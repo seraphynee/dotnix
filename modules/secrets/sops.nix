@@ -5,7 +5,7 @@
 }: let
   # `sops-nix` activation runs as root; use absolute path, not `~`.
   # This file can contain AGE secret keys and/or AGE-PLUGIN-YUBIKEY identities.
-  ageKeyFile = "/var/lib/sops-nix/keys.txt";
+  ageKeyFile = "/Users/chianyung/.config/sops/age/keys.txt";
   sharedSopsFile = ../../secrets/shared/secrets.yaml;
   mbpSopsFile = ../../secrets/mbp/secrets.yaml;
 in {
@@ -86,6 +86,9 @@ in {
         # e.g. /run/secrets/<secret-name>
         secrets = {
           "keys/ssh/gh-spy" = {};
+          test = {
+            sopsFile = ../../secrets/mbp/secrets.yaml;
+          };
         };
       };
     };

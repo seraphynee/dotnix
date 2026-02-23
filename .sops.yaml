@@ -4,6 +4,7 @@ keys:
   - &spy age1kam6fzccmuq6mnsuk64mnhhw5937avqpl2xslj5v8feasrdsca8sra4p0z
   - &mca age1072nv5djq53dz279ayhpm2lcmk7w7k28mpqpsqqxuszxtvdlayys9l5n4m
   # hosts
+  - &mbp age1enfye6t5navcpazam4xqvnqkx8ytm3rld7py65uwwhq88mjszpqqrpkvzw
 creation_rules:
   - path_regex: ^secrets/shared/.*\.yaml$
     key_groups:
@@ -12,7 +13,7 @@ creation_rules:
   - path_regex: ^secrets/mbp/.*\.yaml$
     key_groups:
       - age:
-          - *cny
+          - *mbp
   - path_regex: ^secrets/esquire/.*\.yaml$
     key_groups:
       - age:
