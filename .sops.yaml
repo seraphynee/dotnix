@@ -1,12 +1,25 @@
 keys:
-  - &yb1 age1lemhxccxe6z4fhp0y8l2yvlk0p3r764tydrq357hv6270w7e550sp27jc4
-  - &host-mbp age1enfye6t5navcpazam4xqvnqkx8ytm3rld7py65uwwhq88mjszpqqrpkvzw
+  # users
+  - &cny age1z9fpa8c4v4fmdu42myc6uyapvs9436tns9myss5yqv6p3cmrny2s4rs6kt
+  - &spy age1kam6fzccmuq6mnsuk64mnhhw5937avqpl2xslj5v8feasrdsca8sra4p0z
+  - &mca age1072nv5djq53dz279ayhpm2lcmk7w7k28mpqpsqqxuszxtvdlayys9l5n4m
+  # hosts
 creation_rules:
-  - path_regex: ^secrets/common/.*\.yaml$
+  - path_regex: ^secrets/shared/.*\.yaml$
     key_groups:
       - age:
-          - *yb1
+          - *cny
   - path_regex: ^secrets/mbp/.*\.yaml$
     key_groups:
       - age:
-          - *host-mbp
+          - *cny
+  - path_regex: ^secrets/esquire/.*\.yaml$
+    key_groups:
+      - age:
+          - *cny
+          - *spy
+  - path_regex: ^secrets/acerus/.*\.yaml$
+    key_groups:
+      - age:
+          - *spy
+          - *mca
