@@ -1,7 +1,7 @@
 keys:
   users:
     - &cny age1z9fpa8c4v4fmdu42myc6uyapvs9436tns9myss5yqv6p3cmrny2s4rs6kt
-    - &spy age1kam6fzccmuq6mnsuk64mnhhw5937avqpl2xslj5v8feasrdsca8sra4p0z
+    - &spy age1a6xkfekmu4u3f2srapnhdnwpna53lx5l3vrc2l3xw6xq74nnr53qjsq3gv
     - &mca age1072nv5djq53dz279ayhpm2lcmk7w7k28mpqpsqqxuszxtvdlayys9l5n4m
   hosts: # nix-shell -p ssh-to-age --run 'cat /etc/ssh/ssh_host_ed25519_key.pub | ssh-to-age'
     - &mbp age1enfye6t5navcpazam4xqvnqkx8ytm3rld7py65uwwhq88mjszpqqrpkvzw
