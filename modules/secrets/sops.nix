@@ -67,56 +67,56 @@ in {
             };
           };
         };
-        esquire = {
-          nixos = {pkgs, ...}: {
-            imports = [inputs.sops-nix.nixosModules.sops];
+      };
+      esquire = {
+        nixos = {pkgs, ...}: {
+          imports = [inputs.sops-nix.nixosModules.sops];
 
-            environment.systemPackages = with pkgs; [
-              sops
-              age
-              age-plugin-yubikey
-              yubikey-manager # optional but handy (ykman)
-              yubico-piv-tool # optional but handy (PIV debugging)
-              pcsclite
-            ];
-            services.pcscd.enable = true;
+          environment.systemPackages = with pkgs; [
+            sops
+            age
+            age-plugin-yubikey
+            yubikey-manager # optional but handy (ykman)
+            yubico-piv-tool # optional but handy (PIV debugging)
+            pcsclite
+          ];
+          services.pcscd.enable = true;
 
-            sops = {
-              # Shared secrets are read from `common` by default.
-              # Host-specific secrets should override `sopsFile` per secret.
-              defaultSopsFile = ../../secrets/esquire/secrets.yaml;
-              validateSopsFiles = false;
+          sops = {
+            # Shared secrets are read from `common` by default.
+            # Host-specific secrets should override `sopsFile` per secret.
+            defaultSopsFile = ../../secrets/esquire/secrets.yaml;
+            validateSopsFiles = false;
 
-              age = {
-                # automatically import host SSH keys as age keys
-                sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
-                # this will use an age key that is expected to already be in the filesystem
-                keyFile = "/home/${constants.user_two}/.config/sops/age/keys.txt";
-                # generate a new key if the key specified above does not exist
-                generateKey = true;
+            age = {
+              # automatically import host SSH keys as age keys
+              sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
+              # this will use an age key that is expected to already be in the filesystem
+              keyFile = "/home/${constants.user_two}/.config/sops/age/keys.txt";
+              # generate a new key if the key specified above does not exist
+              generateKey = true;
+            };
+
+            gnupg = {
+              sshKeyPaths = [];
+            };
+
+            # secrets will be output to /run/secrets
+            # e.g. /run/secrets/<secret-name>
+            secrets = {
+              "keys/ssh/ghspy-priv" = {
+                name = "ghspy-priv";
+                sopsFile = sharedSopsFile;
+                path = "/Users/${constants.user_two}/.ssh_keys/ghspy";
+                owner = "${constants.user_two}";
+                mode = "0600";
               };
-
-              gnupg = {
-                sshKeyPaths = [];
-              };
-
-              # secrets will be output to /run/secrets
-              # e.g. /run/secrets/<secret-name>
-              secrets = {
-                "keys/ssh/ghspy-priv" = {
-                  name = "ghspy-priv";
-                  sopsFile = sharedSopsFile;
-                  path = "/Users/${constants.user_two}/.ssh_keys/ghspy";
-                  owner = "${constants.user_two}";
-                  mode = "0600";
-                };
-                "keys/ssh/ghspy-pub" = {
-                  name = "ghspy-pub";
-                  sopsFile = sharedSopsFile;
-                  path = "/Users/${constants.user_two}/.ssh_keys/ghspy.pub";
-                  owner = "${constants.user_one}";
-                  mode = "0600";
-                };
+              "keys/ssh/ghspy-pub" = {
+                name = "ghspy-pub";
+                sopsFile = sharedSopsFile;
+                path = "/Users/${constants.user_two}/.ssh_keys/ghspy.pub";
+                owner = "${constants.user_one}";
+                mode = "0600";
               };
             };
           };
