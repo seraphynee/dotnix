@@ -1,13 +1,12 @@
 {
   __findFile,
   inputs,
+  constants,
   ...
 }: let
   # `sops-nix` activation runs as root; use absolute path, not `~`.
   # This file can contain AGE secret keys and/or AGE-PLUGIN-YUBIKEY identities.
-  ageKeyFile = "/Users/chianyung/.config/sops/age/keys.txt";
   sharedSopsFile = ../../secrets/shared/secrets.yaml;
-  mbpSopsFile = ../../secrets/mbp/secrets.yaml;
 in {
   den.aspects.secrets._.sops = {
     provides = {
@@ -28,14 +27,14 @@ in {
           sops = {
             # Shared secrets are read from `common` by default.
             # Host-specific secrets should override `sopsFile` per secret.
-            defaultSopsFile = sharedSopsFile;
+            defaultSopsFile = ../../secrets/mbp/secrets.yaml;
             validateSopsFiles = false;
 
             age = {
               # automatically import host SSH keys as age keys
               sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
               # this will use an age key that is expected to already be in the filesystem
-              keyFile = ageKeyFile;
+              keyFile = "/Users/${constants.user_one}/.config/sops/age/keys.txt";
               # generate a new key if the key specified above does not exist
               generateKey = true;
             };
@@ -47,7 +46,9 @@ in {
             # secrets will be output to /run/secrets
             # e.g. /run/secrets/<secret-name>
             secrets = {
-              "keys/ssh/gh-spy" = {};
+              "keys/ssh/gh-spy" = {
+                sopsFile = sharedSopsFile;
+              };
               test = {
                 sopsFile = ../../secrets/mbp/secrets.yaml;
               };
@@ -71,14 +72,14 @@ in {
             sops = {
               # Shared secrets are read from `common` by default.
               # Host-specific secrets should override `sopsFile` per secret.
-              defaultSopsFile = sharedSopsFile;
+              defaultSopsFile = ../../secrets/esquire/secrets.yaml;
               validateSopsFiles = false;
 
               age = {
                 # automatically import host SSH keys as age keys
                 sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
                 # this will use an age key that is expected to already be in the filesystem
-                keyFile = ageKeyFile;
+                keyFile = "/home/${constants.user_two}/.config/sops/age/keys.txt";
                 # generate a new key if the key specified above does not exist
                 generateKey = true;
               };
@@ -90,7 +91,9 @@ in {
               # secrets will be output to /run/secrets
               # e.g. /run/secrets/<secret-name>
               secrets = {
-                "keys/ssh/gh-spy" = {};
+                "keys/ssh/gh-spy" = {
+                  sopsFile = sharedSopsFile;
+                };
               };
             };
           };
