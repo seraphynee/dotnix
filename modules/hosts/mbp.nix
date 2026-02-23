@@ -11,6 +11,10 @@
       <secrets/sops>
     ];
 
+    homeManager = {pkgs, ...}: {
+      home.packages = with pkgs; [nil];
+    };
+
     # homeManager = {
     #   home.file."Library/Application Support/zen" = {
     #     force = true;
