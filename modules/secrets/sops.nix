@@ -46,9 +46,21 @@ in {
             # secrets will be output to /run/secrets
             # e.g. /run/secrets/<secret-name>
             secrets = {
-              "keys/ssh/gh-spy" = {
+              "keys/ssh/ghspy-priv" = {
+                name = "ghspy-priv";
                 sopsFile = sharedSopsFile;
+                path = "/Users/${constants.user_one}/.ssh_keys/ghspy";
+                owner = "${constants.user_one}";
+                mode = "0600";
               };
+              "keys/ssh/ghspy-pub" = {
+                name = "ghspy-pub";
+                sopsFile = sharedSopsFile;
+                path = "/Users/${constants.user_one}/.ssh_keys/ghspy.pub";
+                owner = "${constants.user_one}";
+                mode = "0600";
+              };
+
               test = {
                 sopsFile = ../../secrets/mbp/secrets.yaml;
               };
@@ -91,8 +103,19 @@ in {
               # secrets will be output to /run/secrets
               # e.g. /run/secrets/<secret-name>
               secrets = {
-                "keys/ssh/gh-spy" = {
+                "keys/ssh/ghspy-priv" = {
+                  name = "ghspy-priv";
                   sopsFile = sharedSopsFile;
+                  path = "/Users/${constants.user_two}/.ssh_keys/ghspy";
+                  owner = "${constants.user_two}";
+                  mode = "0600";
+                };
+                "keys/ssh/ghspy-pub" = {
+                  name = "ghspy-pub";
+                  sopsFile = sharedSopsFile;
+                  path = "/Users/${constants.user_two}/.ssh_keys/ghspy.pub";
+                  owner = "${constants.user_one}";
+                  mode = "0600";
                 };
               };
             };
