@@ -6,6 +6,7 @@
   # `sops-nix` activation runs as root; use absolute path, not `~`.
   # This file can contain AGE secret keys and/or AGE-PLUGIN-YUBIKEY identities.
   ageKeyFile = "/var/sops/age/keys.txt";
+  sopsFile = "../../secrets/secrets.yaml";
 in {
   den.aspects.secrets._.sops = {
     nixos = {pkgs, ...}: {
@@ -22,12 +23,18 @@ in {
       services.pcscd.enable = true;
 
       sops = {
-        # `secrets.yaml` is encrypted for AGE recipient from YubiKey.
-        defaultSopsFile = ../../secrets/secrets.yaml;
+        defaultSopsFile = sopsFile;
+        validateSopsFile = false;
+
         age = {
-          # keyFile = ageKeyFile;
-          # Prevent fallback to host SSH keys like `/etc/ssh/ssh_host_rsa_key`.
+          keyFile = ageKeyFile;
           sshKeyPaths = [];
+        };
+
+        # secrets will be output to /run/secrets
+        # e.g. /run/secrets/<secret-name>
+        secrets = {
+          example-key = {};
         };
       };
     };
@@ -45,40 +52,20 @@ in {
         ssh-to-age
       ];
 
-      programs.ssh.extraConfig = ''
-        Host spy
-          User git
-          Hostname github.com
-          IdentityFile /run/secrets/git-seraphyne
-          IdentitiesOnly yes
-      '';
-
       sops = {
-        # `secrets.yaml` is encrypted for AGE recipient from YubiKey.
-        defaultSopsFile = ../../secrets/secrets.yaml;
+        defaultSopsFile = sopsFile;
+        validateSopsFile = false;
+
         age = {
           keyFile = ageKeyFile;
-          # Prevent fallback to host SSH keys like `/etc/ssh/ssh_host_rsa_key`.
           sshKeyPaths = [];
         };
 
-        secrets.git-seraphyne = {
-          owner = "chianyung";
-          mode = "0400";
+        # secrets will be output to /run/secrets
+        # e.g. /run/secrets/<secret-name>
+        secrets = {
+          example-key = {};
         };
-        #     secrets.seraphyne = {
-        #       # Key name inside secrets.yaml (typo kept for backward compatibility).
-        #       key = "serapyhne";
-        #
-        #       # path file hasil decrypt:
-        #       path = "/run/secrets/seraphyne";
-        #       mode = "0400";
-        #
-        #       # kalau key ini dipakai oleh user tertentu:
-        #       owner = "chianyung"; # ganti usermu
-        #     };
-        #   };
-        #
       };
     };
   };
