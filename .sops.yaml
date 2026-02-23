@@ -1,7 +1,12 @@
 keys:
   - &yb1 age1lemhxccxe6z4fhp0y8l2yvlk0p3r764tydrq357hv6270w7e550sp27jc4
+  - &host-mbp age1enfye6t5navcpazam4xqvnqkx8ytm3rld7py65uwwhq88mjszpqqrpkvzw
 creation_rules:
-  - path_regex: secrets/.*\.yaml$
+  - path_regex: ^secrets/common/.*\.yaml$
     key_groups:
       - age:
           - *yb1
+  - path_regex: ^secrets/mbp/.*\.yaml$
+    key_groups:
+      - age:
+          - *host-mbp
