@@ -6,7 +6,7 @@
   # `sops-nix` activation runs as root; use absolute path, not `~`.
   # This file can contain AGE secret keys and/or AGE-PLUGIN-YUBIKEY identities.
   ageKeyFile = "/var/lib/sops-nix/keys.txt";
-  commonSopsFile = ../../secrets/common/secrets.yaml;
+  sharedSopsFile = ../../secrets/shared/secrets.yaml;
   mbpSopsFile = ../../secrets/mbp/secrets.yaml;
 in {
   den.aspects.secrets._.sops = {
@@ -26,7 +26,7 @@ in {
       sops = {
         # Shared secrets are read from `common` by default.
         # Host-specific secrets should override `sopsFile` per secret.
-        defaultSopsFile = commonSopsFile;
+        defaultSopsFile = sharedSopsFile;
         validateSopsFiles = false;
 
         age = {
@@ -45,9 +45,7 @@ in {
         # secrets will be output to /run/secrets
         # e.g. /run/secrets/<secret-name>
         secrets = {
-          test-mbp = {
-            sopsFile = mbpSopsFile;
-          };
+          "keys/ssh/gh-spy" = {};
         };
       };
     };
@@ -68,7 +66,7 @@ in {
       sops = {
         # Shared secrets are read from `common` by default.
         # Host-specific secrets should override `sopsFile` per secret.
-        defaultSopsFile = commonSopsFile;
+        defaultSopsFile = sharedSopsFile;
         validateSopsFiles = false;
 
         age = {
@@ -87,13 +85,7 @@ in {
         # secrets will be output to /run/secrets
         # e.g. /run/secrets/<secret-name>
         secrets = {
-          test-mbp = {
-            sopsFile = mbpSopsFile;
-          };
-
-          test-common = {
-            sopsFile = commonSopsFile;
-          };
+          "keys/ssh/gh-spy" = {};
         };
       };
     };
