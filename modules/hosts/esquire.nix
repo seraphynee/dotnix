@@ -46,6 +46,8 @@
 
       <services/tailscale>
       <services/kanata>
+
+      <secrets/sops/esquire>
     ];
   };
 }

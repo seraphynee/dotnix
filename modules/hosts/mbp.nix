@@ -8,7 +8,12 @@
   den.aspects.mbp = {
     includes = [
       <system/settings>
+      <secrets/sops/mbp>
     ];
+
+    homeManager = {pkgs, ...}: {
+      home.packages = with pkgs; [nil nh];
+    };
 
     # homeManager = {
     #   home.file."Library/Application Support/zen" = {

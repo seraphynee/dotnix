@@ -17,12 +17,12 @@
           ghcny = {
             hostname = "github.com";
             user = "git";
-            identityFile = "~/.ssh_keys/github-cnycode.pub";
+            identityFile = "~/.ssh_keys/ghcny.pub";
           };
           ghspy = {
             hostname = "github.com";
             user = "git";
-            identityFile = "~/.ssh_keys/github-seraphynee.pub";
+            identityFile = "~/.ssh_keys/ghspy.pub";
           };
         };
       };
