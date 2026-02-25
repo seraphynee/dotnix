@@ -24,7 +24,7 @@
       <shell/neovim>
       <shell/starship>
       <shell/tmux>
-      <shell/yazi>
+      # <shell/yazi>
     ];
 
     nixos = {
