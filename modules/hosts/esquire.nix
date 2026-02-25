@@ -38,6 +38,7 @@
       <system/xdg>
 
       # <desktop/kde>
+      <desktop/sddm>
       <desktop/niri>
 
       <apps/ghostty>
