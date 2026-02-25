@@ -1,5 +1,9 @@
-{lib, ...}: let
-  device = lib.mkDefault "/dev/disk/by-id/nvme-eui.002538ba11b6cb55";
+{
+  lib,
+  constants,
+  ...
+}: let
+  device = lib.mkDefault "${constants.mainDisk}";
   luksName = "crypted";
   swapSizeMiB = 8192;
   mountOptions = [

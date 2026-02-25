@@ -2,27 +2,30 @@
   __findFile,
   constants,
   ...
-}: {
+}:
+{
   den.hosts.x86_64-linux.esquire.users = {
-    ${constants.user_two} = {};
+    ${constants.user_two} = { };
   };
 
   den.aspects.esquire = {
-    nixos = {lib, ...}: {
-      imports = [];
+    nixos =
+      { lib, ... }:
+      {
+        imports = [ ];
 
-      boot.initrd.availableKernelModules = [
-        "nvme"
-        "ahci"
-        "xhci_pci"
-        "usbhid"
-        "usb_storage"
-        "sd_mod"
-        "sr_mod"
-      ];
+        boot.initrd.availableKernelModules = [
+          "nvme"
+          "ahci"
+          "xhci_pci"
+          "usbhid"
+          "usb_storage"
+          "sd_mod"
+          "sr_mod"
+        ];
 
-      disko.devices.disk.btrfs.device = lib.mkForce "/dev/disk/by-id/nvme-eui.002538ba11b6cb55";
-    };
+        disko.devices.disk.btrfs.device = lib.mkForce constants.mainDisk;
+      };
 
     includes = [
       <disko/btrfs-luks>
