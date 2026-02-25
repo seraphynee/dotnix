@@ -92,9 +92,9 @@ in {
               # automatically import host SSH keys as age keys
               sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
               # this will use an age key that is expected to already be in the filesystem
-              keyFile = "/home/${constants.user_two}/.config/sops/age/keys.txt";
+              keyFile = "/var/lib/sops-nix/keys.txt";
               # generate a new key if the key specified above does not exist
-              generateKey = true;
+              generateKey = false;
             };
 
             gnupg = {

@@ -29,3 +29,10 @@ disko-install-remount host flake='.' rw_store_size='20G':
     sudo nix --extra-experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount --flake '{{ flake }}#{{ host }}'
     sudo mount -o remount,size={{ rw_store_size }},noatime /nix/.rw-store
     sudo nixos-install --flake '{{ flake }}#{{ host }}'
+
+disko-mount-only host flake='.':
+    sudo nix --extra-experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount --flake '{{ flake }}#{{ host }}'
+
+install-after-key host flake='.' rw_store_size='20G':
+    sudo mount -o remount,size={{ rw_store_size }},noatime /nix/.rw-store
+    sudo nixos-install --flake '{{ flake }}#{{ host }}'
