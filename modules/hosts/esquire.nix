@@ -25,7 +25,7 @@
     };
 
     includes = [
-      <disko/btrfs>
+      <disko/btrfs-luks>
 
       <system/systemd-boot>
       <system/locale>
@@ -47,7 +47,7 @@
       <services/tailscale>
       <services/kanata>
 
-      <secrets/sops/esquire>
+      # <secrets/sops/esquire>
     ];
   };
 }
