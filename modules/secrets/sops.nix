@@ -116,6 +116,9 @@ in
                   owner = "${constants.user_two}";
                   mode = "0600";
                 };
+                "password/seraphyne" = {
+                  neededForUsers = true;
+                };
               };
             };
           };
