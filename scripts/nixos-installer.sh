@@ -17,7 +17,8 @@ KEY_FILE="${KEY_FILE:-$HOME/keys.txt}"
 FLAKE_HOST="${FLAKE_HOST:-esquire}"
 TARGET_USER="${TARGET_USER:-root}"
 BUILD_ON="${BUILD_ON:-remote}"
-SSH_PREFERRED_AUTH="${SSH_PREFERRED_AUTH:-publickey,password}"
+SSH_PREFERRED_AUTH="${SSH_PREFERRED_AUTH:-password}"
+SSH_DISABLE_PUBKEY="${SSH_DISABLE_PUBKEY:-yes}"
 
 print
 gum style --border normal --padding "1 2" --margin "1 0" \
@@ -47,6 +48,7 @@ gum style "  target-host : ${TARGET_HOST}"
 gum style "  keyfile     : ${KEY_FILE}"
 gum style "  flake       : ${FLAKE}"
 gum style "  build-on    : ${BUILD_ON}"
+gum style "  ssh auth    : ${SSH_PREFERRED_AUTH}"
 
 if ! gum confirm "Continue installation on this host?"; then
 	print "Cancelled."
@@ -81,4 +83,5 @@ chmod 600 "$tmp/var/lib/sops-nix/keys.txt"
 	--build-on "$BUILD_ON" \
 	--extra-files "$tmp" \
 	--ssh-option "PreferredAuthentications=${SSH_PREFERRED_AUTH}" \
+	--ssh-option "PubkeyAuthentication=${SSH_DISABLE_PUBKEY}" \
 	"$TARGET_HOST"
