@@ -14,6 +14,6 @@ jobs:
       - name: Install Nix
         uses: cachix/install-nix-action@v27
       - name: Run deadnix
-        run: nix run nixpkgs#deadnix -- .
+        run: nix run nixpkgs#deadnix -- -L .
       - name: Run statix
         run: nix run nixpkgs#statix -- check .
