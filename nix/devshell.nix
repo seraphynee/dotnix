@@ -13,6 +13,7 @@
           nil
           alejandra
           nixd
+          nixos-anywhere
         ];
       };
     };
