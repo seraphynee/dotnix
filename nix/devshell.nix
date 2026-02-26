@@ -13,8 +13,9 @@
 
           packages = with pkgs; [
             nil
-            nixfmt
             nixd
+            nixfmt
+            nixfmt-tree
             nixos-anywhere
             gum
           ];

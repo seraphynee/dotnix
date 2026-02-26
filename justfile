@@ -1,3 +1,6 @@
+default:
+    @just --list
+
 rebuild host:
     if [ "$(uname -s)" = "Darwin" ]; then nh darwin switch . -H {{ host }}; else nh os switch . -H {{ host }}; fi
 
@@ -20,7 +23,7 @@ check:
     nix flake check
 
 fmt:
-    nix run nixpkgs#nixfmt-tree -- --excludes flake.nix .
+    treefmt --excludes flake.nix .
 
 anywhere host target:
     nix run github:nix-community/nixos-anywhere -- --flake {{ host }} --host-target {{ target }}
