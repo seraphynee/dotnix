@@ -5,7 +5,7 @@
       programs.neovim = {
         enable = true;
         plugins = with pkgs.vimPlugins; [
-          (nvim-treesitter.withAllGrammars)
+          nvim-treesitter.withAllGrammars
         ];
       };
       xdg.configFile."nvim" = {

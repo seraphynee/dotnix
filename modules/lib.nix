@@ -26,7 +26,7 @@ in
           take.unused OS {
             nixos.networking.hostName = host.hostName;
             darwin.networking = {
-              hostName = host.hostName;
+              inherit (host) hostName;
               localHostName = host.hostName;
               computerName = host.hostName;
             };
@@ -97,8 +97,7 @@ in
       ];
     };
 
-    aspect-router = (
-      let
+    aspect-router = let
         mutual = from: to: den.aspects.${from.aspect}._.${to.aspect} or { };
       in
       {
@@ -115,7 +114,6 @@ in
           (mutual user host)
           (mutual host user)
         ];
-      }
-    );
+      };
   };
 }
