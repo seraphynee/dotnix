@@ -2,7 +2,8 @@
   lib,
   constants,
   ...
-}: let
+}:
+let
   device = lib.mkDefault "${constants.mainDisk}";
   luksName = "crypted";
   swapSizeMiB = 8192;
@@ -14,7 +15,8 @@
     "noatime"
     "nodatacow"
   ];
-in {
+in
+{
   den.aspects.disko._."btrfs-luks".nixos = {
     services.fstrim.enable = true;
     swapDevices = [
@@ -43,7 +45,7 @@ in {
                     type = "filesystem";
                     format = "vfat";
                     mountpoint = "/boot";
-                    mountOptions = ["umask=0077"];
+                    mountOptions = [ "umask=0077" ];
                   };
                 };
                 root = {
@@ -56,7 +58,7 @@ in {
                     };
                     content = {
                       type = "btrfs";
-                      extraArgs = ["-f"];
+                      extraArgs = [ "-f" ];
                       subvolumes = {
                         "@" = {
                           mountpoint = "/";

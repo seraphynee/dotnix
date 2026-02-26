@@ -6,21 +6,28 @@
     systems.url = "github:nix-systems/default";
   };
 
-  outputs = {
-    nixpkgs,
-    systems,
-    ...
-  }: let
-    forEachSystem = nixpkgs.lib.genAttrs (import systems);
-    pkgsFor = forEachSystem (system: import nixpkgs {inherit system;});
-  in {
-    devShells = forEachSystem (system: let
-      pkgs = pkgsFor.${system};
-    in {
-      default = pkgsFor.${system}.mkShell {
-        packages = with pkgs; [
-        ];
-      };
-    });
-  };
+  outputs =
+    {
+      nixpkgs,
+      systems,
+      ...
+    }:
+    let
+      forEachSystem = nixpkgs.lib.genAttrs (import systems);
+      pkgsFor = forEachSystem (system: import nixpkgs { inherit system; });
+    in
+    {
+      devShells = forEachSystem (
+        system:
+        let
+          pkgs = pkgsFor.${system};
+        in
+        {
+          default = pkgsFor.${system}.mkShell {
+            packages = with pkgs; [
+            ];
+          };
+        }
+      );
+    };
 }

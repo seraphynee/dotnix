@@ -1,4 +1,5 @@
-{__findFile, ...}: {
+{ __findFile, ... }:
+{
   den.aspects.desktop._.gnome = {
     nixos = {
       services.xserver.enable = true;

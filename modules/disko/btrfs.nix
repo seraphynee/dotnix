@@ -2,13 +2,15 @@
   lib,
   constants,
   ...
-}: let
+}:
+let
   device = lib.mkDefault "${constants.mainDisk}";
   mountOptions = [
     "noatime"
     "compress=zstd"
   ];
-in {
+in
+{
   den.aspects.disko._.btrfs.nixos.disko = {
     devices = {
       disk = {
@@ -28,14 +30,14 @@ in {
                   type = "filesystem";
                   format = "vfat";
                   mountpoint = "/boot";
-                  mountOptions = ["umask=0077"];
+                  mountOptions = [ "umask=0077" ];
                 };
               };
               root = {
                 size = "100%";
                 content = {
                   type = "btrfs";
-                  extraArgs = ["-f"];
+                  extraArgs = [ "-f" ];
                   subvolumes = {
                     "@" = {
                       mountpoint = "/";

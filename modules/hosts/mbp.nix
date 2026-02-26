@@ -2,8 +2,9 @@
   __findFile,
   constants,
   ...
-}: {
-  den.hosts.aarch64-darwin.mbp.users.${constants.user_one} = {};
+}:
+{
+  den.hosts.aarch64-darwin.mbp.users.${constants.user_one} = { };
 
   den.aspects.mbp = {
     includes = [
@@ -11,9 +12,14 @@
       <secrets/sops/mbp>
     ];
 
-    homeManager = {pkgs, ...}: {
-      home.packages = with pkgs; [nil nh];
-    };
+    homeManager =
+      { pkgs, ... }:
+      {
+        home.packages = with pkgs; [
+          nil
+          nh
+        ];
+      };
 
     # homeManager = {
     #   home.file."Library/Application Support/zen" = {
@@ -34,6 +40,6 @@
     #   # '';
     # };
 
-    darwin = {};
+    darwin = { };
   };
 }

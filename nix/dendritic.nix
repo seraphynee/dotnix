@@ -1,7 +1,8 @@
-{inputs, ...}: {
+{ inputs, ... }:
+{
   imports = [
-    (inputs.flake-file.flakeModules.dendritic or {})
-    (inputs.den.flakeModules.dendritic or {})
+    (inputs.flake-file.flakeModules.dendritic or { })
+    (inputs.den.flakeModules.dendritic or { })
   ];
 
   # other inputs may be defined at a module using them.
