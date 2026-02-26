@@ -1,16 +1,13 @@
----
 # Unordered list style
 # Disabled this because the TOC was giving me warnings for using other symbols
 # than -
 # https://github.com/DavidAnson/markdownlint/blob/main/doc/md004.md
 MD004: false
-
 # Unordered list indentation
 # I disable this because for some documents I use 4 space indenting, like
 # markdown files that I need to upload to confluence
 # https://github.com/DavidAnson/markdownlint/blob/main/doc/md007.md
 MD007: false
-
 # Hard tabs
 # https://github.com/DavidAnson/markdownlint/blob/main/doc/md010.md
 # This rule is triggered by any lines that contain hard tab characters instead
@@ -18,14 +15,12 @@ MD007: false
 # with spaces instead
 MD010:
   code_blocks: false
-
 # Multiple consecutive blank lines
 # https://github.com/DavidAnson/markdownlint/blob/main/doc/md012.md
 # Not sure why at the end of markdown files I get an error that there are 2
 # blank lines when there's only 1, so increasing this to fix it
 MD012:
   maximum: 2
-
 # Line length
 # I disabled this because autoformatting takes care of the line length for me,
 # so it's not necessary, also if I have a really long markdown link with {:target="\_blank"}
@@ -41,7 +36,6 @@ MD013: false
 # Disabled this because of confluence formatting
 # https://github.com/DavidAnson/markdownlint/blob/main/doc/md030.md
 MD030: false
-
 # Inline HTML
 # I disabled this so it doesn't warn me when I include HTML code in my markdown
 # files, sometimes HTML is needed in github readmes

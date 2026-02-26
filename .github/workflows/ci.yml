@@ -1,11 +1,9 @@
 name: CI
-
 on:
   pull_request:
   push:
     branches:
       - main
-
 jobs:
   flake-check:
     name: Flake Check and Format
@@ -13,12 +11,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Install Nix
         uses: cachix/install-nix-action@v27
-
       - name: Run flake checks
         run: nix flake check --print-build-logs
-
       - name: Check formatting
         run: nix run nixpkgs#nixfmt-tree -- --ci --excludes flake.nix .

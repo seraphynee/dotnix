@@ -1,14 +1,11 @@
 name: Gitleaks
-
 on:
   pull_request:
   push:
     branches:
       - main
-
 permissions:
   contents: read
-
 jobs:
   scan:
     name: Secret scan
@@ -18,7 +15,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - name: Run gitleaks
         uses: gitleaks/gitleaks-action@v2
         env:
