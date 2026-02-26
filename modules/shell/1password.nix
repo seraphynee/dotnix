@@ -18,20 +18,16 @@
       }:
       {
         xdg.configFile."1Password/ssh/agent.toml".source = ../../dots/config/1Password/ssh/agent.toml;
-        programs.ssh = {
-          enable = true;
-          extraConfig =
-            if pkgs.stdenv.hostPlatform.isDarwin then
-              ''
-                IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
-              ''
-            else if pkgs.stdenv.hostPlatform.isLinux then
-              ''
-                IdentityAgent "~/.1password/agent.sock"
-              ''
-            else
-              "";
-        };
+        home.sessionVariables =
+          lib.optionalAttrs (pkgs.stdenv.hostPlatform.isDarwin || pkgs.stdenv.hostPlatform.isLinux)
+            {
+              SSH_AUTH_SOCK =
+                if pkgs.stdenv.hostPlatform.isDarwin then
+                  "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+                else
+                  "~/.1password/agent.sock";
+            };
+        programs.ssh.enable = true;
       };
   };
 }
