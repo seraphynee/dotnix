@@ -36,13 +36,15 @@
             {
               SSH_AUTH_SOCK = sshAuthSock;
             };
-        programs.fish.interactiveShellInit = lib.mkAfter ''
-          set -gx SSH_AUTH_SOCK "${sshAuthSock}"
-        '';
-        programs.bash.bashrcExtra = lib.mkAfter ''
-          export SSH_AUTH_SOCK="${sshAuthSock}"
-        '';
-        programs.ssh.enable = true;
+        programs = {
+          fish.interactiveShellInit = lib.mkAfter ''
+            set -gx SSH_AUTH_SOCK "${sshAuthSock}"
+          '';
+          bash.bashrcExtra = lib.mkAfter ''
+            export SSH_AUTH_SOCK="${sshAuthSock}"
+          '';
+          ssh.enable = true;
+        };
       };
   };
 }
