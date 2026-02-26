@@ -14,11 +14,11 @@ creation_rules:
   - path_regex: ^secrets/mbp/.*\.yaml$
     key_groups:
       - age:
+          - *cny
           - *mbp
   - path_regex: ^secrets/esquire/.*\.yaml$
     key_groups:
       - age:
-          - *cny
           - *spy
   - path_regex: ^secrets/acerus/.*\.yaml$
     key_groups:
