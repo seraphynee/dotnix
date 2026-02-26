@@ -1,14 +1,16 @@
 {
-  den.aspects.shell._.neovim.homeManager = {pkgs, ...}: {
-    programs.neovim = {
-      enable = true;
-      plugins = with pkgs.vimPlugins; [
-        (nvim-treesitter.withAllGrammars)
-      ];
+  den.aspects.shell._.neovim.homeManager =
+    { pkgs, ... }:
+    {
+      programs.neovim = {
+        enable = true;
+        plugins = with pkgs.vimPlugins; [
+          nvim-treesitter.withAllGrammars
+        ];
+      };
+      xdg.configFile."nvim" = {
+        source = ../../dots/config/nvim;
+        recursive = true;
+      };
     };
-    xdg.configFile."nvim" = {
-      source = ../../dots/config/nvim;
-      recursive = true;
-    };
-  };
 }

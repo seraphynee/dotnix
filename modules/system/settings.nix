@@ -1,4 +1,5 @@
-{__findFile, ...}: {
+{ __findFile, ... }:
+{
   den.aspects.system._.settings = {
     darwin = {
       system.defaults = {
@@ -23,6 +24,6 @@
         NSGlobalDomain._HIHideMenuBar = true;
       };
     };
-    nixos = {};
+    nixos = { };
   };
 }

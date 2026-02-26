@@ -1,22 +1,24 @@
 {
-  perSystem = {
-    config,
-    pkgs,
-    inputs',
-    ...
-  }: {
-    devShells = {
-      default = pkgs.mkShell {
-        name = "den-shell";
+  perSystem =
+    {
+      config,
+      pkgs,
+      inputs',
+      ...
+    }:
+    {
+      devShells = {
+        default = pkgs.mkShell {
+          name = "den-shell";
 
-        packages = with pkgs; [
-          nil
-          alejandra
-          nixd
-          nixos-anywhere
-          gum
-        ];
+          packages = with pkgs; [
+            nil
+            nixfmt
+            nixd
+            nixos-anywhere
+            gum
+          ];
+        };
       };
     };
-  };
 }

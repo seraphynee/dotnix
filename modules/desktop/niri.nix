@@ -1,6 +1,7 @@
-{__findFile, ...}: {
+{ __findFile, ... }:
+{
   den.aspects.desktop._.niri = {
-    includes = [<desktop/sddm>];
+    includes = [ <desktop/sddm> ];
 
     nixos = {
       services.xserver.enable = true;

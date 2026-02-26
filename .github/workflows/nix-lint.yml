@@ -1,0 +1,19 @@
+name: Nix Lint
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+jobs:
+  lint:
+    name: deadnix and statix
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+      - name: Run deadnix
+        run: nix run nixpkgs#deadnix -- -L .
+      - name: Run statix
+        run: nix run nixpkgs#statix -- check .

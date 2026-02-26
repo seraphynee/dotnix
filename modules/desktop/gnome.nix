@@ -1,10 +1,15 @@
-{__findFile, ...}: {
+{ __findFile, ... }:
+{
   den.aspects.desktop._.gnome = {
     nixos = {
-      services.xserver.enable = true;
-      services.displayManager.gdm.enable = true;
-      services.desktopManager.gnome.enable = true;
-      services.xserver.xkb.layout = "us";
+      services = {
+        xserver = {
+          enable = true;
+          xkb.layout = "us";
+        };
+        displayManager.gdm.enable = true;
+        desktopManager.gnome.enable = true;
+      };
     };
   };
 }
