@@ -14,6 +14,7 @@
           alejandra
           nixd
           nixos-anywhere
+          gum
         ];
       };
     };
