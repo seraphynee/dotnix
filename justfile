@@ -1,6 +1,9 @@
 rebuild host:
     if [ "$(uname -s)" = "Darwin" ]; then nh darwin switch . -H {{ host }}; else nh os switch . -H {{ host }}; fi
 
+rebuild-boot host:
+    sudo nixos-rebuild boot --flake .#{{ host }}
+
 up:
     nix flake update
 
