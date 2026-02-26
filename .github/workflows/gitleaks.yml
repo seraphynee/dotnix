@@ -8,15 +8,14 @@ permissions:
   contents: read
 jobs:
   scan:
-    name: Secret scan
+    name: Secret scan via justfile
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Run gitleaks
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+      - name: Run secret scan recipe from justfile
+        run: nix shell nixpkgs#just -c just secrets-scan

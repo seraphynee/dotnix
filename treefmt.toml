@@ -1,0 +1,10 @@
+[global]
+excludes = [
+  "flake.nix",
+  ".direnv/**",
+  "result/**",
+]
+
+[formatter.nixfmt]
+command = "nixfmt"
+includes = ["**/*.nix"]

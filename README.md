@@ -68,3 +68,17 @@ All three should be mounted as btrfs subvolumes (`@`, `@home`, `@nix`).
 
 - den documentation: <https://vic.github.io/den>
 - Disko: <https://github.com/nix-community/disko>
+
+## Development workflow
+
+Use the shared task runner and git hooks:
+
+```console
+nix develop
+just hooks-install
+```
+
+Configured hooks:
+
+- `pre-commit`: `just fmt` and `just lint`
+- `pre-push`: `just check`

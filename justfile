@@ -20,10 +20,28 @@ clean:
     sudo nix-collect-garbage -d
 
 check:
-    nix flake check
+    nix flake check --print-build-logs
+
+ci-check:
+    just fmt-check
+    just lint
+    just check
 
 fmt:
-    treefmt --excludes flake.nix .
+    nix shell nixpkgs#treefmt nixpkgs#nixfmt -c treefmt
+
+fmt-check:
+    nix shell nixpkgs#treefmt nixpkgs#nixfmt -c treefmt --ci
+
+lint:
+    nix run nixpkgs#deadnix -- -L .
+    nix run nixpkgs#statix -- check .
+
+secrets-scan:
+    nix run nixpkgs#gitleaks -- detect --source . --verbose
+
+hooks-install:
+    lefthook install
 
 anywhere host target:
     nix run github:nix-community/nixos-anywhere -- --flake {{ host }} --host-target {{ target }}
