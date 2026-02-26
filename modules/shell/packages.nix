@@ -53,13 +53,15 @@
 
             # Version Control
             git # Distributed version control system
-            jj # Jujutsu Version Control
             git-lfs # Large file support
             gh # GitHub CLI
             delta # Syntax-highlighting pager
             tig # Text-mode interface for Git
             lazygit # Terminal UI for Git
             gitui # Another terminal UI for Git
+            jujutsu # Jujutsu Version Control
+            jjui # Jujutsu TUI
+            lazyjj # Jujutsu TUI
 
             # Development Tools
             hyperfine # Command-line benchmarking tool
