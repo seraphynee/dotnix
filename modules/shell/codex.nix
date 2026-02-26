@@ -15,7 +15,8 @@
           && codex.packages.${pkgs.system} ? default
         then
           codex.packages.${pkgs.system}.default
-        else pkgs.codex or null;
+        else
+          pkgs.codex or null;
       codexFixed =
         if codexPackage != null then
           codexPackage.overrideAttrs (old: {

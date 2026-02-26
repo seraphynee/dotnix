@@ -97,7 +97,8 @@ in
       ];
     };
 
-    aspect-router = let
+    aspect-router =
+      let
         mutual = from: to: den.aspects.${from.aspect}._.${to.aspect} or { };
       in
       {
