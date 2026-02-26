@@ -51,6 +51,8 @@
 
       <services/tailscale>
       <services/kanata>
+
+      <secrets/sops/acerus>
     ];
   };
 }

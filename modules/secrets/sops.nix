@@ -123,6 +123,44 @@ in
             };
           };
       };
+      acerus = {
+        nixos =
+          { pkgs, ... }:
+          {
+            imports = [ inputs.sops-nix.nixosModules.sops ];
+
+            environment.systemPackages = with pkgs; [
+              sops
+              age
+              age-plugin-yubikey
+              yubikey-manager
+              yubico-piv-tool
+              pcsclite
+            ];
+            services.pcscd.enable = true;
+
+            sops = {
+              defaultSopsFile = ../../secrets/acerus/secrets.yaml;
+              validateSopsFiles = false;
+
+              age = {
+                sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+                keyFile = "/var/lib/sops-nix/keys.txt";
+                generateKey = false;
+              };
+
+              gnupg = {
+                sshKeyPaths = [ ];
+              };
+
+              secrets = {
+                "password/seraphyne" = {
+                  neededForUsers = true;
+                };
+              };
+            };
+          };
+      };
     };
   };
 }
