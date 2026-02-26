@@ -21,4 +21,4 @@ jobs:
         run: nix flake check --print-build-logs
 
       - name: Check formatting
-        run: nix run nixpkgs#alejandra -- --check .
+        run: nix run nixpkgs#alejandra -- --check --exclude flake.nix .

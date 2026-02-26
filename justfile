@@ -17,7 +17,7 @@ check:
     nix flake check
 
 fmt:
-    alejandra .
+    alejandra --exclude flake.nix .
 
 anywhere host target:
     nix run github:nix-community/nixos-anywhere -- --flake {{ host }} --host-target {{ target }}
