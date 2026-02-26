@@ -12,7 +12,7 @@
 
       <shell/nix-tools>
       <shell/utils>
-      <shell/packages>
+      <shell/packages/dev>
       <shell/nh>
       <shell/env>
 
