@@ -36,10 +36,20 @@
 
             # Process & System Monitoring
             procs # Modern process viewer (ps alternative)
+            gping # ping, but with graph
 
             # File Searching
             fd # User-friendly find alternative
             ripgrep # Ultra-fast grep alternative
+            skim # fuzzy-finder alternative to fzf
+
+            # Keys
+            age
+            age-plugin-yubikey
+            yubikey-manager # optional but handy (ykman)
+            yubico-piv-tool # optional but handy (PIV debugging)
+            pcsclite
+            ssh-to-age
 
             # Version Control
             git # Distributed version control system
