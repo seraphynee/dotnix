@@ -30,6 +30,9 @@ up:
 upp target:
     nix flake update {{ target }}
 
+write-flake:
+    nix run .#write-flake
+
 repl:
     nh os repl
 

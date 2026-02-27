@@ -48,6 +48,10 @@
       url = "github:Mic92/sops-nix";
     };
     systems.url = "github:nix-systems/default";
+    treefmt-nix = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:numtide/treefmt-nix";
+    };
     zen-browser = {
       inputs = {
         home-manager.follows = "home-manager";
