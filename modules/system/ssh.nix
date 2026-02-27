@@ -4,27 +4,7 @@
     homeManager = {
       programs.ssh = {
         enableDefaultConfig = false;
-        matchBlocks = {
-          "*" = {
-            serverAliveInterval = 30;
-            serverAliveCountMax = 120;
-            identitiesOnly = true;
-            extraOptions = {
-              Protocol = "2";
-              StrictHostKeyChecking = "accept-new";
-            };
-          };
-          ghcny = {
-            hostname = "github.com";
-            user = "git";
-            identityFile = "~/.ssh_keys/ghcny.pub";
-          };
-          ghspy = {
-            hostname = "github.com";
-            user = "git";
-            identityFile = "~/.ssh_keys/ghspy.pub";
-          };
-        };
+        matchBlocks."*" = { };
       };
     };
   };
