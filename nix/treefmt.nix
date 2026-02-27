@@ -1,5 +1,6 @@
-{ inputs, _ }:
+args:
 let
+  inherit (args) inputs;
   hasTreefmt = inputs ? treefmt-nix;
 in
 {
@@ -13,12 +14,22 @@ in
   };
 
   perSystem =
-    { _ }:
+    _:
     if hasTreefmt then
       {
         treefmt = {
           projectRootFile = "flake.nix";
-          programs.nixfmt.enable = true;
+          programs = {
+            # formatter
+            nixfmt.enable = true;
+            taplo.enable = true;
+            yamlfmt.enable = true;
+            stylua.enable = true;
+
+            # linter
+            statix.enable = true;
+            deadnix.enable = true;
+          };
         };
       }
     else

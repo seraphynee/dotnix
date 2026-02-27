@@ -2,15 +2,11 @@ default:
     @just --list
 
 # Quality
-fmt:
-    nix shell nixpkgs#treefmt nixpkgs#nixfmt -c treefmt
+fmt-lint:
+    nix fmt
 
-fmt-check:
-    nix shell nixpkgs#treefmt nixpkgs#nixfmt -c treefmt --ci
-
-lint:
-    nix run nixpkgs#deadnix -- -L .
-    nix run nixpkgs#statix -- check .
+fmt-lint-check:
+    nix fmt -- --ci
 
 check:
     nix flake check --print-build-logs
@@ -19,8 +15,7 @@ secrets-scan:
     nix run nixpkgs#gitleaks -- detect --source . --verbose
 
 ci-check:
-    just fmt-check
-    just lint
+    just fmt-lint-check
     just check
 
 # Daily workflow
