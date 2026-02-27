@@ -74,7 +74,7 @@ in
       };
       esquire = {
         nixos =
-          { pkgs, ... }:
+          { pkgs, config, ... }:
           {
             imports = [ inputs.sops-nix.nixosModules.sops ];
 
@@ -110,7 +110,7 @@ in
               # secrets will be output to /run/secrets
               # e.g. /run/secrets/<secret-name>
               secrets = {
-                "keys/ssh/ghspy-pub" = {
+                "ssh/keys/ghspy-pub" = {
                   name = "ghspy-pub";
                   path = "/home/${constants.user_two}/.ssh_keys/ghspy.pub";
                   owner = "${constants.user_two}";
@@ -119,7 +119,18 @@ in
                 "password/seraphyne" = {
                   neededForUsers = true;
                 };
+                "ssh/config" = { };
               };
+            };
+
+            programs.ssh = {
+              extraConfig = "
+               # This file will be generated with sops and if sops fails to generate
+               # it this directive will be skipped.
+               Include ${
+                               config.sops.secrets."ssh/config".path
+                             }
+               ";
             };
           };
       };
