@@ -88,10 +88,7 @@ in
               };
 
               secrets = {
-                "ssh/config" = {
-                  owner = "${constants.user_two}";
-                  mode = "0600";
-                };
+                "ssh/config" = { };
               };
             };
 
