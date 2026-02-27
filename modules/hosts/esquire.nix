@@ -45,7 +45,8 @@
       # <desktop/gnome>
       <desktop/sddm>
       <desktop/niri>
-      <desktop/noctalia>
+      <desktop/dms>
+      # <desktop/noctalia>
 
       <apps/ghostty>
       <apps/zen>
