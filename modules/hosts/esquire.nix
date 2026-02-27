@@ -41,9 +41,9 @@
       <system/xdg>
 
       # <desktop/kde>
-      # <desktop/sddm>
-      # <desktop/niri>
-      <desktop/gnome>
+      <desktop/sddm>
+      <desktop/niri>
+      # <desktop/gnome>
 
       <apps/ghostty>
       <apps/zen>

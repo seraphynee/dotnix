@@ -3,16 +3,23 @@
   den.aspects.desktop._.niri = {
     includes = [ <desktop/sddm> ];
 
-    nixos = {
-      services.xserver.enable = true;
-      services.xserver.xkb.layout = "us";
+    nixos =
+      { pkgs, ... }:
+      {
+        environment.systemPackages = with pkgs; [
+          fuzzel
+          alacritty
+        ];
 
-      programs.niri.enable = true;
-      security.polkit.enable = true;
-    };
+        services.xserver.enable = true;
+        services.xserver.xkb.layout = "us";
 
-    homeManager = {
-      xdg.configFile."niri/config.kdl".source = ../../dots/config/niri/config.kdl;
-    };
+        programs.niri.enable = true;
+        security.polkit.enable = true;
+      };
+
+    # homeManager = {
+    #   #      xdg.configFile."niri/config.kdl".source = ../../dots/config/niri/config.kdl;
+    # };
   };
 }
