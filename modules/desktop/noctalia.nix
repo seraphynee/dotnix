@@ -10,6 +10,7 @@
       # configure options
       programs.noctalia-shell = {
         enable = true;
+        systemd.enable = true;
         settings = {
           # configure noctalia here
           bar = {
