@@ -30,6 +30,11 @@ in
             statix.enable = true;
             deadnix.enable = true;
           };
+
+          settings.formatter.deadnix.options = [
+            "-L"
+            "."
+          ];
         };
       }
     else
