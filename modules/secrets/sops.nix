@@ -73,15 +73,33 @@ in
           };
       };
       esquire = {
-        homeManager = _: {
-          programs.ssh = {
-            extraConfig = "
-               # This file will be generated with sops and if sops fails to generate
-               # it this directive will be skipped.
-               Include /run/secrets/ssh/config
-               ";
+        homeManager =
+          { config, ... }:
+          {
+            imports = [ inputs.sops-nix.homeManagerModules.sops ];
+
+            sops = {
+              defaultSopsFile = ../../secrets/esquire/secrets.yaml;
+              validateSopsFiles = false;
+
+              age = {
+                keyFile = "/var/lib/sops-nix/keys.txt";
+                generateKey = false;
+              };
+
+              secrets = {
+                "ssh/config" = { };
+              };
+            };
+
+            programs.ssh = {
+              extraConfig = ''
+                # This file will be generated with sops and if sops fails to generate
+                # it this directive will be skipped.
+                Include ${config.sops.secrets."ssh/config".path}
+              '';
+            };
           };
-        };
         nixos =
           { pkgs, config, ... }:
           {
@@ -127,10 +145,6 @@ in
                 };
                 "password/seraphyne" = {
                   neededForUsers = true;
-                };
-                "ssh/config" = {
-                  owner = "${constants.user_two}";
-                  mode = "0400";
                 };
               };
             };
