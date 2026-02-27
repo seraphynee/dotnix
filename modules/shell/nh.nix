@@ -17,7 +17,7 @@
 
       programs.nh = {
         enable = true;
-        osFlake = "${config.home.homeDirectory}/den";
+        osFlake = "${config.home.homeDirectory}/dotnix";
       };
     };
 }
