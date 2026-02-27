@@ -14,11 +14,6 @@
           packages = with pkgs; [
             just
             lefthook
-            nil
-            nixd
-            nixfmt
-            nixfmt-tree
-            nixos-anywhere
             gum
           ];
         };
