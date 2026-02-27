@@ -1,6 +1,12 @@
 { __findFile, ... }:
 {
   den.aspects.system._.settings = {
+    nixos = {
+      services = {
+        power-profiles-daemon.enable = true; # alternatively, use tuned.enable = true
+        upower.enable = true;
+      };
+    };
     darwin = {
       system.defaults = {
         spaces.spans-displays = false;
@@ -24,6 +30,5 @@
         NSGlobalDomain._HIHideMenuBar = true;
       };
     };
-    nixos = { };
   };
 }

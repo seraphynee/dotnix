@@ -39,11 +39,13 @@
       <system/networking>
       <system/nvidia>
       <system/xdg>
+      <system/settings>
 
       # <desktop/kde>
+      # <desktop/gnome>
       <desktop/sddm>
       <desktop/niri>
-      # <desktop/gnome>
+      <desktop/noctalia>
 
       <apps/ghostty>
       <apps/zen>
