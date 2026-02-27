@@ -6,12 +6,12 @@ on:
       - main
 jobs:
   lint:
-    name: deadnix and statix via justfile
+    name: treefmt check via justfile
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Install Nix
         uses: cachix/install-nix-action@v27
-      - name: Run lint recipe from justfile
-        run: nix shell nixpkgs#just -c just lint
+      - name: Run treefmt check recipe from justfile
+        run: nix shell nixpkgs#just -c just treefmt-check

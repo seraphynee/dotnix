@@ -5,7 +5,7 @@ default:
 fmt-lint:
     nix fmt
 
-fmt-lint-check:
+treefmt-check:
     nix fmt -- --ci
 
 check:
@@ -15,7 +15,7 @@ secrets-scan:
     nix run nixpkgs#gitleaks -- detect --source . --verbose
 
 ci-check:
-    just fmt-lint-check
+    just treefmt-check
     just check
 
 # Daily workflow
