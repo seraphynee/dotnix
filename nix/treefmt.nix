@@ -22,7 +22,19 @@ in
           programs = {
             # formatter
             nixfmt.enable = true;
-            taplo.enable = true;
+            taplo = {
+              enable = true;
+              settings = {
+                formatting = {
+                  align_comments = true;
+                  align_entries = true;
+                  indent_entries = true;
+                  indent_tables = true;
+                  reorder_arrays = false;
+                  reorder_keys = true;
+                };
+              };
+            };
             yamlfmt.enable = true;
             stylua.enable = true;
 
