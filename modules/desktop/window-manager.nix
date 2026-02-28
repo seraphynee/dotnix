@@ -50,19 +50,7 @@
       mangowc = {
         includes = [ <desktop/sddm> ];
 
-        nixos =
-          { pkgs, ... }:
-          {
-            imports = [
-              inputs.mangowc.nixosModules.mango
-              # .. other imports ...
-            ];
-
-            programs.mango.enable = true;
-
-            xdg.portal.enable = true;
-            xdg.portal.extraPortals = with pkgs; [ xdg-desktop-portal-wlr ];
-          };
+        nixos = { };
       };
     };
   };
