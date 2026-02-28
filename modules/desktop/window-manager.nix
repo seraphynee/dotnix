@@ -1,29 +1,56 @@
-{ __findFile }:
+{ __findFile, ... }:
 {
-  den.aspects.desktop._.wm._ = {
-    niri = {
-      includes = [ <desktop/sddm> ];
+  den.aspects.desktop._.wm = {
+    nixos =
+      { pkgs, ... }:
+      {
+        environment.systemPackages = with pkgs; [
+          glibc
+          wayland
+          wayland-protocols
+          libinput
+          libdrm
+          libxkbcommon
+          pixman
+          meson
+          ninja
+          libdisplay-info
+          libliftoff
+          hwdata
+          seatd
+          pcre2
+          xwayland
+          libxcb
+        ];
+      };
+    provides = {
+      niri = {
+        includes = [ <desktop/sddm> ];
 
-      nixos =
-        { pkgs, ... }:
-        {
-          environment.systemPackages = with pkgs; [
-            fuzzel
-            alacritty
-          ];
+        nixos =
+          { pkgs, ... }:
+          {
+            environment.systemPackages = with pkgs; [
+              fuzzel
+              alacritty
+            ];
 
-          services.xserver.enable = true;
-          services.xserver.xkb.layout = "us";
+            services.xserver.enable = true;
+            services.xserver.xkb.layout = "us";
 
-          programs.niri.enable = true;
-          security.polkit.enable = true;
-        };
+            programs.niri.enable = true;
+            security.polkit.enable = true;
+          };
 
-      # homeManager = {
-      #   #      xdg.configFile."niri/config.kdl".source = ../../dots/config/niri/config.kdl;
-      # };
+        # homeManager = {
+        #   #      xdg.configFile."niri/config.kdl".source = ../../dots/config/niri/config.kdl;
+        # };
+      };
+
+      mangowc = {
+        includes = [ <desktop/sddm> ];
+
+      };
     };
-
-    mangowc = { };
   };
 }

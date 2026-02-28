@@ -37,6 +37,10 @@
       url = "github:nix-community/home-manager";
     };
     import-tree.url = "github:vic/import-tree";
+    mangowc = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:DreamMaoMao/mangowc";
+    };
     niri = {
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:sodiboo/niri-flake";
