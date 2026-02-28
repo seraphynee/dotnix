@@ -83,8 +83,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    mangowc = {
-      url = "github:DreamMaoMao/mangowc";
+    mango = {
+      url = "github:DreamMaoMao/mango";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

@@ -50,7 +50,13 @@
       mangowc = {
         includes = [ <desktop/sddm> ];
 
-        nixos = { };
+        nixos = {
+          imports = [
+            inputs.mango.nixosModules.mango
+          ];
+
+          programs.mango.enable = true;
+        };
       };
     };
   };
