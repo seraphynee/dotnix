@@ -47,8 +47,21 @@
         # };
       };
 
-      mangowc = {
+      mango = {
         includes = [ <desktop/sddm> ];
+
+        homeManager = {
+          imports = [ inputs.mango.hmModules.mango ];
+          wayland.windowManager.mango = {
+            enable = true;
+            settings = ''
+              # mango config.conf
+            '';
+            autostart_sh = ''
+              # autostart.sh (tanpa shebang)
+            '';
+          };
+        };
 
         nixos = {
           imports = [
