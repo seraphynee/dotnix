@@ -6,6 +6,8 @@
       accent = "lavender";
     in
     {
+      services.displayManager.defaultSession = "mango";
+
       environment.systemPackages = [
         (pkgs.catppuccin-sddm.override {
           flavor = "mocha";
