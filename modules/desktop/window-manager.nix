@@ -50,15 +50,26 @@
       mangowc = {
         includes = [ <desktop/sddm> ];
 
-        nixos = {
-          imports = [
-            inputs.mangowc.nixosModules.mango
-            # .. other imports ...
-          ];
+        nixos =
+          { pkgs, ... }:
+          {
+            imports = [
+              inputs.mangowc.nixosModules.mango
+              # .. other imports ...
+            ];
 
-          programs.mango.enable = true;
-          services.displayManager.defaultSession = "mango";
-        };
+            programs.mango.enable = true;
+
+            environment.systemPackages = with pkgs; [
+              foot
+              wmenu
+              wl-clipboard
+              grim
+              slurp
+              swaybg
+              firefox
+            ];
+          };
       };
     };
   };
