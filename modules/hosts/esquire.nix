@@ -41,8 +41,8 @@
       <system/xdg>
       <system/settings>
 
-      <desktop/wm/niri>
-      <desktop/qs/dms>
+      <desktop/wm/mangowc>
+      # <desktop/qs/dms>
 
       <apps/ghostty>
       <apps/zen>

@@ -1,4 +1,4 @@
-{ __findFile, ... }:
+{ __findFile, inputs, ... }:
 {
   den.aspects.desktop._.wm = {
     nixos =
@@ -21,6 +21,7 @@
           pcre2
           xwayland
           libxcb
+          fuzzel
         ];
       };
     provides = {
@@ -31,7 +32,6 @@
           { pkgs, ... }:
           {
             environment.systemPackages = with pkgs; [
-              fuzzel
               alacritty
             ];
 
@@ -50,6 +50,14 @@
       mangowc = {
         includes = [ <desktop/sddm> ];
 
+        nixos = {
+          imports = [
+            inputs.mangowc.nixosModules.mango
+            # .. other imports ...
+          ];
+
+          programs.mango.enable = true;
+        };
       };
     };
   };
