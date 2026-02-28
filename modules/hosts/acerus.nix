@@ -41,9 +41,7 @@
       <system/nvidia>
       <system/xdg>
 
-      # <desktop/sddm>
-      # <desktop/kde>
-      <desktop/gnome>
+      # <desktop/de/gnome>
 
       <apps/ghostty>
       <apps/zen>

@@ -41,12 +41,8 @@
       <system/xdg>
       <system/settings>
 
-      # <desktop/kde>
-      # <desktop/gnome>
-      <desktop/sddm>
-      <desktop/niri>
-      <desktop/dms>
-      # <desktop/noctalia>
+      <desktop/wm/niri>
+      <desktop/qs/dms>
 
       <apps/ghostty>
       <apps/zen>
