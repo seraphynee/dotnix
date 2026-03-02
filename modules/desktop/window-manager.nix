@@ -114,6 +114,9 @@
 
               #  GNOME keyring
               gnome-keyring
+
+              # apps launcher
+              fuzzel
             ];
           };
       };

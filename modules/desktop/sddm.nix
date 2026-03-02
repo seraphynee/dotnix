@@ -12,6 +12,7 @@
           accent = "lavender";
         })
       ];
+      services.displayManager.defaultSession = "mango";
       services.displayManager.sddm = {
         enable = true;
         extraPackages = [ pkgs.sddm-astronaut ];
