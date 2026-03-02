@@ -9,6 +9,14 @@
 
     provides = {
       noctalia = {
+        nixos =
+          { pkgs, ... }:
+          {
+            environment.systemPackages = with pkgs; [
+              inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
+              # ... maybe other stuff
+            ];
+          };
         homeManager =
           { pkgs, ... }:
           {
@@ -63,13 +71,13 @@
                   };
                 };
                 colorSchemes.predefinedScheme = "Monochrome";
-                general = {
-                  avatarImage = "/home/drfoobar/.face";
-                  radiusRatio = 0.2;
-                };
+                # general = {
+                #   avatarImage = "/home/drfoobar/.face";
+                #   radiusRatio = 0.2;
+                # };
                 location = {
                   monthBeforeDay = true;
-                  name = "Marseille, France";
+                  name = "Jakarta, Indonesia";
                 };
               };
               # this may also be a string or a path to a JSON file.
