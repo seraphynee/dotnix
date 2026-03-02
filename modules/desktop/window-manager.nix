@@ -82,7 +82,10 @@
               inputs.mango.nixosModules.mango
             ];
 
-            programs.mango.enable = true;
+            programs.mango = {
+              enable = true;
+              addLoginEntry = true;
+            };
             # xdg.portal = {
             #   enable = true;
             #   wlr.enable = true;
