@@ -87,7 +87,7 @@
 
             programs.mango = {
               enable = true;
-              addLoginEntry = true;
+              addLoginEntry = true; # integrate with display manager, after login with DM will run this mango
             };
             # xdg.portal = {
             #   enable = true;
