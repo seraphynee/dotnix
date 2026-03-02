@@ -1,0 +1,17 @@
+# Basic behavior
+daemonize
+ignore-empty-password
+show-failed-attempts
+indicator
+indicator-caps-lock
+show-keyboard-layout
+
+# Visuals
+font=JetBrainsMono Nerd Font
+font-size=24
+color=201b14
+inside-color=201b14
+ring-color=c9b890
+line-color=444444
+text-color=f5e0dc
+separator-color=00000000

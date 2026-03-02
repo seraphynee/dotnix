@@ -57,6 +57,7 @@
             source = ../../dots/config/mango;
             recursive = true;
           };
+          xdg.configFile."swaylock/config".source = ../../dots/config/swaylock/config;
 
           # imports = [ inputs.mango.hmModules.mango ];
           # wayland.windowManager.mango = {
