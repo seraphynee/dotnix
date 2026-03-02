@@ -82,6 +82,9 @@
               inputs.mango.nixosModules.mango
             ];
 
+            # 1Password Related
+            security.polkit.enable = true;
+
             programs.mango = {
               enable = true;
               addLoginEntry = true;
@@ -116,8 +119,12 @@
               pipewire
               xdg-desktop-portal-wlr
 
-              #  GNOME keyring
+              #  GNOME keyring (1Password Related)
               gnome-keyring
+              polkit_gnome
+              (pkgs.writeShellScriptBin "start-polkit-agent" ''
+                exec ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1
+              '')
 
               # apps launcher
               fuzzel
