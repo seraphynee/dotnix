@@ -9,7 +9,8 @@
 
     provides = {
       noctalia = {
-        includes = [ <desktop/wm> ];
+        includes = [ <desktop/qs> ];
+
         nixos =
           { pkgs, ... }:
           {
@@ -86,6 +87,8 @@
           };
       };
       dms = {
+        includes = [ <desktop/qs> ];
+
         nixos = {
           programs.dms-shell.enable = true;
         };
