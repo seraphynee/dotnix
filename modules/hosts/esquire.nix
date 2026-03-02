@@ -44,6 +44,7 @@
       # <desktop/wm/niri>
       # <desktop/qs/dms>
       <desktop/wm/mango>
+      <desktop/qs/noctalia>
 
       <apps/ghostty>
       <apps/zen>

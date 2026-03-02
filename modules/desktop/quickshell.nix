@@ -9,6 +9,7 @@
 
     provides = {
       noctalia = {
+        includes = [ <desktop/wm> ];
         nixos =
           { pkgs, ... }:
           {
