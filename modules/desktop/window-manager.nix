@@ -82,20 +82,20 @@
             ];
 
             programs.mango.enable = true;
-            xdg.portal = {
-              enable = true;
-              wlr.enable = true;
-              extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-            };
-
-            i18n.inputMethod = {
-              enable = true;
-              type = "fcitx5";
-              fcitx5.addons = with pkgs; [
-                fcitx5-gtk
-                qt6Packages.fcitx5-chinese-addons
-              ];
-            };
+            # xdg.portal = {
+            #   enable = true;
+            #   wlr.enable = true;
+            #   extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+            # };
+            #
+            # i18n.inputMethod = {
+            #   enable = true;
+            #   type = "fcitx5";
+            #   fcitx5.addons = with pkgs; [
+            #     fcitx5-gtk
+            #     qt6Packages.fcitx5-chinese-addons
+            #   ];
+            # };
 
             environment.systemPackages = with pkgs; [
               # Clipboard Manager
