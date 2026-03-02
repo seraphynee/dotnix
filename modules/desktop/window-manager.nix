@@ -5,23 +5,23 @@
       { pkgs, ... }:
       {
         environment.systemPackages = with pkgs; [
-          glibc
-          wayland
-          wayland-protocols
-          libinput
-          libdrm
-          libxkbcommon
-          pixman
-          meson
-          ninja
-          libdisplay-info
-          libliftoff
-          hwdata
-          seatd
-          pcre2
-          xwayland
-          libxcb
-          fuzzel
+          glibc # GNU C runtime library
+          wayland # Core Wayland client/server protocol library
+          wayland-protocols # Extra Wayland protocol definitions
+          libinput # Input device handling (keyboard/mouse/touch)
+          libdrm # DRM/KMS userspace interface for GPUs/displays
+          libxkbcommon # Keyboard layout/keymap handling
+          pixman # Low-level pixel manipulation/compositing library
+          meson # Build system (build-time tool)
+          ninja # Fast build tool used by Meson (build-time)
+          libdisplay-info # DisplayID/EDID parsing library
+          libliftoff # Helper library for DRM plane allocation
+          hwdata # Hardware ID and device data database
+          seatd # Seat/session management daemon for compositors
+          pcre2 # Perl-compatible regular expression library
+          xwayland # X11 compatibility layer on Wayland
+          libxcb # X11 client library (X C Binding)
+          fuzzel # Wayland-native application launcher
         ];
       };
     provides = {
@@ -48,7 +48,10 @@
       };
 
       mango = {
-        includes = [ <desktop/sddm> ];
+        includes = [
+          <desktop/sddm>
+          <desktop/wm>
+        ];
 
         homeManager = {
           xdg.configFile."mango" = {
