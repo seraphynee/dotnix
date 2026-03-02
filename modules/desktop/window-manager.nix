@@ -51,25 +51,70 @@
         includes = [ <desktop/sddm> ];
 
         homeManager = {
-          imports = [ inputs.mango.hmModules.mango ];
-          wayland.windowManager.mango = {
-            enable = true;
-            settings = ''
-              # mango config.conf
-            '';
-            autostart_sh = ''
-              # autostart.sh (tanpa shebang)
-            '';
+          xdg.configFile."mango" = {
+            source = ../../dots/config/mango;
+            recursive = true;
           };
+
+          # imports = [ inputs.mango.hmModules.mango ];
+          # wayland.windowManager.mango = {
+          #   enable = true;
+          #   settings = ''
+          #     # mango config.conf
+          #     # Monitor
+          #     monitorrule=name:eDP-1,width:1920,height:1080,refresh:60,x:0,y:0,scale:1.5
+          #     # Bind
+          #
+          #   '';
+          #   autostart_sh = ''
+          #     # autostart.sh (tanpa shebang)
+          #   '';
+          # };
         };
 
-        nixos = {
-          imports = [
-            inputs.mango.nixosModules.mango
-          ];
+        nixos =
+          { pkgs, ... }:
+          {
+            imports = [
+              inputs.mango.nixosModules.mango
+            ];
 
-          programs.mango.enable = true;
-        };
+            programs.mango.enable = true;
+            xdg.portal = {
+              enable = true;
+              wlr.enable = true;
+              extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+            };
+
+            i18n.inputMethod = {
+              enable = true;
+              type = "fcitx5";
+              fcitx5.addons = with pkgs; [
+                fcitx5-gtk
+                fcitx5-chinese-addons
+              ];
+            };
+
+            environment.systemPackages = with pkgs; [
+              # Clipboard Manager
+              wl-clipboard
+              cliphist
+              wl-clip-persist
+
+              # Session Utilities
+              swaylock
+
+              # Qt / Input Method
+              qt5ct
+
+              pipewire
+              pipewire-pulse
+              xdg-desktop-portal-wlr
+
+              #  GNOME keyring
+              gnome-keyring
+            ];
+          };
       };
     };
   };
