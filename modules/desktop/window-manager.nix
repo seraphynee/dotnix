@@ -50,7 +50,6 @@
       mango = {
         includes = [
           <desktop/sddm>
-          <desktop/wm>
         ];
 
         homeManager = {
@@ -94,7 +93,7 @@
               type = "fcitx5";
               fcitx5.addons = with pkgs; [
                 fcitx5-gtk
-                fcitx5-chinese-addons
+                qt6Packages.fcitx5-chinese-addons
               ];
             };
 
@@ -108,10 +107,9 @@
               swaylock
 
               # Qt / Input Method
-              qt5ct
+              libsForQt5.qt5ct
 
               pipewire
-              pipewire-pulse
               xdg-desktop-portal-wlr
 
               #  GNOME keyring
