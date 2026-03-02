@@ -7,7 +7,7 @@
       enableZshIntegration = true;
       settings = {
         font-family = "JetBrains Mono Nerd Font";
-        font-size = 18;
+        font-size = 14;
         background-opacity = 0.9;
         theme = "Catppuccin Mocha";
         shell-integration-features = true;
