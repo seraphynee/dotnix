@@ -20,7 +20,7 @@
         settings = {
           General = {
             RememberLastSession = true;
-            Session = "mango.desktop";
+            Session = "mango";
           };
         };
       };
