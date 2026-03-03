@@ -12,6 +12,7 @@
           accent = "lavender";
         })
       ];
+      security.pam.services.sddm.enableGnomeKeyring = true;
       services.displayManager.sddm = {
         enable = true;
         extraPackages = [ pkgs.sddm-astronaut ];

@@ -4,29 +4,42 @@
     nixos =
       { pkgs, ... }:
       {
+        security.polkit.enable = true;
+        services.gnome.gnome-keyring-enable = true;
+
         environment.systemPackages = with pkgs; [
-          glibc # GNU C runtime library
-          wayland # Core Wayland client/server protocol library
-          wayland-protocols # Extra Wayland protocol definitions
-          libinput # Input device handling (keyboard/mouse/touch)
-          libdrm # DRM/KMS userspace interface for GPUs/displays
-          libxkbcommon # Keyboard layout/keymap handling
-          pixman # Low-level pixel manipulation/compositing library
-          meson # Build system (build-time tool)
-          ninja # Fast build tool used by Meson (build-time)
-          libdisplay-info # DisplayID/EDID parsing library
-          libliftoff # Helper library for DRM plane allocation
-          hwdata # Hardware ID and device data database
-          seatd # Seat/session management daemon for compositors
-          pcre2 # Perl-compatible regular expression library
-          xwayland # X11 compatibility layer on Wayland
-          libxcb # X11 client library (X C Binding)
-          fuzzel # Wayland-native application launcher
+          # glibc # GNU C runtime library
+          # wayland # Core Wayland client/server protocol library
+          # wayland-protocols # Extra Wayland protocol definitions
+          # libinput # Input device handling (keyboard/mouse/touch)
+          # libdrm # DRM/KMS userspace interface for GPUs/displays
+          # libxkbcommon # Keyboard layout/keymap handling
+          # pixman # Low-level pixel manipulation/compositing library
+          # meson # Build system (build-time tool)
+          # ninja # Fast build tool used by Meson (build-time)
+          # libdisplay-info # DisplayID/EDID parsing library
+          # libliftoff # Helper library for DRM plane allocation
+          # hwdata # Hardware ID and device data database
+          # seatd # Seat/session management daemon for compositors
+          # pcre2 # Perl-compatible regular expression library
+          # xwayland # X11 compatibility layer on Wayland
+          # libxcb # X11 client library (X C Binding)
+          # fuzzel # Wayland-native application launcher
+
+          #  GNOME keyring (1Password Related)
+          # gnome-keyring
+          polkit_gnome
+          (pkgs.writeShellScriptBin "start-polkit-agent" ''
+            exec ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1
+          '')
         ];
       };
     provides = {
       niri = {
-        includes = [ <desktop/sddm> ];
+        includes = [
+          <desktop/sddm>
+          <desktop/wm>
+        ];
 
         nixos =
           { pkgs, ... }:
@@ -50,6 +63,7 @@
       mango = {
         includes = [
           <desktop/sddm>
+          <desktop/wm>
         ];
 
         homeManager = {
@@ -57,6 +71,7 @@
             source = ../../dots/config/mango;
             recursive = true;
           };
+
           xdg.configFile."swaylock/config".source = ../../dots/config/swaylock/config;
 
           # imports = [ inputs.mango.hmModules.mango ];
@@ -82,27 +97,10 @@
               inputs.mango.nixosModules.mango
             ];
 
-            # 1Password Related
-            security.polkit.enable = true;
-
             programs.mango = {
               enable = true;
               addLoginEntry = true; # integrate with display manager, after login with DM will run this mango
             };
-            # xdg.portal = {
-            #   enable = true;
-            #   wlr.enable = true;
-            #   extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-            # };
-            #
-            # i18n.inputMethod = {
-            #   enable = true;
-            #   type = "fcitx5";
-            #   fcitx5.addons = with pkgs; [
-            #     fcitx5-gtk
-            #     qt6Packages.fcitx5-chinese-addons
-            #   ];
-            # };
 
             environment.systemPackages = with pkgs; [
               # Clipboard Manager
@@ -118,13 +116,6 @@
 
               pipewire
               xdg-desktop-portal-wlr
-
-              #  GNOME keyring (1Password Related)
-              gnome-keyring
-              polkit_gnome
-              (pkgs.writeShellScriptBin "start-polkit-agent" ''
-                exec ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1
-              '')
 
               # apps launcher
               fuzzel
