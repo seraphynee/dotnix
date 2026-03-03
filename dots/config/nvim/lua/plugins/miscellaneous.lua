@@ -13,7 +13,7 @@ return {
 
   -- https://github.com/wakatime/vim-wakatime
   -- DESC: Plugin for tracking your time in Neovim
-  { "wakatime/vim-wakatime", lazy = false },
+  { "wakatime/vim-wakatime", enabled = false, lazy = false },
 
   -- https://github.com/nvzone/floaterm
   -- DESC: multiple floating terminal inside neovim
