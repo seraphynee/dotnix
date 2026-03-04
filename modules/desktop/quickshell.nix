@@ -34,7 +34,7 @@
                 # configure noctalia here
                 bar = {
                   density = "compact";
-                  position = "right";
+                  position = "top";
                   showCapsule = false;
                   widgets = {
                     left = [
@@ -72,14 +72,25 @@
                     ];
                   };
                 };
-                colorSchemes.predefinedScheme = "Monochrome";
-                # general = {
-                #   avatarImage = "/home/drfoobar/.face";
-                #   radiusRatio = 0.2;
-                # };
+                colorSchemes = {
+                  useWallpaperColors = false;
+                  predefinedScheme = "Vesper";
+                  darkMode = true;
+                };
+                general = {
+                  # avatarImage = "/home/drfoobar/.face";
+                  # radiusRatio = 0.2;
+                  showSessionButtonsOnLockScreen = false;
+                };
                 location = {
                   monthBeforeDay = true;
                   name = "Jakarta, Indonesia";
+                };
+                ui = {
+                  fontDefault = "Jetbrains Mono";
+                };
+                idle = {
+                  enabled = true;
                 };
               };
               # this may also be a string or a path to a JSON file.
