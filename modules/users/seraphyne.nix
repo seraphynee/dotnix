@@ -4,10 +4,12 @@
   ...
 }:
 {
-  den.homes.x86_64-linux.${constants.user_two} = { };
+  # den.homes.x86_64-linux.${constants.user_two} = { };
 
   den.aspects.${constants.user_two} = {
     includes = [
+      <den/primary-user>
+
       # Automatically set default shell
       (<den/user-shell> "fish")
 

@@ -4,7 +4,7 @@
   ...
 }:
 {
-  den.homes.x86_64-linux.${constants.user_three} = { };
+  # den.homes.x86_64-linux.${constants.user_three} = { };
 
   den.aspects.${constants.user_three} = {
     includes = [

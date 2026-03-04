@@ -72,12 +72,13 @@
       };
   };
 
-  den.base.user.classes = lib.mkDefault [ "homeManager" ];
+  den.base.user.classes = lib.mkDefault [
+    "homeManager"
+    "hjem"
+  ];
+
   den.default.includes = [
     <den/define-user>
-
-    # Automatically create the user on host.
-    <den/primary-user>
 
     # Autoset hostname
     <lib/define-hostname>
