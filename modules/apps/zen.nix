@@ -19,7 +19,7 @@
       }:
       {
         imports = [ inputs.zen-browser.homeModules.default ];
-        home.sessionVariables.BROWSER = "zen";
+        home.sessionVariables.BROWSER = "firefox";
         programs.zen-browser = {
           enable = true;
           suppressXdgMigrationWarning = true;

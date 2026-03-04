@@ -36,9 +36,9 @@ in
 
               age = {
                 # automatically import host SSH keys as age keys
-                sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+                # sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
                 # this will use an age key that is expected to already be in the filesystem
-                keyFile = "/Users/${constants.user_one}/.config/sops/age/keys.txt";
+                keyFile = "/Users/${constants.user_one}/.local/state/ages/keys.txt";
                 # generate a new key if the key specified above does not exist
                 generateKey = true;
               };
@@ -47,7 +47,7 @@ in
                 sshKeyPaths = [ ];
               };
 
-              # secrets will be output to /run/secrets
+              # secrets will be output to /run/secrets by default
               # e.g. /run/secrets/<secret-name>
               secrets = {
                 "keys/ssh/ghspy-priv" = {
@@ -57,6 +57,7 @@ in
                   owner = "${constants.user_one}";
                   mode = "0600";
                 };
+
                 "keys/ssh/ghspy-pub" = {
                   name = "ghspy-pub";
                   sopsFile = sharedSopsFile;
@@ -65,8 +66,9 @@ in
                   mode = "0600";
                 };
 
-                test = {
-                  sopsFile = ../../secrets/mbp/secrets.yaml;
+                "passwords/chianyung" = {
+                  sopsFile = sharedSopsFile;
+                  neededForUsers = true;
                 };
               };
             };
