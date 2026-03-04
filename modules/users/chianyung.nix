@@ -5,10 +5,11 @@
 }:
 {
   den.homes.x86_64-linux.${constants.user_one} = { };
+  den.homes.aarch64-darwin.${constants.user_one} = { };
 
   den.aspects.${constants.user_one} = {
     includes = [
-      # <shell/yazi>
+      <shell/homebrew>
       <shell/nix-tools>
     ];
 
