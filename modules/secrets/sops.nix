@@ -83,7 +83,7 @@ in
               validateSopsFiles = false;
 
               age = {
-                keyFile = "/var/lib/sops-nix/keys.txt";
+                keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
                 generateKey = false;
               };
 
