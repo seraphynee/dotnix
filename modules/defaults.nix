@@ -74,7 +74,6 @@
 
   den.base.user.classes = lib.mkDefault [
     "homeManager"
-    "hjem"
   ];
 
   den.default.includes = [
