@@ -34,6 +34,7 @@
           '')
 
           nautilus # File Manager
+          bibata-cursors
         ];
       };
     provides = {
