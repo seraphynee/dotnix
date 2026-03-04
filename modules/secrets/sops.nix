@@ -85,7 +85,7 @@ in
               validateSopsFiles = false;
 
               age = {
-                keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
+                keyFile = "/home/${constants.user_two}/.local/state/ages/keys.txt";
                 generateKey = false;
               };
 
