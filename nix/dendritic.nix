@@ -37,11 +37,6 @@
 
     nix-homebrew = {
       url = "github:zhaofengli/nix-homebrew";
-<<<<<<< HEAD
-      inputs.nixpkgs.follows = "nixpkgs";
-||||||| parent of 55716d7 (WIP: add homebrew-nix)
-=======
->>>>>>> 55716d7 (WIP: add homebrew-nix)
     };
 
     # Optional: Declarative tap management
