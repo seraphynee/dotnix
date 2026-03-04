@@ -102,7 +102,6 @@
 
             programs.mango = {
               enable = true;
-              addLoginEntry = true; # integrate with display manager, after login with DM will run this mango
             };
 
             environment.systemPackages = with pkgs; [

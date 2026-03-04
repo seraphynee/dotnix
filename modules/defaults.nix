@@ -1,6 +1,7 @@
 {
   __findFile,
   inputs,
+  lib,
   ...
 }:
 {
@@ -71,10 +72,8 @@
       };
   };
 
+  den.base.user.classes = lib.mkDefault [ "homeManager" ];
   den.default.includes = [
-    # Enable home-manager on all hosts.
-    <den/home-manager>
-
     <den/define-user>
 
     # Automatically create the user on host.
