@@ -32,6 +32,8 @@
           (pkgs.writeShellScriptBin "start-polkit-agent" ''
             exec ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1
           '')
+
+          nautilus # File Manager
         ];
       };
     provides = {
