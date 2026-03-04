@@ -6,6 +6,7 @@
         power-profiles-daemon.enable = true; # alternatively, use tuned.enable = true
         upower.enable = true;
       };
+      security.pam.services.login.enableGnomeKeyring = true;
     };
     darwin = {
       system.defaults = {

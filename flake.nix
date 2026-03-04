@@ -22,11 +22,19 @@
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:nix-community/disko/latest";
     };
+    dms = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:AvengeMedia/DankMaterialShell/stable";
+    };
     flake-aspects.url = "github:vic/flake-aspects";
     flake-file.url = "github:vic/flake-file";
     flake-parts = {
       inputs.nixpkgs-lib.follows = "nixpkgs-lib";
       url = "github:hercules-ci/flake-parts";
+    };
+    hjem = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:feel-co/hjem";
     };
     home-manager = {
       inputs.nixpkgs.follows = "nixpkgs";
@@ -41,6 +49,14 @@
       url = "github:homebrew/homebrew-core";
     };
     import-tree.url = "github:vic/import-tree";
+    mango = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:DreamMaoMao/mango";
+    };
+    niri = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:sodiboo/niri-flake";
+    };
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
     nix-index-database = {
       inputs.nixpkgs.follows = "nixpkgs";
@@ -53,8 +69,15 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgs-lib.follows = "nixpkgs";
     noctalia = {
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        noctalia-qs.follows = "noctalia-qs";
+      };
       url = "github:noctalia-dev/noctalia-shell";
+    };
+    noctalia-qs = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:noctalia-dev/noctalia-qs";
     };
     sops-nix = {
       inputs.nixpkgs.follows = "nixpkgs";

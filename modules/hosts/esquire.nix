@@ -41,11 +41,10 @@
       <system/xdg>
       <system/settings>
 
-      # <desktop/kde>
-      # <desktop/gnome>
-      <desktop/sddm>
-      <desktop/niri>
-      <desktop/noctalia>
+      # <desktop/wm/niri>
+      # <desktop/qs/dms>
+      <desktop/wm/mango>
+      <desktop/qs/noctalia>
 
       <apps/ghostty>
       <apps/zen>

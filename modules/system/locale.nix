@@ -1,6 +1,9 @@
 {
   den.aspects.system._.locale = {
-    i18n.defaultLocale = "en_US.UTF-8";
-    time.timeZone = "Asia/Jakarta";
+    nixos = {
+      i18n.defaultLocale = "en_US.UTF-8";
+      time.timeZone = "Asia/Jakarta";
+      # services.timesyncd.enable = true;
+    };
   };
 }
