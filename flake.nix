@@ -41,10 +41,15 @@
       url = "github:homebrew/homebrew-core";
     };
     import-tree.url = "github:vic/import-tree";
+<<<<<<< HEAD
     nix-homebrew = {
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:zhaofengli/nix-homebrew";
     };
+||||||| parent of 55716d7 (WIP: add homebrew-nix)
+=======
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+>>>>>>> 55716d7 (WIP: add homebrew-nix)
     nix-index-database = {
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:nix-community/nix-index-database";
