@@ -18,12 +18,6 @@
         extraPackages = [ pkgs.sddm-astronaut ];
         theme = "catppuccin-${flavor}-${accent}";
         wayland.enable = true;
-        settings = {
-          General = {
-            RememberLastSession = true;
-            Session = "mango";
-          };
-        };
       };
     };
 }
