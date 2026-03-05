@@ -35,6 +35,10 @@
 
           nautilus # File Manager
           bibata-cursors
+
+          # Desktop Portals
+          xdg-desktop-portal
+          xdg-desktop-portal-wlr
         ];
       };
     provides = {
@@ -117,7 +121,6 @@
               libsForQt5.qt5ct
 
               pipewire
-              xdg-desktop-portal-wlr
 
               # apps launcher
               fuzzel
