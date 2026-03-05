@@ -17,7 +17,7 @@
       };
 
     homeManager =
-      { ... }:
+      _:
       {
         home.sessionVariables = {
           TERMINAL = "ghostty";
