@@ -213,6 +213,34 @@
                   control = true;
                 };
               }
+              {
+                id = "zen-workspace-switch-1";
+                key = "1";
+                modifiers = {
+                  control = true;
+                };
+              }
+              {
+                id = "zen-workspace-switch-2";
+                key = "2";
+                modifiers = {
+                  control = true;
+                };
+              }
+              {
+                id = "zen-workspace-switch-3";
+                key = "3";
+                modifiers = {
+                  control = true;
+                };
+              }
+              {
+                id = "zen-workspace-switch-4";
+                key = "4";
+                modifiers = {
+                  control = true;
+                };
+              }
             ];
             # Fails activation on schema changes to detect potential regressions
             # Find this in about:config or prefs.js of your profile
