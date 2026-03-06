@@ -4,36 +4,30 @@
     {
       services.ssh-agent = {
         enable = true;
-        enableFishIntegration = true;
+        enableFishIntegration = false;
         enableNushellIntegration = true;
       };
 
       programs = {
-        starship = {
-          enable = true;
-          enableFishIntegration = true;
-          enableNushellIntegration = true;
-        };
-
         fzf = {
           enable = true;
-          enableFishIntegration = true;
+          enableFishIntegration = false;
         };
 
         eza = {
           enable = true;
-          enableFishIntegration = true;
+          enableFishIntegration = false;
         };
 
         zoxide = {
           enable = true;
-          enableFishIntegration = true;
+          enableFishIntegration = false;
           enableNushellIntegration = true;
         };
 
         broot = {
           enable = true;
-          enableFishIntegration = true;
+          enableFishIntegration = false;
           enableNushellIntegration = true;
         };
 
@@ -44,19 +38,19 @@
 
         carapace = {
           enable = true;
-          enableFishIntegration = true;
+          enableFishIntegration = false;
           enableNushellIntegration = true;
         };
 
         atuin = {
           enable = true;
-          enableFishIntegration = true;
+          enableFishIntegration = false;
           enableNushellIntegration = true;
         };
 
         pay-respects = {
           enable = true;
-          enableFishIntegration = true;
+          enableFishIntegration = false;
           enableNushellIntegration = true;
         };
 

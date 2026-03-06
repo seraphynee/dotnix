@@ -3,7 +3,7 @@
     programs.ghostty = {
       enable = true;
       enableBashIntegration = true;
-      enableFishIntegration = true;
+      enableFishIntegration = false;
       enableZshIntegration = true;
       settings = {
         font-family = "JetBrains Mono Nerd Font";

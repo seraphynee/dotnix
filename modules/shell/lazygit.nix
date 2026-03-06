@@ -1,7 +1,7 @@
 {
   den.aspects.shell._.lazygit.homeManager = {
     programs.lazygit = {
-      enableFishIntegration = true;
+      enableFishIntegration = false;
       settings = {
         git = {
           pagers = {
