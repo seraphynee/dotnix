@@ -1,12 +1,15 @@
 {
   den.aspects.shell._.lazygit.homeManager = {
     programs.lazygit = {
+      enable = true;
       enableFishIntegration = false;
       settings = {
         git = {
-          pagers = {
-            pager = "delta --dark --paging=never";
-          };
+          pagers = [
+            {
+              externalDiffCommand = "difft --color=always";
+            }
+          ];
         };
       };
     };
