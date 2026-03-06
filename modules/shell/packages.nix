@@ -124,7 +124,7 @@
 
             # Editors
             # neovim
-            zed-editor
+            # zed-editor
 
             # Android Development
             scrcpy # Android device mirroring

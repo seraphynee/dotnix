@@ -48,6 +48,7 @@
 
       <apps/ghostty>
       <apps/zen>
+      <apps/zed>
       <apps/firefox>
 
       <services/tailscale>
