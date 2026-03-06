@@ -9,10 +9,11 @@ let
       gitUser,
       gitEmail,
       githubUser,
-      signingKey,
+      signingKeySecret,
     }:
     {
       pkgs,
+      config,
       ...
     }:
     let
@@ -23,7 +24,7 @@ let
       programs.git = {
         enable = true;
         signing = {
-          key = signingKey;
+          key = config.sops.secrets.${signingKeySecret}.path;
           signByDefault = true;
         };
 
@@ -371,7 +372,7 @@ in
           gitUser = "chianyungcode";
           gitEmail = "cnytechcode@gmail.com";
           githubUser = "chianyungcode";
-          signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINWQKPz2Bz5ufdBQih3CFMXhpg21Rwzgy/RaT+Q0XNwS";
+          signingKeySecret = "ssh/keys/signing/ghcny-pub";
         };
       };
 
@@ -382,7 +383,7 @@ in
           gitUser = "seraphynee";
           gitEmail = "seraphyne31@gmail.com";
           githubUser = "seraphynee";
-          signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINWQKPz2Bz5ufdBQih3CFMXhpg21Rwzgy/RaT+Q0XNwS";
+          signingKeySecret = "ssh/keys/signing/ghspy-pub";
         };
       };
     };

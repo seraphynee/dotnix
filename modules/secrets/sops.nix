@@ -11,10 +11,21 @@ let
 in
 {
   den.aspects.secrets._.sops = {
+    homeManager = {
+      home.sessionVariables = {
+        SOPS_AGE_KEY_FILE = "$HOME/.local/state/ages/keys.txt";
+      };
+    };
+
     provides = {
       mbp = {
+        includes = [ <secrets/sops> ];
+
         darwin =
-          { pkgs, ... }:
+          { pkgs, config, ... }:
+          let
+            userHome = config.users.users.${constants.user_one}.home or "/Users/${constants.user_one}";
+          in
           {
             imports = [ inputs.sops-nix.darwinModules.sops ];
 
@@ -38,7 +49,7 @@ in
                 # automatically import host SSH keys as age keys
                 # sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
                 # this will use an age key that is expected to already be in the filesystem
-                keyFile = "/Users/${constants.user_one}/.local/state/ages/keys.txt";
+                keyFile = "${userHome}/.local/state/ages/keys.txt";
                 # generate a new key if the key specified above does not exist
                 generateKey = true;
               };
@@ -53,15 +64,15 @@ in
                 "keys/ssh/ghspy-priv" = {
                   name = "ghspy-priv";
                   sopsFile = sharedSopsFile;
-                  path = "/Users/${constants.user_one}/.ssh_keys/ghspy";
+                  path = "${userHome}/.ssh_keys/ghspy";
                   owner = "${constants.user_one}";
                   mode = "0600";
                 };
 
-                "keys/ssh/ghspy-pub" = {
+                "keys/ssh/auth/ghspy-pub" = {
                   name = "ghspy-pub";
                   sopsFile = sharedSopsFile;
-                  path = "/Users/${constants.user_one}/.ssh_keys/ghspy.pub";
+                  path = "${userHome}/.ssh_keys/ghspy.pub";
                   owner = "${constants.user_one}";
                   mode = "0600";
                 };
@@ -75,6 +86,8 @@ in
           };
       };
       esquire = {
+        includes = [ <secrets/sops> ];
+
         homeManager =
           { config, ... }:
           {
@@ -85,12 +98,13 @@ in
               validateSopsFiles = false;
 
               age = {
-                keyFile = "/home/${constants.user_two}/.local/state/ages/keys.txt";
+                keyFile = "${config.home.homeDirectory}/.local/state/ages/keys.txt";
                 generateKey = false;
               };
 
               secrets = {
                 "ssh/config" = { };
+                "ssh/keys/signing/ghspy-pub" = { };
               };
             };
 
@@ -104,6 +118,9 @@ in
           };
         nixos =
           { pkgs, config, ... }:
+          let
+            userHome = config.users.users.${constants.user_two}.home or "/home/${constants.user_two}";
+          in
           {
             imports = [ inputs.sops-nix.nixosModules.sops ];
 
@@ -139,9 +156,13 @@ in
               # secrets will be output to /run/secrets
               # e.g. /run/secrets/<secret-name>
               secrets = {
-                "ssh/keys/ghspy-pub" = {
+                "ssh/keys/auth/ghspy-pub" = {
                   name = "ghspy-pub";
-                  path = "/home/${constants.user_two}/.ssh_keys/ghspy.pub";
+                  path = "${userHome}/.ssh_keys/ghspy.pub";
+                  owner = "${constants.user_two}";
+                  mode = "0600";
+                };
+                "ssh/keys/signing/ghspy-pub" = {
                   owner = "${constants.user_two}";
                   mode = "0600";
                 };
@@ -153,6 +174,8 @@ in
           };
       };
       acerus = {
+        includes = [ <secrets/sops> ];
+
         nixos =
           { pkgs, ... }:
           {
