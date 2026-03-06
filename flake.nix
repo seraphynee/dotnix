@@ -12,6 +12,10 @@
     );
 
   inputs = {
+    brew-src = {
+      flake = false;
+      url = "github:Homebrew/brew/5.0.16";
+    };
     catppuccin.url = "github:catppuccin/nix";
     darwin = {
       inputs.nixpkgs.follows = "nixpkgs";
@@ -57,7 +61,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:sodiboo/niri-flake";
     };
-    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+    nix-homebrew = {
+      inputs.brew-src.follows = "brew-src";
+      url = "github:zhaofengli/nix-homebrew";
+    };
     nix-index-database = {
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:nix-community/nix-index-database";

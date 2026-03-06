@@ -42,6 +42,13 @@
 
     nix-homebrew = {
       url = "github:zhaofengli/nix-homebrew";
+      inputs.brew-src.follows = "brew-src";
+    };
+
+    # Override the Homebrew version carried by nix-homebrew.
+    brew-src = {
+      url = "github:Homebrew/brew/5.0.16";
+      flake = false;
     };
 
     # Optional: Declarative tap management

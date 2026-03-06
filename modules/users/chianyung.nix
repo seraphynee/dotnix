@@ -18,6 +18,8 @@
       { config, ... }:
       {
         nix.settings.trusted-users = [
+          "root"
+          "@wheel"
           constants.user_one
         ];
       };

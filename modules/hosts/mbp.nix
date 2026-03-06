@@ -8,7 +8,7 @@
 
   den.aspects.mbp = {
     includes = [
-      <shell/homebrew>
+      # <shell/homebrew>
 
       <system/settings>
       <secrets/sops/mbp>
