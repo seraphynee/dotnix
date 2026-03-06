@@ -9,7 +9,7 @@
     {
       devShells = {
         default = pkgs.mkShell {
-          name = "den-shell";
+          name = "dotnix-shell";
 
           packages = with pkgs; [
             just
