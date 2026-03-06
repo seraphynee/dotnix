@@ -22,38 +22,40 @@ let
     {
       programs.git = {
         enable = true;
-        userName = gitUser;
-        userEmail = gitEmail;
-
-        aliases = {
-          co = "checkout";
-          pf = "!git push --force-with-lease \"$@\"";
-          cam = "commit --amend --no-edit";
-
-          dl = "-c diff.external=difft log -p --ext-diff";
-          ds = "-c diff.external=difft show --ext-diff";
-          dft = "-c diff.external=difft diff";
-
-          build = mkConventionalAlias "build";
-          chore = mkConventionalAlias "chore";
-          ci = mkConventionalAlias "ci";
-          docs = mkConventionalAlias "docs";
-          feat = mkConventionalAlias "feat";
-          fix = mkConventionalAlias "fix";
-          perf = mkConventionalAlias "perf";
-          refactor = mkConventionalAlias "refactor";
-          rev = mkConventionalAlias "revert";
-          style = mkConventionalAlias "style";
-          test = mkConventionalAlias "test";
-          wip = mkConventionalAlias "wip";
-        };
-
         signing = {
           key = signingKey;
           signByDefault = true;
         };
 
-        extraConfig = {
+        settings = {
+          user = {
+            name = gitUser;
+            email = gitEmail;
+          };
+
+          alias = {
+            co = "checkout";
+            pf = "!git push --force-with-lease \"$@\"";
+            cam = "commit --amend --no-edit";
+
+            dl = "-c diff.external=difft log -p --ext-diff";
+            ds = "-c diff.external=difft show --ext-diff";
+            dft = "-c diff.external=difft diff";
+
+            build = mkConventionalAlias "build";
+            chore = mkConventionalAlias "chore";
+            ci = mkConventionalAlias "ci";
+            docs = mkConventionalAlias "docs";
+            feat = mkConventionalAlias "feat";
+            fix = mkConventionalAlias "fix";
+            perf = mkConventionalAlias "perf";
+            refactor = mkConventionalAlias "refactor";
+            rev = mkConventionalAlias "revert";
+            style = mkConventionalAlias "style";
+            test = mkConventionalAlias "test";
+            wip = mkConventionalAlias "wip";
+          };
+
           gpg.format = "ssh";
           "gpg \"ssh\"".program =
             if isDarwin then
