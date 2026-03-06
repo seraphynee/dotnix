@@ -14,6 +14,14 @@
       <shell/nix-tools>
     ];
 
+    darwin =
+      { config, ... }:
+      {
+        nix.settings.trusted-users = [
+          constants.user_one
+        ];
+      };
+
     nixos =
       {
         pkgs,
