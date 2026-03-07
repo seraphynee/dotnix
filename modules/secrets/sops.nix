@@ -90,13 +90,13 @@ in
               # e.g. /run/secrets/<secret-name>
               secrets = {
                 "ssh/keys/auth/ghspy-pub" = {
-                  name = "ghspy-pub";
+                  name = "ghspy-auth.pub";
                   path = "${userHome}/.ssh_keys/ghspy-auth.pub";
                   owner = "${constants.user_two}";
                   mode = "0600";
                 };
                 "ssh/keys/signing/ghspy-pub" = {
-                  name = "ghspy-pub";
+                  name = "ghspy-signing.pub";
                   path = "${userHome}/.ssh_keys/ghspy-signing.pub";
                   owner = "${constants.user_two}";
                   mode = "0600";
