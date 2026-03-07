@@ -4,7 +4,7 @@
   ...
 }:
 let
-  device = lib.mkDefault "${constants.mainDisk}";
+  device = lib.mkDefault "/dev/nvme0n1";
   mountOptions = [
     "noatime"
     "compress=zstd"
