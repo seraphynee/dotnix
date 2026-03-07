@@ -26,13 +26,6 @@
           # libxcb # X11 client library (X C Binding)
           # fuzzel # Wayland-native application launcher
 
-          #  GNOME keyring (1Password Related)
-          # gnome-keyring
-          # polkit_gnome
-          (pkgs.writeShellScriptBin "start-polkit-agent" ''
-            exec ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1
-          '')
-
           nautilus # File Manager
           bibata-cursors
 
@@ -53,6 +46,7 @@
           {
             environment.systemPackages = with pkgs; [
               alacritty
+              # gnome-keyring
               polkit_gnome
             ];
 
@@ -79,8 +73,6 @@
             source = ../../dots/config/mango;
             recursive = true;
           };
-
-          xdg.configFile."swaylock/config".source = ../../dots/config/swaylock/config;
 
           # imports = [ inputs.mango.hmModules.mango ];
           # wayland.windowManager.mango = {
@@ -114,9 +106,6 @@
               wl-clipboard
               cliphist
               wl-clip-persist
-
-              # Session Utilities
-              swaylock
 
               # Qt / Input Method
               libsForQt5.qt5ct
