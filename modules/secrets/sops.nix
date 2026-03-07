@@ -81,22 +81,14 @@ in
               # secrets will be output to /run/secrets by default
               # e.g. /run/secrets/<secret-name>
               secrets = {
-                # "keys/ssh/ghspy-priv" = {
-                #   name = "ghspy-priv";
-                #   sopsFile = sharedSopsFile;
-                #   path = "${userHome}/.ssh_keys/ghspy";
-                #   owner = "${constants.user_one}";
-                #   mode = "0600";
-                # };
-                #
-                # "keys/ssh/auth/ghspy-pub" = {
-                #   name = "ghspy-pub";
-                #   sopsFile = sharedSopsFile;
-                #   path = "${userHome}/.ssh_keys/ghspy.pub";
-                #   owner = "${constants.user_one}";
-                #   mode = "0600";
-                # };
-                #
+                "keys/ssh/auth/ghspy-pub" = {
+                  name = "ghspy-pub";
+                  sopsFile = sharedSopsFile;
+                  path = "${userHome}/.ssh_keys/ghspy.pub";
+                  owner = "${constants.user_one}";
+                  mode = "0600";
+                };
+
                 "passwords/chianyung" = {
                   sopsFile = sharedSopsFile;
                   neededForUsers = true;
