@@ -17,7 +17,7 @@ let
       ...
     }:
     let
-      isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
+      inherit (pkgs.stdenv.hostPlatform) isDarwin;
       githubPrefix = if gitUser == "seraphynee" then "ghspy:" else "ghcny:";
     in
     {
