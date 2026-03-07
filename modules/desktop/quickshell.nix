@@ -75,7 +75,7 @@
               settings = {
                 # configure noctalia here
                 bar = {
-                  barType = "Framed";
+                  barType = "framed";
                   density = "default";
                   position = "top";
                   showCapsule = false;
@@ -116,7 +116,7 @@
                       #   id = "Tailscale";
                       # }
                       {
-                        id = "Catwalk";
+                        id = "catwalk";
                       }
                       # {
                       #   id = "mango layout switcher";

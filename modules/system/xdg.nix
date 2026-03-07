@@ -36,7 +36,7 @@
       };
 
       xdg = {
-        enable = true;
+        enable = true; # enable xdg base directories: XDG_CONFIG_HOME, XDG_STATE_HOME, XDG_CACHE_HOME, XDG_DATA_HOME
         #   mimeApps.defaultApplications =
         #     let
         #       browser = [ "zen.desktop" ];
