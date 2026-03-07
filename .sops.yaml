@@ -5,6 +5,8 @@ keys:
     - &mca age1072nv5djq53dz279ayhpm2lcmk7w7k28mpqpsqqxuszxtvdlayys9l5n4m
   hosts: # nix-shell -p ssh-to-age --run 'cat /etc/ssh/ssh_host_ed25519_key.pub | ssh-to-age'
     - &mbp age1enfye6t5navcpazam4xqvnqkx8ytm3rld7py65uwwhq88mjszpqqrpkvzw
+    - &esquire age1h300zj028glm4592mtyj0k82ys6k3mnckrdlu2x22zqhl0z3qepsv9m3ef
+    - &acerus age1y0q5pjaal8w9amxtk5rx6jj24n83fgd6ey8q7tyuf2cetk8h3v7smdx27w
 creation_rules:
   - path_regex: ^secrets/shared/.*\.yaml$
     key_groups:
@@ -19,9 +21,11 @@ creation_rules:
   - path_regex: ^secrets/esquire/.*\.yaml$
     key_groups:
       - age:
+          - *esquire
           - *spy
   - path_regex: ^secrets/acerus/.*\.yaml$
     key_groups:
       - age:
+          - *acerus
           - *spy
           - *mca
