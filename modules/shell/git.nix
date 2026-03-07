@@ -19,12 +19,18 @@ let
     let
       inherit (pkgs.stdenv.hostPlatform) isDarwin;
       githubPrefix = if gitUser == "seraphynee" then "ghspy:" else "ghcny:";
+      signingKeyPath = lib.attrByPath [
+        "sops"
+        "secrets"
+        signingKeySecret
+        "path"
+      ] null config;
     in
     {
       programs.git = {
         enable = true;
-        signing = {
-          key = config.sops.secrets.${signingKeySecret}.path;
+        signing = lib.optionalAttrs (signingKeyPath != null) {
+          key = signingKeyPath;
           signByDefault = true;
         };
 
