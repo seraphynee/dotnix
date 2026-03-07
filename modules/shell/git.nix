@@ -94,10 +94,11 @@ let
             guiPrompt = false;
           };
 
-          url = {
-            "${githubPrefix}".insteadOf = "https://github.com/";
-            "glcny:".insteadOf = "https://gitlab.com/";
-          };
+          # Disable this because when starting noctalia-shell plugins it's needed to run git clone operations and when this activated it neeeded to approve prompt for 1Password
+          # url = {
+          #   "${githubPrefix}".insteadOf = "https://github.com/";
+          #   "glcny:".insteadOf = "https://gitlab.com/";
+          # };
 
           delta = {
             navigate = true;

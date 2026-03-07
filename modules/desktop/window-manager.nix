@@ -28,7 +28,7 @@
 
           #  GNOME keyring (1Password Related)
           # gnome-keyring
-          polkit_gnome
+          # polkit_gnome
           (pkgs.writeShellScriptBin "start-polkit-agent" ''
             exec ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1
           '')
@@ -53,6 +53,7 @@
           {
             environment.systemPackages = with pkgs; [
               alacritty
+              polkit_gnome
             ];
 
             services.xserver.enable = true;
