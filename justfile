@@ -38,10 +38,10 @@ clean:
     sudo nix-collect-garbage -d
 
 # Host operations
-rebuild host:
+rb host:
     if [ "$(uname -s)" = "Darwin" ]; then nh darwin switch . -H {{ host }}; else nh os switch . -H {{ host }}; fi
 
-rebuild-boot host:
+rbb host:
     sudo nixos-rebuild boot --flake .#{{ host }}
 
 # Remote/bootstrap
