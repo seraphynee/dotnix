@@ -75,7 +75,8 @@
               settings = {
                 # configure noctalia here
                 bar = {
-                  density = "compact";
+                  barType = "Framed";
+                  density = "default";
                   position = "top";
                   showCapsule = false;
                   widgets = {
@@ -93,9 +94,16 @@
                     ];
                     center = [
                       {
-                        hideUnoccupied = false;
+                        formatHorizontal = "HH:mm";
+                        formatVertical = "HH mm";
+                        id = "Clock";
+                        useMonospacedFont = true;
+                        usePrimaryColor = true;
+                      }
+                      {
+                        hideUnoccupied = true;
                         id = "Workspace";
-                        labelMode = "none";
+                        labelMode = "Index";
                       }
                     ];
                     right = [
@@ -104,13 +112,18 @@
                         id = "Battery";
                         warningThreshold = 30;
                       }
+                      # {
+                      #   id = "Tailscale";
+                      # }
                       {
-                        formatHorizontal = "HH:mm";
-                        formatVertical = "HH mm";
-                        id = "Clock";
-                        useMonospacedFont = true;
-                        usePrimaryColor = true;
+                        id = "Catwalk";
                       }
+                      # {
+                      #   id = "mango layout switcher";
+                      # }
+                      # {
+                      #   id = "Privacy Indicator";
+                      # }
                     ];
                   };
                 };
