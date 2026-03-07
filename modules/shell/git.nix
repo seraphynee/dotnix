@@ -18,7 +18,6 @@ let
     }:
     let
       inherit (pkgs.stdenv.hostPlatform) isDarwin;
-      githubPrefix = if gitUser == "seraphynee" then "ghspy:" else "ghcny:";
       signingKeyPath = lib.attrByPath [
         "sops"
         "secrets"
