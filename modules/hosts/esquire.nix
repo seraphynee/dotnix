@@ -46,10 +46,11 @@
       <desktop/wm/mango>
       <desktop/qs/noctalia>
 
+      <apps/discord>
+      <apps/firefox>
       <apps/ghostty>
       <apps/zen>
       <apps/zed>
-      <apps/firefox>
 
       <services/tailscale>
       <services/kanata>
