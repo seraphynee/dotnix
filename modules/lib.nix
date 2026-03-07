@@ -20,10 +20,9 @@ in
       includes = [
         (
           {
-            OS,
             host,
           }:
-          take.unused OS {
+          {
             nixos.networking.hostName = host.hostName;
             darwin.networking = {
               inherit (host) hostName;
@@ -43,10 +42,9 @@ in
       includes = [
         (
           {
-            OS,
             host,
           }:
-          take.unused OS {
+          {
             nixos =
               let
                 reportPath = ./hosts/${host.hostName}/facter.json;
