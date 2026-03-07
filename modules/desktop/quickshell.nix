@@ -74,6 +74,7 @@
 
               settings = {
                 # configure noctalia here
+                settingsVersion = 57;
                 bar = {
                   barType = "framed";
                   density = "default";
@@ -105,6 +106,28 @@
                         id = "Workspace";
                         labelMode = "Index";
                       }
+                      {
+                        compactMode = false;
+                        diskPath = "/";
+                        iconColor = "none";
+                        id = "SystemMonitor";
+                        showCpuCores = false;
+                        showCpuFreq = false;
+                        showCpuTemp = true;
+                        showCpuUsage = true;
+                        showDiskAvailable = false;
+                        showDiskUsage = false;
+                        showDiskUsageAsPercent = false;
+                        showGpuTemp = false;
+                        showLoadAverage = false;
+                        showMemoryAsPercent = false;
+                        showMemoryUsage = true;
+                        showNetworkStats = false;
+                        showSwapUsage = false;
+                        textColor = "none";
+                        useMonospaceFont = true;
+                        usePadding = false;
+                      }
                     ];
                     right = [
                       {
@@ -112,20 +135,25 @@
                         id = "Battery";
                         warningThreshold = 30;
                       }
-                      # {
-                      #   id = "Tailscale";
-                      # }
                       {
-                        id = "catwalk";
+                        id = "plugin:tailscale";
                       }
-                      # {
-                      #   id = "mango layout switcher";
-                      # }
-                      # {
-                      #   id = "Privacy Indicator";
-                      # }
+                      {
+                        id = "plugin:catwalk";
+                      }
+                      {
+                        id = "plugin:mangowc-layout-switcher";
+                      }
+                      {
+                        id = "plugin:privacy-indicator";
+                      }
                     ];
                   };
+                };
+                appLauncher = {
+                  viewMode = "list";
+                  position = "bottom_center";
+                  density = "compact";
                 };
                 colorSchemes = {
                   useWallpaperColors = false;
