@@ -57,6 +57,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:DreamMaoMao/mango";
     };
+    momoi-say.url = "github:haruki-nikaidou/momoisay-rs";
     niri = {
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:sodiboo/niri-flake";

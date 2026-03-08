@@ -119,5 +119,7 @@
       url = "github:DreamMaoMao/mango";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    momoi-say.url = "github:haruki-nikaidou/momoisay-rs";
   };
 }

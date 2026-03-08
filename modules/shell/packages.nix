@@ -1,3 +1,4 @@
+{ __findFile, inputs, ... }:
 {
   den.aspects.shell._.packages._ = {
     common = {
@@ -8,12 +9,13 @@
       homeManager =
         { pkgs, ... }:
         {
-          home.packages = with pkgs; [
-          ];
+          home.packages = [ inputs.momoi-say.packages.${pkgs.system}.momoiSay ];
         };
     };
 
     dev = {
+      includes = [ <shell/packages> ];
+
       homeManager =
         { pkgs, ... }:
         {
@@ -114,6 +116,7 @@
             uv # Python package manager
             ruff # Python linter & formatter
             basedpyright # Python lsp
+            pipx
 
             # Nix
             deadnix # Dead code detection for Nix
@@ -129,6 +132,9 @@
             # Android Development
             scrcpy # Android device mirroring
             android-tools # Android platform tools
+
+            # Cosmetics
+            cmatrix
           ];
         };
     };
