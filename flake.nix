@@ -52,7 +52,15 @@
       flake = false;
       url = "github:homebrew/homebrew-core";
     };
+    impermanence = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/impermanence";
+    };
     import-tree.url = "github:vic/import-tree";
+    lanzaboote = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/lanzaboote";
+    };
     mango = {
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:DreamMaoMao/mango";
