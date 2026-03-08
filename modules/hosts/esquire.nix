@@ -29,8 +29,10 @@
 
     includes = [
       <disko/btrfs-luks>
+      <system/bootloader/lanzaboote>
+      <system/impermanence>
+      <system/tpm>
 
-      <system/lanzaboote>
       <system/locale>
       <system/ssh>
       <system/sshd>
@@ -40,11 +42,7 @@
       <system/nvidia>
       <system/xdg>
       <system/settings>
-      <system/tpm>
-      <system/impermanence>
 
-      # <desktop/wm/niri>
-      # <desktop/qs/dms>
       <desktop/wm/mango>
       <desktop/qs/noctalia>
 
