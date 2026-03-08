@@ -30,6 +30,8 @@
             p7zip # 7z compression utility
             ffmpeg # Multimedia framework
             mkpasswd # Make password hash
+            ouch # Command-line utility for easily compressing and decompressing files and directories
+            onefetch # Git repository summary on your terminal.
 
             # Disk Usage Analyzers
             dua # Disk usage analyzer with TUI

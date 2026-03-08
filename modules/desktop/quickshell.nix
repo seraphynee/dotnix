@@ -151,6 +151,7 @@
                   };
                 };
                 appLauncher = {
+                  enableClipboardHistory = true;
                   viewMode = "list";
                   position = "bottom_center";
                   density = "compact";
