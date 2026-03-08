@@ -8,15 +8,20 @@
       fileSystems."/persist".neededForBoot = true;
 
       environment.persistence."/persist" = {
+        enable = true;
         hideMounts = true;
         files = [
           "/etc/machine-id"
+          "/var/lib/systemd/random-seed"
         ];
         directories = [
           "/etc/secureboot"
           "/etc/ssh"
           "/var/lib/NetworkManager"
           "/etc/NetworkManager/system-connections"
+          "/var/lib/nixos"
+          "/var/lib/systemd/coredump"
+          "/var/lib/tpm2-tss"
           "/var/lib/tailscale"
           "/var/lib/sops-nix"
           "/var/lib/bluetooth"
