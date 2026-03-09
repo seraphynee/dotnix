@@ -13,11 +13,24 @@
         })
       ];
       security.pam.services.sddm.enableGnomeKeyring = true;
-      services.displayManager.sddm = {
-        enable = true;
-        extraPackages = [ pkgs.sddm-astronaut ];
-        theme = "catppuccin-${flavor}-${accent}";
-        wayland.enable = true;
+      services = {
+        xserver.enable = true;
+
+        displayManager.sddm = {
+          enable = true;
+          extraPackages = [ pkgs.sddm-astronaut ];
+          theme = "catppuccin-${flavor}-${accent}";
+
+          # TODO: Re-enable SDDM Wayland once this regression is fixed:
+          # https://github.com/NixOS/nixpkgs/issues/496361
+          wayland.enable = false;
+
+          settings = {
+            General = {
+              InputMethod = ""; # Disables the virtual keyboard especially because it's showing in x11 display server
+            };
+          };
+        };
       };
     };
 }
