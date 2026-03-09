@@ -9,6 +9,7 @@ let
       gitUser,
       gitEmail,
       githubUser,
+      githubPAT ? null,
       signingKeySecret,
     }:
     {
@@ -18,6 +19,16 @@ let
     }:
     let
       inherit (pkgs.stdenv.hostPlatform) isDarwin;
+      githubPATPath =
+        if githubPAT == null then
+          null
+        else
+          lib.attrByPath [
+            "sops"
+            "secrets"
+            githubPAT
+            "path"
+          ] null config;
       signingKeyPath = lib.attrByPath [
         "sops"
         "secrets"
@@ -26,6 +37,26 @@ let
       ] null config;
     in
     {
+      home.sessionVariables = lib.optionalAttrs (githubPATPath != null) {
+        GITHUB_TOKEN_FILE = githubPATPath;
+      };
+
+      programs.fish.interactiveShellInit = lib.mkIf (githubPATPath != null) (
+        lib.mkAfter ''
+          if test -r "${githubPATPath}"
+            set -gx GITHUB_TOKEN (cat "${githubPATPath}")
+          end
+        ''
+      );
+
+      programs.bash.bashrcExtra = lib.mkIf (githubPATPath != null) (
+        lib.mkAfter ''
+          if [ -r "${githubPATPath}" ]; then
+            export GITHUB_TOKEN="$(cat "${githubPATPath}")"
+          fi
+        ''
+      );
+
       programs.git = {
         enable = true;
         signing = lib.optionalAttrs (signingKeyPath != null) {
@@ -389,6 +420,7 @@ in
           gitUser = "seraphynee";
           gitEmail = "seraphyne31@gmail.com";
           githubUser = "seraphynee";
+          githubPAT = "keys/ghspy-pat";
           signingKeySecret = "ssh/keys/signing/ghspy-pub";
         };
       };

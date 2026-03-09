@@ -38,6 +38,7 @@ in
               secrets = {
                 "ssh/config" = { };
                 "ssh/keys/signing/ghspy-pub" = { };
+                "keys/ghspy-pat" = { };
               };
             };
 
