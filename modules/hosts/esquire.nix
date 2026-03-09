@@ -29,9 +29,8 @@
 
     includes = [
       <disko/btrfs-luks>
-      <system/bootloader/lanzaboote>
+      <system/bootloader/systemd-boot>
       <system/impermanence>
-      <system/tpm>
 
       <system/locale>
       <system/ssh>

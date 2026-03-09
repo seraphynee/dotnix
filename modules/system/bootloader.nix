@@ -16,23 +16,27 @@
         };
       };
 
-      lanzaboote.nixos =
-        {
-          lib,
-          pkgs,
-          ...
-        }:
-        {
-          imports = [ inputs.lanzaboote.nixosModules.lanzaboote ];
+      lanzaboote = {
+        includes = [ <system/tpm> ];
 
-          environment.systemPackages = [ pkgs.sbctl ];
+        nixos =
+          {
+            lib,
+            pkgs,
+            ...
+          }:
+          {
+            imports = [ inputs.lanzaboote.nixosModules.lanzaboote ];
 
-          boot.loader.systemd-boot.enable = lib.mkForce false; # Let Lanzaboote manage systemd-boot to avoid conflicts.
-          boot.lanzaboote = {
-            enable = true;
-            pkiBundle = "/etc/secureboot";
+            environment.systemPackages = [ pkgs.sbctl ];
+
+            boot.loader.systemd-boot.enable = lib.mkForce false; # Let Lanzaboote manage systemd-boot to avoid conflicts.
+            boot.lanzaboote = {
+              enable = true;
+              pkiBundle = "/etc/secureboot";
+            };
           };
-        };
+      };
     };
   };
 }
