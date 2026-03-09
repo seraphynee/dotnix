@@ -1,84 +1,26 @@
-# Bootstrap NixOS with this repo
+# dotnix
 
-This guide explains how to install a fresh NixOS system using the flake configuration in this repository.
+## Background
 
-## 1. About this repository
+Managing personal infrastructure across multiple machines is painful when everything is done manually. This repository exists to make workstation and system setup reproducible, versioned, and fast to recover.
 
-This repo contains:
+The main problems this repo solves:
 
-- NixOS host configuration (for example `modules/hosts/esquire.nix`)
-- Disk layout managed by Disko
-- `justfile` recipes to run installation from a live ISO
+- **Reinstall anxiety**: a fresh machine should be bootstrapped quickly, not rebuilt from memory.
+- **Configuration drift**: laptop and desktop environments should stay consistent over time.
+- **Cross-platform complexity**: NixOS and macOS should share one source of truth where possible.
+- **Operational reliability**: installation, rebuild, formatting, and checks should be automated through repeatable commands.
+- **Security hygiene**: sensitive values should stay encrypted and managed declaratively.
 
-Quick concepts:
+In short, this repo is needed so infrastructure changes are intentional, auditable, and easy to reproduce.
 
-- `esquire` = NixOS host name
-- `btrfs` = Disko disk key
+## Features
 
-Both `disko-install` and `disko-install-remount` recipes accept an optional `flake` argument.
-
-In this repository's `justfile`, both `disko-install` and `disko-install-remount`
-default to `flake='.'` (the local checkout).
-
-Override with `flake=<value>` when needed (for example `flake=github:dendritic-nix/den`).
-
-## 2. Bootstrap from live ISO (recommended)
-
-Prerequisites:
-
-- Booted into a NixOS installer/live ISO
-- Working internet connection
-- Correct target disk identified (for example with `lsblk`)
-- You understand the target disk data will be erased
-
-Run this from the installer shell as `root`:
-
-```console
-git clone https://github.com/dendritic-nix/den.git den && cd den
-lsblk -o NAME,SIZE,MODEL
-nix --extra-experimental-features "nix-command flakes" shell nixpkgs#just -c just disko-install-remount <hostname>
-reboot
-```
-
-Focus: simply run the `just disko-install-remount <hostname>` command above (via `nix shell`).
-
-## Important disk note
-
-The `esquire` host currently forces the disk device to this by-id path in `modules/hosts/esquire.nix`:
-
-```nix
-disko.devices.disk.btrfs.device = lib.mkForce "/dev/disk/by-id/nvme-eui.002538ba11b6cb55";
-```
-
-If you install on another machine or disk, update that by-id value to match the actual device.
-
-## Post-install verification
-
-After booting into the installed system, run:
-
-```console
-findmnt /
-findmnt /home
-findmnt /nix
-```
-
-All three should be mounted as btrfs subvolumes (`@`, `@home`, `@nix`).
-
-## References
-
-- den documentation: <https://vic.github.io/den>
-- Disko: <https://github.com/nix-community/disko>
-
-## Development workflow
-
-Use the shared task runner and git hooks:
-
-```console
-nix develop
-just hooks-install
-```
-
-Configured hooks:
-
-- `pre-commit`: `just fmt` and `just lint`
-- `pre-push`: `just check`
+- **Single flake, multiple hosts**: manages multiple host targets from one codebase (Linux and Darwin).
+- **Declarative system provisioning**: uses Disko-driven layouts, including Btrfs/LUKS-based host setups.
+- **Bootstrap-ready install flow**: includes installer-oriented recipes such as `disko-install` and `disko-install-remount` in `justfile`.
+- **Modular architecture**: split into reusable modules for hosts, users, system settings, shell tooling, and services.
+- **Secrets management with SOPS**: encrypted per-host and shared secrets are tracked safely in-repo.
+- **Daily workflow automation**: quality and maintenance commands are centralized (`fmt`, `check`, updates, hooks).
+- **Security and CI checks**: GitHub workflows cover linting, flake checks, lockfile updates, and secret scanning.
+- **Remote install support**: documented bootstrap SSH flow is available in `docs/nixos-installer-bootstrap-ssh.md`.
