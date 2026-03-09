@@ -13,12 +13,15 @@ fi
 
 # Default values (can be overridden via environment variables)
 IP_TARGET_HOST="${IP_TARGET_HOST:-192.168.100.13}"
-KEY_FILE="${KEY_FILE:-$HOME/keys.txt}"
+KEY_FILE="${KEY_FILE:-$HOME/.local/ages/keys.txt}"
 FLAKE_HOST="${FLAKE_HOST:-esquire}"
 TARGET_USER="${TARGET_USER:-root}"
 BUILD_ON="${BUILD_ON:-remote}"
 SSH_AUTH_MODE="${SSH_AUTH_MODE:-password}"
-SSH_KEY_FILE="${SSH_KEY_FILE:-$HOME/.ssh/id_ed25519}"
+SSH_KEY_DIR="${SSH_KEY_DIR:-$HOME/.ssh_keys}"
+SSH_KEY_NAME="${SSH_KEY_NAME:-id_ed25519}"
+SSH_KEY_FILE=""
+SSH_PUBKEY_FILE=""
 
 print
 gum style --border normal --padding "1 2" --margin "1 0" \
@@ -32,7 +35,7 @@ IP_TARGET_HOST="$(gum input \
 
 KEY_FILE="$(gum input \
 	--prompt "Path keyfile: " \
-	--placeholder "$HOME/keys.txt" \
+	--placeholder "$HOME/.local/ages/keys.txt" \
 	--value "$KEY_FILE")"
 
 FLAKE_HOST="$(gum input \
@@ -42,14 +45,16 @@ FLAKE_HOST="$(gum input \
 
 SSH_AUTH_CHOICE="$(gum choose \
 	"Password only" \
-	"SSH key file")"
+	"Bootstrap SSH key")"
 
-if [[ "$SSH_AUTH_CHOICE" == "SSH key file" ]]; then
+if [[ "$SSH_AUTH_CHOICE" == "Bootstrap SSH key" ]]; then
 	SSH_AUTH_MODE="key"
-	SSH_KEY_FILE="$(gum input \
-		--prompt "Path SSH private key: " \
-		--placeholder "$HOME/.ssh/id_ed25519" \
-		--value "$SSH_KEY_FILE")"
+	SSH_KEY_NAME="$(gum input \
+		--prompt "SSH key name: " \
+		--placeholder "id_ed25519" \
+		--value "$SSH_KEY_NAME")"
+	SSH_KEY_FILE="${SSH_KEY_DIR}/${SSH_KEY_NAME}"
+	SSH_PUBKEY_FILE="${SSH_KEY_FILE}.pub"
 else
 	SSH_AUTH_MODE="password"
 fi
@@ -65,8 +70,11 @@ gum style "  build-on    : ${BUILD_ON}"
 if [[ "$SSH_AUTH_MODE" == "password" ]]; then
 	gum style "  ssh mode    : password only"
 else
-	gum style "  ssh mode    : ssh key file"
-	gum style "  ssh key     : ${SSH_KEY_FILE}"
+	gum style "  ssh mode    : bootstrap ssh key"
+	gum style "  ssh key dir : ${SSH_KEY_DIR}"
+	gum style "  ssh key     : ${SSH_KEY_NAME}"
+	gum style "  ssh privkey : ${SSH_KEY_FILE}"
+	gum style "  ssh pubkey  : ${SSH_PUBKEY_FILE}"
 fi
 
 if ! gum confirm "Continue installation on this host?"; then
@@ -89,9 +97,16 @@ if [[ ! -f "$KEY_FILE" ]]; then
 	exit 1
 fi
 
-if [[ "$SSH_AUTH_MODE" == "key" ]] && [[ ! -f "$SSH_KEY_FILE" ]]; then
-	print -u2 "Error: SSH private key file not found: $SSH_KEY_FILE"
-	exit 1
+if [[ "$SSH_AUTH_MODE" == "key" ]]; then
+	if [[ ! -f "$SSH_KEY_FILE" ]]; then
+		print -u2 "Error: SSH private key file not found: $SSH_KEY_FILE"
+		exit 1
+	fi
+
+	if [[ ! -f "$SSH_PUBKEY_FILE" ]]; then
+		print -u2 "Error: SSH public key file not found: $SSH_PUBKEY_FILE"
+		exit 1
+	fi
 fi
 
 ssh_options=()
@@ -102,11 +117,33 @@ if [[ "$SSH_AUTH_MODE" == "password" ]]; then
 	)
 else
 	ssh_options=(
-		--ssh-option "PreferredAuthentications=publickey,password"
+		--ssh-option "PreferredAuthentications=publickey"
 		--ssh-option "PubkeyAuthentication=yes"
+		--ssh-option "PasswordAuthentication=no"
 		--ssh-option "IdentityFile=${SSH_KEY_FILE}"
 		--ssh-option "IdentitiesOnly=yes"
 	)
+fi
+
+if [[ "$SSH_AUTH_MODE" == "key" ]]; then
+	gum style --margin "1 0" \
+		"Bootstrapping SSH key to ${TARGET_HOST}" \
+		"Enter the current root password on the target when prompted."
+
+	if command -v ssh-copy-id >/dev/null 2>&1; then
+		ssh-copy-id \
+			-i "$SSH_PUBKEY_FILE" \
+			-o PreferredAuthentications=password \
+			-o PubkeyAuthentication=no \
+			"$TARGET_HOST"
+	else
+		pubkey_contents="$(<"$SSH_PUBKEY_FILE")"
+		ssh \
+			-o PreferredAuthentications=password \
+			-o PubkeyAuthentication=no \
+			"$TARGET_HOST" \
+			"umask 077; mkdir -p ~/.ssh; grep -qxF '$pubkey_contents' ~/.ssh/authorized_keys 2>/dev/null || printf '%s\n' '$pubkey_contents' >> ~/.ssh/authorized_keys"
+	fi
 fi
 
 tmp="$(mktemp -d)"
