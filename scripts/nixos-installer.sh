@@ -17,8 +17,8 @@ KEY_FILE="${KEY_FILE:-$HOME/keys.txt}"
 FLAKE_HOST="${FLAKE_HOST:-esquire}"
 TARGET_USER="${TARGET_USER:-root}"
 BUILD_ON="${BUILD_ON:-remote}"
-SSH_PREFERRED_AUTH="${SSH_PREFERRED_AUTH:-password}"
-SSH_DISABLE_PUBKEY="${SSH_DISABLE_PUBKEY:-yes}"
+SSH_AUTH_MODE="${SSH_AUTH_MODE:-password}"
+SSH_KEY_FILE="${SSH_KEY_FILE:-$HOME/.ssh/id_ed25519}"
 
 print
 gum style --border normal --padding "1 2" --margin "1 0" \
@@ -40,6 +40,20 @@ FLAKE_HOST="$(gum input \
 	--placeholder "esquire" \
 	--value "$FLAKE_HOST")"
 
+SSH_AUTH_CHOICE="$(gum choose \
+	"Password only" \
+	"SSH key file")"
+
+if [[ "$SSH_AUTH_CHOICE" == "SSH key file" ]]; then
+	SSH_AUTH_MODE="key"
+	SSH_KEY_FILE="$(gum input \
+		--prompt "Path SSH private key: " \
+		--placeholder "$HOME/.ssh/id_ed25519" \
+		--value "$SSH_KEY_FILE")"
+else
+	SSH_AUTH_MODE="password"
+fi
+
 TARGET_HOST="${TARGET_USER}@${IP_TARGET_HOST}"
 FLAKE="${REPO_ROOT}#${FLAKE_HOST}"
 
@@ -48,7 +62,12 @@ gum style "  target-host : ${TARGET_HOST}"
 gum style "  keyfile     : ${KEY_FILE}"
 gum style "  flake       : ${FLAKE}"
 gum style "  build-on    : ${BUILD_ON}"
-gum style "  ssh auth    : ${SSH_PREFERRED_AUTH}"
+if [[ "$SSH_AUTH_MODE" == "password" ]]; then
+	gum style "  ssh mode    : password only"
+else
+	gum style "  ssh mode    : ssh key file"
+	gum style "  ssh key     : ${SSH_KEY_FILE}"
+fi
 
 if ! gum confirm "Continue installation on this host?"; then
 	print "Cancelled."
@@ -70,6 +89,26 @@ if [[ ! -f "$KEY_FILE" ]]; then
 	exit 1
 fi
 
+if [[ "$SSH_AUTH_MODE" == "key" ]] && [[ ! -f "$SSH_KEY_FILE" ]]; then
+	print -u2 "Error: SSH private key file not found: $SSH_KEY_FILE"
+	exit 1
+fi
+
+ssh_options=()
+if [[ "$SSH_AUTH_MODE" == "password" ]]; then
+	ssh_options=(
+		--ssh-option "PreferredAuthentications=password"
+		--ssh-option "PubkeyAuthentication=no"
+	)
+else
+	ssh_options=(
+		--ssh-option "PreferredAuthentications=publickey,password"
+		--ssh-option "PubkeyAuthentication=yes"
+		--ssh-option "IdentityFile=${SSH_KEY_FILE}"
+		--ssh-option "IdentitiesOnly=yes"
+	)
+fi
+
 tmp="$(mktemp -d)"
 cleanup() { rm -rf "$tmp"; }
 trap cleanup EXIT INT TERM
@@ -82,6 +121,5 @@ chmod 600 "$tmp/var/lib/sops-nix/keys.txt"
 	--flake "$FLAKE" \
 	--build-on "$BUILD_ON" \
 	--extra-files "$tmp" \
-	--ssh-option "PreferredAuthentications=${SSH_PREFERRED_AUTH}" \
-	--ssh-option "PubkeyAuthentication=${SSH_DISABLE_PUBKEY}" \
+	"${ssh_options[@]}" \
 	"$TARGET_HOST"
