@@ -15,7 +15,7 @@ The intended flow is:
 - The target machine is already booted into a NixOS live installer or live USB environment.
 - The source machine can reach the target machine over the network.
 - You know the target machine IP address.
-- You know which host name to install from this flake, for example `esquire`.
+- You know which host name to install from this flake, for example `esquire-installer`.
 - You have the `sops-nix` age key file on the source machine.
 - You have an SSH key pair on the source machine in this location:
   - private key: `~/.ssh_keys/<ssh_key_name>`
@@ -66,7 +66,7 @@ What to enter in the installer prompt:
 
 - `IP target host`: the IP address shown on the target machine
 - `Path keyfile`: the local age key file, for example `~/.local/ages/keys.txt`
-- `Flake host`: the host defined in this repository, for example `esquire`
+- `Flake host`: the bootstrap host defined in this repository, for example `esquire-installer`
 - `SSH mode`: choose `Bootstrap SSH key`
 - `SSH key name`: only the key name, for example `id_ed25519`
 
@@ -101,7 +101,7 @@ Then enter:
 
 - target IP: `192.168.100.13`
 - key file: `~/.local/ages/keys.txt`
-- flake host: `esquire`
+- flake host: `esquire-installer`
 - SSH mode: `Bootstrap SSH key`
 - SSH key name: `id_ed25519`
 
@@ -112,6 +112,26 @@ If everything succeeds:
 - the SSH public key is added to the target machine for `root`
 - `nixos-anywhere` installs the selected flake host
 - the installation uses SSH key authentication after the bootstrap step
+
+After the first successful boot, switch from the installer profile to the daily `esquire` profile:
+
+```bash
+nh os switch . -H esquire
+```
+
+The `esquire` host uses Lanzaboote and enables TPM-aware initrd settings for LUKS (`tpm2-device=auto`).
+
+Then enroll a TPM2 key for the LUKS container and reboot:
+
+```bash
+sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=7 /dev/disk/by-partlabel/root
+reboot
+```
+
+Notes:
+
+- Keep your existing LUKS passphrase as a recovery method.
+- If PCR 7 changes (for example after Secure Boot key changes), re-enroll the TPM2 token.
 
 ## Troubleshooting
 

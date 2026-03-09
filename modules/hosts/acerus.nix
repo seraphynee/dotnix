@@ -30,8 +30,8 @@
 
     includes = [
       <disko/btrfs>
+      <system/bootloader/systemd-boot>
 
-      <system/systemd-boot>
       <system/locale>
       <system/ssh>
       <system/sshd>

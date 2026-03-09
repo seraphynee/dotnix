@@ -3,12 +3,8 @@
   constants,
   ...
 }:
-{
-  den.hosts.x86_64-linux.esquire.users = {
-    ${constants.user_two} = { };
-  };
-
-  den.aspects.esquire = {
+let
+  mkEsquireAspect = bootloader: {
     nixos =
       { lib, ... }:
       {
@@ -29,8 +25,9 @@
 
     includes = [
       <disko/btrfs-luks>
+      bootloader
+      <system/impermanence>
 
-      <system/systemd-boot>
       <system/locale>
       <system/ssh>
       <system/sshd>
@@ -41,8 +38,6 @@
       <system/xdg>
       <system/settings>
 
-      # <desktop/wm/niri>
-      # <desktop/qs/dms>
       <desktop/wm/mango>
       <desktop/qs/noctalia>
 
@@ -58,4 +53,16 @@
       <secrets/sops/esquire>
     ];
   };
+in
+{
+  den.hosts.x86_64-linux.esquire.users = {
+    ${constants.user_two} = { };
+  };
+
+  den.hosts.x86_64-linux."esquire-installer".users = {
+    ${constants.user_two} = { };
+  };
+
+  den.aspects.esquire = mkEsquireAspect <system/bootloader/lanzaboote>;
+  den.aspects."esquire-installer" = mkEsquireAspect <system/bootloader/systemd-boot>;
 }
