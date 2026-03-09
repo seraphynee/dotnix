@@ -14,7 +14,7 @@ fi
 # Default values (can be overridden via environment variables)
 IP_TARGET_HOST="${IP_TARGET_HOST:-192.168.100.13}"
 KEY_FILE="${KEY_FILE:-$HOME/.local/ages/keys.txt}"
-FLAKE_HOST="${FLAKE_HOST:-esquire}"
+FLAKE_HOST="${FLAKE_HOST:-esquire-installer}"
 TARGET_USER="${TARGET_USER:-root}"
 BUILD_ON="${BUILD_ON:-remote}"
 SSH_AUTH_MODE="${SSH_AUTH_MODE:-password}"
@@ -40,7 +40,7 @@ KEY_FILE="$(gum input \
 
 FLAKE_HOST="$(gum input \
 	--prompt "Flake host: " \
-	--placeholder "esquire" \
+	--placeholder "esquire-installer" \
 	--value "$FLAKE_HOST")"
 
 SSH_AUTH_CHOICE="$(gum choose \
