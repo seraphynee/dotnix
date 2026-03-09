@@ -113,11 +113,25 @@ If everything succeeds:
 - `nixos-anywhere` installs the selected flake host
 - the installation uses SSH key authentication after the bootstrap step
 
-After the first successful boot, switch to the daily host profile that enables Lanzaboote:
+After the first successful boot, switch from the installer profile to the daily `esquire` profile:
 
 ```bash
 nh os switch . -H esquire
 ```
+
+The `esquire` host uses Lanzaboote and enables TPM-aware initrd settings for LUKS (`tpm2-device=auto`).
+
+Then enroll a TPM2 key for the LUKS container and reboot:
+
+```bash
+sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=7 /dev/disk/by-partlabel/root
+reboot
+```
+
+Notes:
+
+- Keep your existing LUKS passphrase as a recovery method.
+- If PCR 7 changes (for example after Secure Boot key changes), re-enroll the TPM2 token.
 
 ## Troubleshooting
 
