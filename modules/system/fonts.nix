@@ -52,6 +52,11 @@
           roboto
           open-sans
           ubuntu-classic
+          martian-mono
+          _0xproto
+          geist-font
+          monaspace
+          hack-font
 
           # Icon fonts
           font-awesome
