@@ -23,15 +23,15 @@
   # services.postgres.enable = true;
 
   # https://devenv.sh/scripts/
-  scripts.hello.exec = ''
-    echo hello from $GREET
-  '';
-
-  # https://devenv.sh/basics/
-  enterShell = ''
-    hello         # Run scripts directly
-    git --version # Use packages
-  '';
+  # scripts.hello.exec = ''
+  #   echo hello from $GREET
+  # '';
+  #
+  # # https://devenv.sh/basics/
+  # enterShell = ''
+  #   hello         # Run scripts directly
+  #   git --version # Use packages
+  # '';
 
   # https://devenv.sh/tasks/
   # tasks = {
