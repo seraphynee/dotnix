@@ -63,7 +63,9 @@ in
               };
 
               secrets = {
-                "ssh/config" = { };
+                "ssh/config" = {
+                  sopsFile = ../../secrets/esquire/secrets.yaml;
+                };
                 "ssh/keys/signing/ghspy-pub" = {
                   sopsFile = ../../secrets/esquire/secrets.yaml;
                 };
