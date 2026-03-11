@@ -44,7 +44,7 @@
 
         atuin = {
           enable = true;
-          enableFishIntegration = false;
+          enableFishIntegration = true;
           enableNushellIntegration = true;
         };
 
