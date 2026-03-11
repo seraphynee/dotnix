@@ -11,11 +11,39 @@ let
 in
 {
   den.aspects.secrets._.sops = {
-    homeManager = {
-      home.sessionVariables = {
-        SOPS_AGE_KEY_FILE = "$HOME/.local/state/ages/keys.txt";
+    homeManager =
+      { config, ... }:
+      {
+        imports = [ inputs.sops-nix.homeManagerModules.sops ];
+
+        sops = {
+          defaultSopsFile = ../../secrets/shared/secrets.yaml;
+          validateSopsFiles = false;
+
+          age = {
+            keyFile = "${config.home.homeDirectory}/.local/state/ages/keys.txt";
+            generateKey = false;
+          };
+
+          secrets = {
+            "ssh/config" = { };
+            "espanso/email" = {
+            };
+          };
+        };
+
+        programs.ssh = {
+          extraConfig = ''
+            # This file will be generated with sops and if sops fails to generate
+            # it this directive will be skipped.
+            Include ${config.sops.secrets."ssh/config".path}
+          '';
+        };
+
+        home.sessionVariables = {
+          SOPS_AGE_KEY_FILE = "$HOME/.local/state/ages/keys.txt";
+        };
       };
-    };
 
     provides = {
       esquire = {
@@ -27,7 +55,6 @@ in
             imports = [ inputs.sops-nix.homeManagerModules.sops ];
 
             sops = {
-              defaultSopsFile = ../../secrets/esquire/secrets.yaml;
               validateSopsFiles = false;
 
               age = {
@@ -37,8 +64,12 @@ in
 
               secrets = {
                 "ssh/config" = { };
-                "ssh/keys/signing/ghspy-pub" = { };
-                "keys/ghspy-pat" = { };
+                "ssh/keys/signing/ghspy-pub" = {
+                  sopsFile = ../../secrets/esquire/secrets.yaml;
+                };
+                "keys/ghspy-pat" = {
+                  sopsFile = ../../secrets/esquire/secrets.yaml;
+                };
               };
             };
 
@@ -160,7 +191,6 @@ in
             imports = [ inputs.sops-nix.homeManagerModules.sops ];
 
             sops = {
-              defaultSopsFile = ../../secrets/mbp/secrets.yaml;
               validateSopsFiles = false;
 
               age = {
@@ -169,7 +199,9 @@ in
               };
 
               secrets = {
-                "ssh/keys/signing/ghcny-pub" = { };
+                "ssh/keys/signing/ghcny-pub" = {
+                  sopsFile = ../../secrets/mbp/secrets.yaml;
+                };
               };
             };
           };
