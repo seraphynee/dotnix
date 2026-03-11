@@ -8,6 +8,9 @@
 
         fish = {
           enable = true;
+          interactiveShellInit = ''
+            abbr --add cl clear
+          '';
           # interactiveShellInit = ''
           #   ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
           # '';
