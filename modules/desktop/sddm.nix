@@ -14,7 +14,7 @@
       ];
       security.pam.services.sddm.enableGnomeKeyring = true;
       services = {
-        xserver.enable = true;
+        xserver.enable = false;
 
         displayManager.sddm = {
           enable = true;
@@ -23,7 +23,8 @@
 
           # TODO: Re-enable SDDM Wayland once this regression is fixed:
           # https://github.com/NixOS/nixpkgs/issues/496361
-          wayland.enable = false;
+          # INFO: this has been fixed
+          wayland.enable = true;
 
           settings = {
             General = {
