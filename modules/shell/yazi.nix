@@ -8,6 +8,15 @@
         ];
       };
 
+    homeManager =
+      { pkgs, ... }:
+      {
+        xdg.configFile."yazi" = {
+          source = ../../dots/config/yazi;
+          recursive = true;
+        };
+      };
+
     #   homeManager =
     #     { pkgs, ... }:
     #     let
