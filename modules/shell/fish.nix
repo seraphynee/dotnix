@@ -2,14 +2,16 @@
   den.aspects.shell._.fish.homeManager =
     { pkgs, ... }:
     {
-      home.packages = [ pkgs.fish ];
+      # home.packages = [ pkgs.fish ];
+
       programs = {
         command-not-found.enable = false;
         nix-index-database.comma.enable = true;
 
         fish = {
-          enable = false;
+          enable = true;
           interactiveShellInit = ''
+            set -g fish_greeting
             abbr --add cl clear
           '';
           functions = {
