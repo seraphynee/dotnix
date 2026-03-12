@@ -4,7 +4,10 @@
     nixos =
       { pkgs, ... }:
       {
-        environment.systemPackages = with pkgs; [ legcord ];
+        environment.systemPackages = with pkgs; [
+          # legcord
+          equibop
+        ];
       };
 
     homeManager = {
