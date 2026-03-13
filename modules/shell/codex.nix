@@ -8,7 +8,7 @@
     { user, ... }:
     {
       homeManager =
-        { pkgs, ... }:
+        { config, pkgs, ... }:
         let
           inherit (pkgs.stdenv.hostPlatform) isDarwin isLinux;
           username = user.userName;
@@ -30,12 +30,28 @@
             else
               "";
 
-          codexConfig = builtins.replaceStrings [ "@conditional_trusted_projects@" ] [ trustedProjects ] (
-            builtins.readFile ../../dots/dot_codex/config.toml.tmpl
-          );
+          codexConfig =
+            builtins.replaceStrings
+              [
+                "@conditional_trusted_projects@"
+                "@context7_api_key@"
+                "@ref_api_key@"
+                "@tavily_api_key@"
+              ]
+              [
+                trustedProjects
+                config.sops.placeholder."codex/context7_apikey"
+                config.sops.placeholder."codex/ref_apikey"
+                config.sops.placeholder."codex/tavily_apikey"
+              ]
+              (builtins.readFile ../../dots/dot_codex/config.toml.tmpl);
         in
         {
-          home.file.".codex/config.toml".text = codexConfig;
+          sops.templates."codex-config.toml" = {
+            path = "${config.home.homeDirectory}/.codex/config.toml";
+            mode = "0600";
+            content = codexConfig;
+          };
         };
 
       nixos =

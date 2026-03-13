@@ -29,6 +29,15 @@ in
             "ssh/config" = { };
             "espanso/email" = {
             };
+            "codex/context7_apikey" = {
+              key = "keys/api/context7";
+            };
+            "codex/ref_apikey" = {
+              key = "keys/api/ref";
+            };
+            "codex/tavily_apikey" = {
+              key = "keys/api/tavily";
+            };
           };
         };
 
