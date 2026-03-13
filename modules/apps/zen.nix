@@ -138,9 +138,9 @@
                     {
                       algorithm = "floating";
                       type = "explicit-lightness";
-                      red = 196;
-                      green = 224;
-                      blue = 255;
+                      red = 48;
+                      green = 54;
+                      blue = 79;
                       lightness = 50;
                       position = {
                         x = 51;
@@ -186,9 +186,9 @@
                     {
                       algorithm = "floating";
                       type = "explicit-lightness";
-                      red = 245;
-                      green = 233;
-                      blue = 207;
+                      red = 75;
+                      green = 46;
+                      blue = 43;
                       lightness = 50;
                       position = {
                         x = 51;
@@ -268,6 +268,21 @@
                 key = "4";
                 modifiers = {
                   control = true;
+                };
+              }
+              {
+                id = "zen-close-all-unpinned-tabs";
+                key = "k";
+                modifiers = {
+                  control = true;
+                  shift = true;
+                };
+              }
+              {
+                id = "key_webconsole";
+                key = "";
+                modifiers = {
+                  control = false;
                 };
               }
             ];
