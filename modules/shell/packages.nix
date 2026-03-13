@@ -33,6 +33,11 @@
             ouch # Command-line utility for easily compressing and decompressing files and directories
             onefetch # Git repository summary on your terminal.
 
+            # Screenshot utility
+            grim
+            swappy
+            slurp
+
             # Disk Usage Analyzers
             dua # Disk usage analyzer with TUI
             gdu # Fast disk usage analyzer
