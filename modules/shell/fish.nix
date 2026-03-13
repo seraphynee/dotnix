@@ -1,14 +1,37 @@
 {
   den.aspects.shell._.fish.homeManager =
     { pkgs, ... }:
+    let
+      inherit (pkgs.stdenv.hostPlatform) isDarwin isLinux;
+
+      commonAliases =
+        if isDarwin then
+          ''
+            alias cpwd "echo -n $(pwd) | pbcopy"
+          ''
+        else if isLinux then
+          ''
+            alias cpwd "echo -n $(pwd) | wl-copy"
+          ''
+        else
+          "";
+
+      commonAliasesFish = builtins.replaceStrings [ "@common_aliases@" ] [ commonAliases ] (
+        builtins.readFile ../../dots/config/fish/conf.d/common_aliases.fish
+      );
+    in
     {
       # home.packages = [ pkgs.fish ];
 
       xdg.configFile."fish/fish_plugins".source = ../../dots/config/fish/fish_plugins;
+      xdg.configFile."fish/conf.d/colors.fish".source = ../../dots/config/fish/conf.d/colors.fish;
+      xdg.configFile."fish/conf.d/common_aliases.fish" = {
+        text = commonAliasesFish;
+      };
 
       programs = {
         command-not-found.enable = false;
-        nix-index-database.comma.enable = true;
+        nix-index-database.comma.enable = false;
 
         fish = {
           enable = true;
