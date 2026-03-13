@@ -66,6 +66,7 @@
             jujutsu # Jujutsu Version Control
             jjui # Jujutsu TUI
             lazyjj # Jujutsu TUI
+            koji # conventional commit generator
 
             # Development Tools
             hyperfine # Command-line benchmarking tool
