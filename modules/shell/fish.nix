@@ -84,15 +84,6 @@
                 hash = "sha256-U1yd8m56YrHXrJFkU8xaOglulOGV0iBvwjU/bdf8tqA=";
               };
             }
-            # {
-            #   name = "pisces";
-            #   src = pkgs.fetchFromGitHub {
-            #     owner = "laughedelic";
-            #     repo = "pisces";
-            #     rev = "e45e0869855d089ba1e628b6248434b2dfa709c4";
-            #     hash = "sha256-Oou2IeNNAqR00ZT3bss/DbhrJjGeMsn9dBBYhgdafBw=";
-            #   };
-            # }
           ];
           functions = {
             tmux = ''
