@@ -84,6 +84,7 @@
     };
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgs-lib.follows = "nixpkgs";
+    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
     noctalia = {
       inputs = {
         nixpkgs.follows = "nixpkgs";

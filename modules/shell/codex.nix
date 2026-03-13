@@ -1,112 +1,48 @@
 {
-  den.aspects.shell._.codex.homeManager =
-    {
-      pkgs,
-      lib,
-      codex ? null,
-      ...
-    }:
-    let
-      codexPackage =
-        if
-          codex != null
-          && codex ? packages
-          && codex.packages ? ${pkgs.system}
-          && codex.packages.${pkgs.system} ? default
-        then
-          codex.packages.${pkgs.system}.default
-        else
-          pkgs.codex or null;
-      codexFixed =
-        if codexPackage != null then
-          codexPackage.overrideAttrs (old: {
-            nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
-            buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.libcap.dev ];
-          })
-        else
-          null;
-    in
-    {
-      flake-file.inputs = {
-        codex.url = "github:openai/codex";
+  __findFile,
+  inputs,
+  constants,
+  ...
+}:
+{
+  den.aspects.shell._.codex = {
+    homeManager =
+      { pkgs, ... }:
+      let
+        inherit (pkgs.stdenv.hostPlatform) isDarwin isLinux;
+
+        trustedProjects =
+          if isDarwin then
+            ''
+              [projects."/Users/${constants.user_one}/.local/share/chezmoi"]
+              trust_level = "trusted"
+
+              [projects."/Users/${constants.user_one}/Code/Personal/Projects/Backend/allweezy-backend"]
+              trust_level = "trusted"
+            ''
+          else if isLinux then
+            ''
+              [projects."/home/${constants.user_two}/dotnix"]
+              trust_level = "trusted"
+            ''
+          else
+            "";
+
+        codexConfig = builtins.replaceStrings [ "@conditional_trusted_projects@" ] [ trustedProjects ] (
+          builtins.readFile ../../dots/dot_codex/config.toml.tmpl
+        );
+      in
+      {
+        home.file.".codex/config.toml".text = codexConfig;
       };
 
-      home.packages =
-        (with pkgs; [
-          # here is some command line tools I use frequently
-          # feel free to add your own or remove some of them
-          bat
-          go-task
-          lazygit
-          delta
-          gh
-          tmux
-          zoxide
-          yazi
-
-          neofetch
-          nnn # terminal file manager
-
-          # archives
-          zip
-          xz
-          unzip
-          p7zip
-
-          # utils
-          ripgrep # recursively searches directories for a regex pattern
-          jq # A lightweight and flexible command-line JSON processor
-          yq-go # yaml processor https://github.com/mikefarah/yq
-          eza # A modern replacement for ‘ls’
-          fzf # A command-line fuzzy finder
-
-          # networking tools
-          mtr # A network diagnostic tool
-          iperf3
-          dnsutils # `dig` + `nslookup`
-          ldns # replacement of `dig`, it provide the command `drill`
-          aria2 # A lightweight multi-protocol & multi-source command-line download utility
-          socat # replacement of openbsd-netcat
-          nmap # A utility for network discovery and security auditing
-          ipcalc # it is a calculator for the IPv4/v6 addresses
-
-          # misc
-          cowsay
-          file
-          which
-          tree
-          gnused
-          gnutar
-          gawk
-          zstd
-          gnupg
-
-          # nix related
-          #
-          # it provides the command `nom` works just like `nix`
-          # with more details log output
-          nix-output-monitor
-
-          # productivity
-          hugo # static site generator
-          glow # markdown previewer in terminal
-
-          btop # replacement of htop/nmon
-          iotop # io monitoring
-          iftop # network monitoring
-
-          # system call monitoring
-          strace # system call monitoring
-          ltrace # library call monitoring
-          lsof # list open files
-
-          # system tools
-          sysstat
-          lm_sensors # for `sensors` command
-          ethtool
-          pciutils # lspci
-          usbutils # lsusb
-        ])
-        ++ lib.optional (codexFixed != null) codexFixed;
-    };
+    nixos =
+      { pkgs, ... }:
+      let
+        inherit (inputs.nixpkgs-master.legacyPackages.${pkgs.system}) codex;
+      in
+      {
+        environment.systemPackages = [ codex ];
+      };
+  };
 }

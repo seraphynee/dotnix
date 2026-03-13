@@ -21,6 +21,7 @@
 
       <shell/_1password>
       <shell/bash>
+      <shell/codex>
       <shell/fish>
       <shell/git/seraphyne>
       <shell/jujutsu/seraphyne>

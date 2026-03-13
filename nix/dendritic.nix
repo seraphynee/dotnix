@@ -131,5 +131,9 @@
     };
 
     momoi-say.url = "github:haruki-nikaidou/momoisay-rs";
+
+    nixpkgs-master = {
+      url = "github:NixOS/nixpkgs/master";
+    };
   };
 }
