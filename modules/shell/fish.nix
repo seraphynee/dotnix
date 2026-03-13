@@ -8,10 +8,41 @@
         if isDarwin then
           ''
             alias cpwd "echo -n $(pwd) | pbcopy"
+
+            === DARWIN ===
+            alias caff="caffeinate -ism"           # Run command without letting mac sleep
+
+            alias showdot='defaults write com.apple.finder AppleShowAllFiles TRUE'  # show dot files in Finder
+            alias hidedot='defaults write com.apple.finder AppleShowAllFiles FALSE' # hide dot files in Finder
+            alias spot-off="sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist"
+            alias spot-on="sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist"
+            alias fixmounts="sudo automount -vcu" # Re-mount all shared drives
           ''
         else if isLinux then
           ''
             alias cpwd "echo -n $(pwd) | wl-copy"
+
+            # === LINUX ===
+            alias ctl='systemctl'
+            alias reboot="sudo systemctl reboot"
+            alias sstop="sudo systemctl stop"
+            alias sstatus="sudo systemctl status"
+
+            # Start and then view status of service
+            function sstart
+                sudo systemctl start $argv[1]
+                sudo systemctl status $argv[1]
+            end
+
+            # Restart and then view status of service
+            function srestart
+                sudo systemctl restart $argv[1]
+                sudo systemctl status $argv[1]
+            end
+
+            # Journalctl aliases
+            alias logs='sudo journalctl -fu'
+            alias logs-all='sudo journalctl -u'
           ''
         else
           "";
@@ -30,6 +61,8 @@
       xdg.configFile."fish/conf.d/common_aliases.fish" = {
         text = commonAliasesFish;
       };
+      xdg.configFile."fish/conf.d/abbreviations.fish".source =
+        ../../dots/config/fish/conf.d/abbreviations.fish;
 
       programs = {
         command-not-found.enable = false;
