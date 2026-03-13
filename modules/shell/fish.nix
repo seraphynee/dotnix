@@ -25,6 +25,8 @@
 
       xdg.configFile."fish/fish_plugins".source = ../../dots/config/fish/fish_plugins;
       xdg.configFile."fish/conf.d/colors.fish".source = ../../dots/config/fish/conf.d/colors.fish;
+      xdg.configFile."fish/conf.d/common_functions.fish".source =
+        ../../dots/config/fish/conf.d/common_functions.fish;
       xdg.configFile."fish/conf.d/common_aliases.fish" = {
         text = commonAliasesFish;
       };
