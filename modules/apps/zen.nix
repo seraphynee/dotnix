@@ -28,18 +28,48 @@
               force = true; # Needed for nix to overwrite search settings on rebuild
               default = "google"; # Aliased to duckduckgo, see other aliases in the link above
               engines = {
-                # My NixOS Option and package search shortcut
+
+                nixos_search = {
+                  name = "NixOS Search";
+                  urls = [
+                    {
+                      template = "https://search.nixos.org/packages?channel=25.11&query={searchTerms}";
+                    }
+                  ];
+
+                  icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+                  definedAliases = [ "@nos" ]; # Keep in mind that aliases defined here only work if they start with "@"
+                };
+
+                darwin_search = {
+                  name = "Darwin Modules Search";
+                  urls = [
+                    {
+                      template = "https://searchix.ovh/options/darwin/search?query={searchTerms}";
+                    }
+                  ];
+
+                  icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+                  definedAliases = [ "@dw" ]; # Keep in mind that aliases defined here only work if they start with "@"
+                };
+
+                hm_search = {
+                  name = "Home Manager Search";
+                  urls = [
+                    {
+                      template = "https://home-manager-options.extranix.com/?query={searchTerms}";
+                    }
+                  ];
+
+                  icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+                  definedAliases = [ "@hm" ]; # Keep in mind that aliases defined here only work if they start with "@"
+                };
+
                 mynixos = {
                   name = "My NixOS";
                   urls = [
                     {
                       template = "https://mynixos.com/search?q={searchTerms}";
-                      params = [
-                        {
-                          name = "query";
-                          value = "searchTerms";
-                        }
-                      ];
                     }
                   ];
 
@@ -56,7 +86,7 @@
                 id = 1;
               };
               Productivity = {
-                color = "green";
+                color = "blue";
                 icon = "tree";
                 id = 2;
               };
@@ -66,7 +96,7 @@
                 id = 3;
               };
               Personal = {
-                color = "purple";
+                color = "yellow";
                 icon = "fingerprint";
                 id = 4;
               };
@@ -108,9 +138,9 @@
                     {
                       algorithm = "floating";
                       type = "explicit-lightness";
-                      red = 188;
-                      green = 217;
-                      blue = 162;
+                      red = 196;
+                      green = 224;
+                      blue = 255;
                       lightness = 50;
                       position = {
                         x = 51;
@@ -156,9 +186,9 @@
                     {
                       algorithm = "floating";
                       type = "explicit-lightness";
-                      red = 211;
-                      green = 78;
-                      blue = 78;
+                      red = 245;
+                      green = 233;
+                      blue = 207;
                       lightness = 50;
                       position = {
                         x = 51;
