@@ -40,9 +40,9 @@
               ]
               [
                 trustedProjects
-                config.sops.placeholder."codex/context7_apikey"
-                config.sops.placeholder."codex/ref_apikey"
-                config.sops.placeholder."codex/tavily_apikey"
+                config.sops.placeholder."llm/context7_apikey"
+                config.sops.placeholder."llm/ref_apikey"
+                config.sops.placeholder."llm/tavily_apikey"
               ]
               (builtins.readFile ../../dots/dot_codex/config.toml.tmpl);
         in

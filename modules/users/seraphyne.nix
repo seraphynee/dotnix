@@ -27,6 +27,7 @@
       <shell/jujutsu/seraphyne>
       <shell/lazygit>
       <shell/neovim>
+      <shell/opencode>
       <shell/starship>
       <shell/tmux>
       <shell/yazi>

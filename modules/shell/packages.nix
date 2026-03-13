@@ -83,7 +83,6 @@
             entr # Run commands when files change
             epy # Simple Python package manager
             zlib # Compression library
-            opencode # LLM TUI
 
             # Typescript
             nodejs # JavaScript runtime
