@@ -72,6 +72,7 @@
             jjui # Jujutsu TUI
             lazyjj # Jujutsu TUI
             koji # conventional commit generator
+            gitleaks
 
             # Development Tools
             hyperfine # Command-line benchmarking tool
@@ -125,6 +126,7 @@
             ruff # Python linter & formatter
             basedpyright # Python lsp
             pipx
+            python315
 
             # Nix
             deadnix # Dead code detection for Nix
