@@ -94,6 +94,10 @@
             defaultApplications = defaults;
             associations.added = defaults;
           };
+          userDirs = {
+            enable = true; # enable XDG user directories support
+            createDirectories = true; # create standard user folders in $HOME
+          };
         };
     };
   };
