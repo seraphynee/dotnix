@@ -28,6 +28,7 @@
       <shell/lazygit>
       <shell/neovim>
       <shell/opencode>
+      <shell/ocr>
       <shell/starship>
       <shell/tmux>
       <shell/yazi>

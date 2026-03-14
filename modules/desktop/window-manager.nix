@@ -106,6 +106,7 @@
               wl-clipboard
               cliphist
               wl-clip-persist
+              tesseract
 
               # Qt / Input Method
               libsForQt5.qt5ct
