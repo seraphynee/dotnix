@@ -44,6 +44,7 @@ let
       <apps/discord>
       <apps/firefox>
       <apps/ghostty>
+      <apps/wezterm>
       <apps/zen>
       <apps/zed>
 
