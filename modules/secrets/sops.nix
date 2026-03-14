@@ -26,7 +26,9 @@ in
           };
 
           secrets = {
-            "ssh/config" = { };
+            "ssh/config" = {
+              sopsFile = ../../secrets/esquire/secrets.yaml;
+            };
             "espanso/email" = {
             };
             "llm/context7_apikey" = {
