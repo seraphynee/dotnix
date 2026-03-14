@@ -30,7 +30,12 @@
 
             environment.systemPackages = [ pkgs.sbctl ];
 
-            boot.loader.systemd-boot.enable = lib.mkForce false; # Let Lanzaboote manage systemd-boot to avoid conflicts.
+            boot.loader.systemd-boot = {
+              enable = lib.mkForce false; # Let Lanzaboote manage systemd-boot to avoid conflicts.
+              configurationLimit = 5; # Keep the latest 10 boot entries.
+              editor = false; # Disable editing kernel parameters at boot.
+
+            };
             boot.lanzaboote = {
               enable = true;
               pkiBundle = "/etc/secureboot";
