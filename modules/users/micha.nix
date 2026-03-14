@@ -20,7 +20,7 @@
       <shell/_1password>
       <shell/bash>
       <shell/fish>
-      <shell/git/seraphyne>
+      <shell/git>
       <shell/lazygit>
       <shell/neovim>
       <shell/starship>

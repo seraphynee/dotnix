@@ -23,7 +23,7 @@
       <shell/bash>
       <shell/codex>
       <shell/fish>
-      <shell/git/seraphyne>
+      <shell/git>
       <shell/jujutsu/seraphyne>
       <shell/lazygit>
       <shell/neovim>

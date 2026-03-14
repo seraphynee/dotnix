@@ -11,7 +11,7 @@
     includes = [
       <den/primary-user>
 
-      <shell/git/chianyungcode>
+      <shell/git>
       <shell/nix-tools>
     ];
 
