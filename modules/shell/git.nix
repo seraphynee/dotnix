@@ -207,7 +207,7 @@ in
             gitUser = "chianyungcode";
             gitEmail = "cnytechcode@gmail.com";
             githubUser = "chianyungcode";
-            signingKeySecret = "ssh/keys/signing/ghcny-pub";
+            signingKeySecret = "keys/ssh/signing/ghcny-pub";
           }
         else if
           builtins.elem user.userName [
@@ -219,8 +219,8 @@ in
             gitUser = "seraphynee";
             gitEmail = "seraphyne31@gmail.com";
             githubUser = "seraphynee";
-            githubPAT = "keys/ghspy-pat";
-            signingKeySecret = "ssh/keys/signing/ghspy-pub";
+            githubPAT = "keys/pat/ghspy-pat";
+            signingKeySecret = "keys/ssh/signing/ghspy-pub";
           }
         else
           throw "Unsupported git profile for user `${user.userName}` in modules/shell/git.nix";

@@ -80,10 +80,10 @@ in
                 "ssh/config" = {
                   sopsFile = ../../secrets/esquire/secrets.yaml;
                 };
-                "ssh/keys/signing/ghspy-pub" = {
+                "keys/ssh/signing/ghspy-pub" = {
                   sopsFile = ../../secrets/esquire/secrets.yaml;
                 };
-                "keys/ghspy-pat" = {
+                "keys/pat/ghspy-pat" = {
                   sopsFile = ../../secrets/esquire/secrets.yaml;
                 };
               };
@@ -137,19 +137,20 @@ in
               # secrets will be output to /run/secrets
               # e.g. /run/secrets/<secret-name>
               secrets = {
-                "ssh/keys/auth/ghspy-pub" = {
+                "keys/ssh/auth/ghspy-pub" = {
                   name = "ghspy-auth.pub";
                   path = "${userHome}/.ssh_keys/ghspy-auth.pub";
                   owner = "${constants.user_two}";
                   mode = "0600";
                 };
-                "ssh/keys/signing/ghspy-pub" = {
+                "keys/ssh/signing/ghspy-pub" = {
                   name = "ghspy-signing.pub";
                   path = "${userHome}/.ssh_keys/ghspy-signing.pub";
                   owner = "${constants.user_two}";
                   mode = "0600";
                 };
-                "password/seraphyne" = {
+                "passwords/seraphyne" = {
+                  sopsFile = ../../secrets/shared/secrets.yaml;
                   neededForUsers = true;
                 };
               };
@@ -190,7 +191,8 @@ in
               };
 
               secrets = {
-                "password/seraphyne" = {
+                "passwords/seraphyne" = {
+                  sopsFile = ../../secrets/shared/secrets.yaml;
                   neededForUsers = true;
                 };
               };
@@ -215,7 +217,7 @@ in
               };
 
               secrets = {
-                "ssh/keys/signing/ghcny-pub" = {
+                "keys/ssh/signing/ghcny-pub" = {
                   sopsFile = ../../secrets/mbp/secrets.yaml;
                 };
               };
