@@ -45,7 +45,7 @@
             "uinput"
           ];
 
-          hashedPasswordFile = config.sops.secrets."password/seraphyne".path;
+          hashedPasswordFile = config.sops.secrets."passwords/seraphyne".path;
           openssh.authorizedKeys.keys = [
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAr35LjSF5Av8xcsrswXznvBwt4CNDhtD97IqZp0H4/n"
           ];
