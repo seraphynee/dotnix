@@ -34,9 +34,26 @@
       tmuxConfig = builtins.replaceStrings [ "@clipboard_bindings@" ] [ clipboardBindings ] (
         builtins.readFile ../../dots/config/tmux/tmux.conf
       );
+
+      seshConnectPickerScript = builtins.replaceStrings [ "#!/usr/bin/env bash\n\n" ] [ "" ] (
+        builtins.readFile ../../dots/config/tmux/sesh-connect-picker.sh
+      );
+
+      seshConnectPicker = pkgs.writeShellApplication {
+        name = "sesh-connect-picker";
+        runtimeInputs = with pkgs; [
+          gnused
+          gum
+          sesh
+        ];
+        text = seshConnectPickerScript;
+      };
     in
     {
-      home.packages = [ pkgs.tmux ];
+      home.packages = [
+        pkgs.tmux
+        seshConnectPicker
+      ];
 
       programs = {
         fish.interactiveShellInit = lib.mkAfter ''

@@ -31,6 +31,8 @@
             ffmpeg # Multimedia framework
             mkpasswd # Make password hash
             ouch # Command-line utility for easily compressing and decompressing files and directories
+            sesh
+            gum
 
             # Screenshot utility
             grim
