@@ -38,6 +38,8 @@
             swappy
             slurp
 
+            wf-recorder # for screen recording
+
             # Disk Usage Analyzers
             dua # Disk usage analyzer with TUI
             gdu # Fast disk usage analyzer
