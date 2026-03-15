@@ -4,11 +4,13 @@
       { pkgs, ... }:
       {
         home.packages = with pkgs; [
-          # Nix
+          # Generic Nix authoring and maintenance tools.
           deadnix # Detect unused Nix code
+          nil # Nix language server
+          nixd # Nix language server
+          nixfmt # Nix formatter (RFC style)
           nix-init # Generate a Nix package file from source projects
           nix-inspect # Inspect derivations and Nix metadata
-          nix-output-monitor # Show cleaner Nix build progress output
           nixpkgs-review # Build/test packages affected by nixpkgs changes
           nix-tree # View the dependency tree of Nix packages
           nix-update # Automatically update Nix package versions/sources

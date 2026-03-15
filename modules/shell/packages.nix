@@ -20,7 +20,7 @@
         { pkgs, ... }:
         {
           home.packages = with pkgs; [
-            # System Utilities
+            # Base tooling
             bat # Cat clone with syntax highlighting
             uutils-coreutils-noprefix # Rust implementation of GNU coreutils
             curl # Data transfer tool for URLs
@@ -31,7 +31,6 @@
             ffmpeg # Multimedia framework
             mkpasswd # Make password hash
             ouch # Command-line utility for easily compressing and decompressing files and directories
-            onefetch # Git repository summary on your terminal.
 
             # Screenshot utility
             grim
@@ -61,20 +60,6 @@
             yubico-piv-tool # optional but handy (PIV debugging)
             pcsclite
             ssh-to-age
-
-            # Version Control
-            git # Distributed version control system
-            git-lfs # Large file support
-            gh # GitHub CLI
-            delta # Syntax-highlighting pager
-            tig # Text-mode interface for Git
-            lazygit # Terminal UI for Git
-            gitui # Another terminal UI for Git
-            jujutsu # Jujutsu Version Control
-            jjui # Jujutsu TUI
-            lazyjj # Jujutsu TUI
-            koji # conventional commit generator
-            gitleaks
 
             # Development Tools
             hyperfine # Command-line benchmarking tool
@@ -128,13 +113,6 @@
             basedpyright # Python lsp
             pipx
             python315
-
-            # Nix
-            deadnix # Dead code detection for Nix
-            statix # Nix linter & suggestions
-            nixd # Nix language server
-            nil # Nix language server
-            nixfmt # Nix formatter (RFC style)
 
             # Editors
             # neovim
