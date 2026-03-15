@@ -32,6 +32,7 @@
       <shell/starship>
       <shell/tmux>
       <shell/yazi>
+      <shell/zellij>
     ];
 
     nixos =
