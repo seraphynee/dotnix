@@ -2,75 +2,22 @@
   __findFile,
   inputs,
   constants,
-  lib,
   ...
 }:
 let
-  inherit (lib) mkMerge optionalAttrs;
-
   # `sops-nix` activation runs as root; use absolute path, not `~`.
   # This file can contain AGE secret keys and/or AGE-PLUGIN-YUBIKEY identities.
   sharedSopsFile = ../../secrets/shared/secrets.yaml;
-
-  hostSopsFiles = {
-    esquire = ../../secrets/esquire/secrets.yaml;
-    acerus = ../../secrets/acerus/secrets.yaml;
-    mbp = ../../secrets/mbp/secrets.yaml;
-  };
-
-  sharedSopsPackages =
-    pkgs: with pkgs; [
-      sops
-      age
-      age-plugin-yubikey
-      yubikey-manager
-      yubico-piv-tool
-      pcsclite
-    ];
-
-  mkSecretRef =
-    {
-      sopsFile ? null,
-      key ? null,
-      neededForUsers ? false,
-    }:
-    (optionalAttrs (sopsFile != null) { inherit sopsFile; })
-    // (optionalAttrs (key != null) { inherit key; })
-    // (optionalAttrs neededForUsers { inherit neededForUsers; });
-
-  mkManagedFileSecret =
-    {
-      userHome,
-      owner,
-      fileName,
-      sopsFile ? null,
-      key ? null,
-    }:
-    (mkSecretRef { inherit sopsFile key; })
-    // {
-      name = fileName;
-      path = "${userHome}/.ssh_keys/${fileName}";
-      inherit owner;
-      mode = "0600";
-    };
-
-  mkPasswordSecret =
-    _:
-    mkSecretRef {
-      sopsFile = sharedSopsFile;
-      neededForUsers = true;
-    };
-
-  mkHomeManagerSops =
-    {
-      extraSecrets ? { },
-      sshIncludeSecret ? null,
-    }:
-    { config, ... }:
-    mkMerge [
+in
+{
+  den.aspects.secrets._.sops = {
+    homeManager =
+      { config, ... }:
       {
+        imports = [ inputs.sops-nix.homeManagerModules.sops ];
+
         sops = {
-          defaultSopsFile = sharedSopsFile;
+          defaultSopsFile = ../../secrets/shared/secrets.yaml;
           validateSopsFiles = false;
 
           age = {
@@ -79,7 +26,11 @@ let
           };
 
           secrets = {
-            "espanso/email" = { };
+            "ssh/config" = {
+              sopsFile = ../../secrets/esquire/secrets.yaml;
+            };
+            "espanso/email" = {
+            };
             "llm/context7_apikey" = {
               key = "keys/api/context7";
             };
@@ -92,163 +43,242 @@ let
             "llm/tavily_apikey" = {
               key = "keys/api/tavily";
             };
-          }
-          // extraSecrets;
+          };
         };
 
-        home.sessionVariables.SOPS_AGE_KEY_FILE = "$HOME/.local/state/ages/keys.txt";
-      }
-      (optionalAttrs (sshIncludeSecret != null) (
-        let
-          secretPath = config.sops.secrets.${sshIncludeSecret}.path;
-        in
-        {
-          programs.ssh.extraConfig = ''
+        programs.ssh = {
+          extraConfig = ''
             # This file will be generated with sops and if sops fails to generate
             # it this directive will be skipped.
-            Include ${secretPath}
+            Include ${config.sops.secrets."ssh/config".path}
           '';
-        }
-      ))
-    ];
-
-  mkNixosSops =
-    {
-      userName,
-      extraSecrets ? (_: { }),
-    }:
-    { pkgs, config, ... }:
-    let
-      userHome = config.users.users.${userName}.home or "/home/${userName}";
-    in
-    {
-      imports = [ inputs.sops-nix.nixosModules.sops ];
-      home-manager.sharedModules = [ inputs.sops-nix.homeManagerModules.sops ];
-
-      environment.systemPackages = sharedSopsPackages pkgs;
-      services.pcscd.enable = true;
-
-      sops = {
-        defaultSopsFile = sharedSopsFile;
-        validateSopsFiles = false;
-
-        age = {
-          sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-          keyFile = "/var/lib/sops-nix/keys.txt";
-          generateKey = false;
         };
 
-        gnupg.sshKeyPaths = [ ];
-        secrets = extraSecrets userHome;
-      };
-    };
-
-  mkDarwinSops =
-    {
-      userName,
-      extraSecrets ? (_: { }),
-      generateKey ? true,
-    }:
-    { pkgs, config, ... }:
-    let
-      userHome = config.users.users.${userName}.home or "/Users/${userName}";
-    in
-    {
-      imports = [ inputs.sops-nix.darwinModules.sops ];
-      home-manager.sharedModules = [ inputs.sops-nix.homeManagerModules.sops ];
-
-      environment.systemPackages = (sharedSopsPackages pkgs) ++ [ pkgs.ssh-to-age ];
-
-      sops = {
-        defaultSopsFile = sharedSopsFile;
-        validateSopsFiles = false;
-
-        age = {
-          keyFile = "${userHome}/.local/state/ages/keys.txt";
-          inherit generateKey;
+        home.sessionVariables = {
+          SOPS_AGE_KEY_FILE = "$HOME/.local/state/ages/keys.txt";
         };
-
-        gnupg.sshKeyPaths = [ ];
-        secrets = extraSecrets userHome;
       };
-    };
-in
-{
-  den.aspects.secrets._.sops = {
+
     provides = {
       esquire = {
         includes = [ <secrets/sops> ];
 
-        homeManager = mkHomeManagerSops {
-          sshIncludeSecret = "ssh/config";
-          extraSecrets = {
-            "ssh/config" = mkSecretRef {
-              sopsFile = hostSopsFiles.esquire;
-            };
-            "keys/ssh/signing/ghspy-pub" = mkSecretRef {
-              sopsFile = hostSopsFiles.esquire;
-            };
-            "keys/pat/ghspy-pat" = mkSecretRef {
-              sopsFile = hostSopsFiles.esquire;
-            };
-          };
-        };
+        homeManager =
+          { config, ... }:
+          {
+            imports = [ inputs.sops-nix.homeManagerModules.sops ];
 
-        nixos = mkNixosSops {
-          userName = constants.user_two;
-          extraSecrets = userHome: {
-            "keys/ssh/auth/ghspy-pub" = mkManagedFileSecret {
-              inherit userHome;
-              owner = constants.user_two;
-              fileName = "ghspy.pub";
-              sopsFile = hostSopsFiles.esquire;
+            sops = {
+              validateSopsFiles = false;
+
+              age = {
+                keyFile = "${config.home.homeDirectory}/.local/state/ages/keys.txt";
+                generateKey = false;
+              };
+
+              secrets = {
+                "ssh/config" = {
+                  sopsFile = ../../secrets/esquire/secrets.yaml;
+                };
+                "keys/ssh/signing/ghspy-pub" = {
+                  sopsFile = ../../secrets/esquire/secrets.yaml;
+                };
+                "keys/pat/ghspy-pat" = {
+                  sopsFile = ../../secrets/esquire/secrets.yaml;
+                };
+              };
             };
-            "keys/ssh/signing/ghspy-pub" = mkManagedFileSecret {
-              inherit userHome;
-              owner = constants.user_two;
-              fileName = "ghspy-signing.pub";
-              sopsFile = hostSopsFiles.esquire;
+
+            programs.ssh = {
+              extraConfig = ''
+                # This file will be generated with sops and if sops fails to generate
+                # it this directive will be skipped.
+                Include ${config.sops.secrets."ssh/config".path}
+              '';
             };
-            "passwords/${constants.user_two}" = mkPasswordSecret constants.user_two;
           };
-        };
+        nixos =
+          { pkgs, config, ... }:
+          let
+            userHome = config.users.users.${constants.user_two}.home or "/home/${constants.user_two}";
+          in
+          {
+            imports = [ inputs.sops-nix.nixosModules.sops ];
+
+            environment.systemPackages = with pkgs; [
+              sops
+              age
+              age-plugin-yubikey
+              yubikey-manager # optional but handy (ykman)
+              yubico-piv-tool # optional but handy (PIV debugging)
+              pcsclite
+            ];
+            services.pcscd.enable = true;
+
+            sops = {
+              # Shared secrets are read from `common` by default.
+              # Host-specific secrets should override `sopsFile` per secret.
+              defaultSopsFile = ../../secrets/esquire/secrets.yaml;
+              validateSopsFiles = false;
+
+              age = {
+                # automatically import host SSH keys as age keys
+                sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+                # this will use an age key that is expected to already be in the filesystem
+                keyFile = "/var/lib/sops-nix/keys.txt";
+                # generate a new key if the key specified above does not exist
+                generateKey = false;
+              };
+
+              gnupg = {
+                sshKeyPaths = [ ];
+              };
+
+              # secrets will be output to /run/secrets
+              # e.g. /run/secrets/<secret-name>
+              secrets = {
+                "keys/ssh/auth/ghspy-pub" = {
+                  name = "ghspy-auth.pub";
+                  path = "${userHome}/.ssh_keys/ghspy-auth.pub";
+                  owner = "${constants.user_two}";
+                  mode = "0600";
+                };
+                "keys/ssh/signing/ghspy-pub" = {
+                  name = "ghspy-signing.pub";
+                  path = "${userHome}/.ssh_keys/ghspy-signing.pub";
+                  owner = "${constants.user_two}";
+                  mode = "0600";
+                };
+                "passwords/seraphyne" = {
+                  sopsFile = ../../secrets/shared/secrets.yaml;
+                  neededForUsers = true;
+                };
+              };
+            };
+          };
       };
 
       acerus = {
         includes = [ <secrets/sops> ];
 
-        nixos = mkNixosSops {
-          userName = constants.user_two;
-          extraSecrets = _: {
-            "passwords/${constants.user_two}" = mkPasswordSecret constants.user_two;
+        nixos =
+          { pkgs, ... }:
+          {
+            imports = [ inputs.sops-nix.nixosModules.sops ];
+
+            environment.systemPackages = with pkgs; [
+              sops
+              age
+              age-plugin-yubikey
+              yubikey-manager
+              yubico-piv-tool
+              pcsclite
+            ];
+            services.pcscd.enable = true;
+
+            sops = {
+              defaultSopsFile = ../../secrets/acerus/secrets.yaml;
+              validateSopsFiles = false;
+
+              age = {
+                sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+                keyFile = "/var/lib/sops-nix/keys.txt";
+                generateKey = false;
+              };
+
+              gnupg = {
+                sshKeyPaths = [ ];
+              };
+
+              secrets = {
+                "passwords/seraphyne" = {
+                  sopsFile = ../../secrets/shared/secrets.yaml;
+                  neededForUsers = true;
+                };
+              };
+            };
           };
-        };
       };
 
       mbp = {
         includes = [ <secrets/sops> ];
 
-        homeManager = mkHomeManagerSops {
-          extraSecrets = {
-            "keys/ssh/signing/ghcny-pub" = mkSecretRef {
-              sopsFile = hostSopsFiles.mbp;
-              key = "ssh/keys/signing/ghcny-pub";
-            };
-          };
-        };
+        homeManager =
+          { config, ... }:
+          {
+            imports = [ inputs.sops-nix.homeManagerModules.sops ];
 
-        darwin = mkDarwinSops {
-          userName = constants.user_one;
-          extraSecrets = userHome: {
-            "keys/ssh/auth/ghspy-pub" = mkManagedFileSecret {
-              inherit userHome;
-              owner = constants.user_one;
-              fileName = "ghspy.pub";
-              sopsFile = sharedSopsFile;
+            sops = {
+              validateSopsFiles = false;
+
+              age = {
+                keyFile = "${config.home.homeDirectory}/.local/state/ages/keys.txt";
+                generateKey = false;
+              };
+
+              secrets = {
+                "keys/ssh/signing/ghcny-pub" = {
+                  sopsFile = ../../secrets/mbp/secrets.yaml;
+                };
+              };
             };
-            "passwords/${constants.user_one}" = mkPasswordSecret constants.user_one;
           };
-        };
+
+        darwin =
+          { pkgs, config, ... }:
+          let
+            userHome = config.users.users.${constants.user_one}.home or "/Users/${constants.user_one}";
+          in
+          {
+            imports = [ inputs.sops-nix.darwinModules.sops ];
+
+            environment.systemPackages = with pkgs; [
+              sops
+              age
+              age-plugin-yubikey
+              yubikey-manager # optional but handy (ykman)
+              yubico-piv-tool # optional but handy (PIV debugging)
+              pcsclite
+              ssh-to-age
+            ];
+
+            sops = {
+              # Shared secrets are read from `common` by default.
+              # Host-specific secrets should override `sopsFile` per secret.
+              defaultSopsFile = ../../secrets/mbp/secrets.yaml;
+              validateSopsFiles = false;
+
+              age = {
+                # automatically import host SSH keys as age keys
+                # sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+                # this will use an age key that is expected to already be in the filesystem
+                keyFile = "${userHome}/.local/state/ages/keys.txt";
+                # generate a new key if the key specified above does not exist
+                generateKey = true;
+              };
+
+              gnupg = {
+                sshKeyPaths = [ ];
+              };
+
+              # secrets will be output to /run/secrets by default
+              # e.g. /run/secrets/<secret-name>
+              secrets = {
+                "keys/ssh/auth/ghspy-pub" = {
+                  name = "ghspy-pub";
+                  sopsFile = sharedSopsFile;
+                  path = "${userHome}/.ssh_keys/ghspy.pub";
+                  owner = "${constants.user_one}";
+                  mode = "0600";
+                };
+
+                "passwords/chianyung" = {
+                  sopsFile = sharedSopsFile;
+                  neededForUsers = true;
+                };
+              };
+            };
+          };
       };
     };
   };
