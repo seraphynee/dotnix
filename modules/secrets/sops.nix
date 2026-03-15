@@ -8,6 +8,12 @@ let
   # `sops-nix` activation runs as root; use absolute path, not `~`.
   # This file can contain AGE secret keys and/or AGE-PLUGIN-YUBIKEY identities.
   sharedSopsFile = ../../secrets/shared/secrets.yaml;
+  hostSopsFile = {
+    esquire = ../../secrets/esquire/secrets.yaml;
+    mbp = ../../secrets/mbp/secrets.yaml;
+    acerus = ../../secrets/acerus/secrets.yaml;
+
+  };
 in
 {
   den.aspects.secrets._.sops = {
@@ -17,7 +23,7 @@ in
         imports = [ inputs.sops-nix.homeManagerModules.sops ];
 
         sops = {
-          defaultSopsFile = ../../secrets/shared/secrets.yaml;
+          defaultSopsFile = sharedSopsFile;
           validateSopsFiles = false;
 
           age = {
@@ -27,7 +33,7 @@ in
 
           secrets = {
             "ssh/config" = {
-              sopsFile = ../../secrets/esquire/secrets.yaml;
+              sopsFile = hostSopsFile.esquire;
             };
             "espanso/email" = {
             };
@@ -78,13 +84,13 @@ in
 
               secrets = {
                 "ssh/config" = {
-                  sopsFile = ../../secrets/esquire/secrets.yaml;
+                  sopsFile = hostSopsFile.esquire;
                 };
                 "keys/ssh/signing/ghspy-pub" = {
-                  sopsFile = ../../secrets/esquire/secrets.yaml;
+                  sopsFile = hostSopsFile.esquire;
                 };
                 "keys/pat/ghspy-pat" = {
-                  sopsFile = ../../secrets/esquire/secrets.yaml;
+                  sopsFile = hostSopsFile.esquire;
                 };
               };
             };
@@ -118,7 +124,7 @@ in
             sops = {
               # Shared secrets are read from `common` by default.
               # Host-specific secrets should override `sopsFile` per secret.
-              defaultSopsFile = ../../secrets/esquire/secrets.yaml;
+              defaultSopsFile = hostSopsFile.esquire;
               validateSopsFiles = false;
 
               age = {
@@ -143,14 +149,8 @@ in
                   owner = "${constants.user_two}";
                   mode = "0600";
                 };
-                "keys/ssh/signing/ghspy-pub" = {
-                  name = "ghspy-signing.pub";
-                  path = "${userHome}/.ssh_keys/ghspy-signing.pub";
-                  owner = "${constants.user_two}";
-                  mode = "0600";
-                };
                 "passwords/seraphyne" = {
-                  sopsFile = ../../secrets/shared/secrets.yaml;
+                  sopsFile = sharedSopsFile;
                   neededForUsers = true;
                 };
               };
@@ -177,7 +177,7 @@ in
             services.pcscd.enable = true;
 
             sops = {
-              defaultSopsFile = ../../secrets/acerus/secrets.yaml;
+              defaultSopsFile = hostSopsFile.acerus;
               validateSopsFiles = false;
 
               age = {
@@ -192,7 +192,7 @@ in
 
               secrets = {
                 "passwords/seraphyne" = {
-                  sopsFile = ../../secrets/shared/secrets.yaml;
+                  sopsFile = sharedSopsFile;
                   neededForUsers = true;
                 };
               };
@@ -218,7 +218,7 @@ in
 
               secrets = {
                 "keys/ssh/signing/ghcny-pub" = {
-                  sopsFile = ../../secrets/mbp/secrets.yaml;
+                  sopsFile = hostSopsFile.mbp;
                 };
               };
             };
