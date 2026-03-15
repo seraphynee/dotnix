@@ -131,90 +131,97 @@ let
 in
 {
   den.aspects.shell._.jujutsu = {
-    homeManager = {
-      programs = {
-        jjui = {
-          enable = true;
-          settings = {
-            preview = {
-              position = "bottom";
-              show_at_start = true;
-            };
+    homeManager =
+      { pkgs, ... }:
+      {
+        home.packages = with pkgs; [
+          koji
+          lazyjj
+        ];
 
-            ui = {
-              # theme = "onedark-dark";
-              tracer = {
-                enabled = true;
+        programs = {
+          jjui = {
+            enable = true;
+            settings = {
+              preview = {
+                position = "bottom";
+                show_at_start = true;
               };
-            };
 
-            leader = {
-              bn = {
-                help = "Set new bookmark";
-                send = [
-                  "$"
-                  ''jj bookmark set -r "$change_id" $(gum input --placeholder "Name of the new bookmark")''
-                  "enter"
-                ];
+              ui = {
+                # theme = "onedark-dark";
+                tracer = {
+                  enabled = true;
+                };
+              };
+
+              leader = {
+                bn = {
+                  help = "Set new bookmark";
+                  send = [
+                    "$"
+                    ''jj bookmark set -r "$change_id" $(gum input --placeholder "Name of the new bookmark")''
+                    "enter"
+                  ];
+                };
               };
             };
           };
+
+          fish.interactiveShellInit = lib.mkAfter ''
+            # Jujutsu
+            abbr -a j jj # I use `jj` to exit insert mode
+            abbr -a jh 'jj -h'
+
+            abbr -a jst 'jj status'
+            abbr -a jsh --set-cursor 'jj show %'
+
+            abbr -a jbl 'jj bookmark list -a'
+            abbr -a jbm --set-cursor 'jj bookmark move % --to @-'
+            abbr -a jbmm 'jj bookmark move main --to @-'
+            abbr -a jbsc 'jj bookmark set -r @'
+
+            abbr -a jdf 'jj diff'
+            abbr -a je --set-cursor 'jj edit %'
+
+            abbr -a jgf 'jj git fetch'
+            abbr -a jgpa 'jj git push'
+            abbr -a jgps --set-cursor 'jj git push -b %'
+            abbr -a jgpsm --set-cursor 'jj git push -b main'
+
+            abbr -a jl 'jj log'
+            abbr -a jla "jj log 'all()'"
+            abbr -a jlt --set-cursor "jj log -T %"
+
+            abbr -a jrh --set-cursor 'jj rebase -h'
+            abbr -a jrs --set-cursor 'jj rebase -s % -d @-'
+            abbr -a jrr --set-cursor 'jj rebase -r % -o '
+
+            abbr -a jsp 'jj split'
+            abbr -a jspi 'jj split -i'
+
+            abbr -a jsq 'jj squash'
+            abbr -a jsqi 'jj squash -i'
+            abbr -a jsqc --set-cursor 'jj squash -t %'
+
+            abbr -a jab --set-cursor 'jj abandon %'
+
+            abbr -a jd --set-cursor 'jj desc -m "%"'
+            abbr -a jdc 'jj desc -m "$(koji --stdout)"'
+
+            abbr -a jc 'jj commit'
+            abbr -a jcc 'jj commit -m "$(koji --stdout)"'
+
+            abbr -a jn --set-cursor 'jj new %'
+            abbr -a jnc 'jj new -m "$(koji --stdout)"'
+
+            abbr -a judo 'jj undo'
+            abbr -a jopl 'jj op log'
+            abbr -a jevl 'jj evolog'
+          '';
+
         };
-
-        fish.interactiveShellInit = lib.mkAfter ''
-          # Jujutsu
-          abbr -a j jj # I use `jj` to exit insert mode
-          abbr -a jh 'jj -h'
-
-          abbr -a jst 'jj status'
-          abbr -a jsh --set-cursor 'jj show %'
-
-          abbr -a jbl 'jj bookmark list -a'
-          abbr -a jbm --set-cursor 'jj bookmark move % --to @-'
-          abbr -a jbmm 'jj bookmark move main --to @-'
-          abbr -a jbsc 'jj bookmark set -r @'
-
-          abbr -a jdf 'jj diff'
-          abbr -a je --set-cursor 'jj edit %'
-
-          abbr -a jgf 'jj git fetch'
-          abbr -a jgpa 'jj git push'
-          abbr -a jgps --set-cursor 'jj git push -b %'
-          abbr -a jgpsm --set-cursor 'jj git push -b main'
-
-          abbr -a jl 'jj log'
-          abbr -a jla "jj log 'all()'"
-          abbr -a jlt --set-cursor "jj log -T %"
-
-          abbr -a jrh --set-cursor 'jj rebase -h'
-          abbr -a jrs --set-cursor 'jj rebase -s % -d @-'
-          abbr -a jrr --set-cursor 'jj rebase -r % -o '
-
-          abbr -a jsp 'jj split'
-          abbr -a jspi 'jj split -i'
-
-          abbr -a jsq 'jj squash'
-          abbr -a jsqi 'jj squash -i'
-          abbr -a jsqc --set-cursor 'jj squash -t %'
-
-          abbr -a jab --set-cursor 'jj abandon %'
-
-          abbr -a jd --set-cursor 'jj desc -m "%"'
-          abbr -a jdc 'jj desc -m "$(koji --stdout)"'
-
-          abbr -a jc 'jj commit'
-          abbr -a jcc 'jj commit -m "$(koji --stdout)"'
-
-          abbr -a jn --set-cursor 'jj new %'
-          abbr -a jnc 'jj new -m "$(koji --stdout)"'
-
-          abbr -a judo 'jj undo'
-          abbr -a jopl 'jj op log'
-          abbr -a jevl 'jj evolog'
-        '';
-
       };
-    };
 
     provides = {
       chianyungcode = {

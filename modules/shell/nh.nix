@@ -7,10 +7,10 @@
     }:
     {
       home.packages = with pkgs; [
+        # Workflow-specific companions for nh.
         nh
         nix-output-monitor
         nix-fast-build
-        nix-tree
         nvd
         nix-diff
       ];

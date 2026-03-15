@@ -234,7 +234,12 @@ in
             home.packages = with pkgs; [
               delta
               difftastic
+              gh
+              gitleaks
+              gitui
               git-lfs
+              onefetch
+              tig
             ];
 
             programs.fish.interactiveShellInit = lib.mkAfter ''
