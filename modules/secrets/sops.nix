@@ -184,6 +184,12 @@ in
                 owner = "${constants.user_two}";
                 mode = "0600";
               };
+              "keys/ssh/auth/ghcny-pub" = {
+                name = "ghcny-auth.pub";
+                path = "${userHome}/.ssh_keys/ghcny-auth.pub";
+                owner = "${constants.user_two}";
+                mode = "0600";
+              };
               "passwords/seraphyne" = {
                 sopsFile = sharedSopsFile;
                 neededForUsers = true;
