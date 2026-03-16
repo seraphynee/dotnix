@@ -170,32 +170,27 @@ in
             };
           };
         };
-        nixos =
-          args@{ config, ... }:
-          let
-            userHome = config.users.users.${constants.user_two}.home or "/home/${constants.user_two}";
-          in
-          mkNixosSops {
-            defaultSopsFile = hostSopsFile.esquire;
-            secrets = {
-              "keys/ssh/auth/ghspy-pub" = {
-                name = "ghspy-auth.pub";
-                path = "${userHome}/.ssh_keys/ghspy-auth.pub";
-                owner = "${constants.user_two}";
-                mode = "0600";
-              };
-              "keys/ssh/auth/ghcny-pub" = {
-                name = "ghcny-auth.pub";
-                path = "${userHome}/.ssh_keys/ghcny-auth.pub";
-                owner = "${constants.user_two}";
-                mode = "0600";
-              };
-              "passwords/seraphyne" = {
-                sopsFile = sharedSopsFile;
-                neededForUsers = true;
-              };
+        nixos = mkNixosSops {
+          defaultSopsFile = hostSopsFile.esquire;
+          secrets = {
+            "keys/ssh/auth/ghspy-pub" = {
+              name = "ghspy-auth.pub";
+              path = "/home/${constants.user_two}/.ssh_keys/ghspy-auth.pub";
+              owner = "${constants.user_two}";
+              mode = "0600";
             };
-          } args;
+            "keys/ssh/auth/ghcny-pub" = {
+              name = "ghcny-auth.pub";
+              path = "/home/${constants.user_two}/.ssh_keys/ghcny-auth.pub";
+              owner = "${constants.user_two}";
+              mode = "0600";
+            };
+            "passwords/seraphyne" = {
+              sopsFile = sharedSopsFile;
+              neededForUsers = true;
+            };
+          };
+        };
       };
 
       acerus = {
