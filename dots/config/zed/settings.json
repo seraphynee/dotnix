@@ -27,9 +27,9 @@
     "default_height": 480,
     "font_size": 18,
   },
-  "ui_font_family": "Geist Mono",
+  "ui_font_family": "TX-02",
   "ui_font_size": 18,
-  "buffer_font_family": "Geist Mono",
+  "buffer_font_family": "TX-02",
   "buffer_font_size": 16,
   "scrollbar": {
     "show": "never",
