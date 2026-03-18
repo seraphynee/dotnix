@@ -158,7 +158,7 @@ in
           secrets = {
             # sopsFile defined in <secrets/sops> aspect in line 29
             "ssh/config" = { };
-            "keys/ssh/signing/ghspy-pub" = {
+            "keys/ssh/github/signing/ghspy-pub" = {
               sopsFile = hostSopsFile.esquire;
             };
             "keys/pat/ghspy-pat" = {
@@ -169,13 +169,13 @@ in
         nixos = mkNixosSops {
           defaultSopsFile = hostSopsFile.esquire;
           secrets = {
-            "keys/ssh/auth/ghspy-pub" = {
+            "keys/ssh/github/auth/ghspy-pub" = {
               name = "ghspy-auth.pub";
               path = "/home/${constants.user_two}/.ssh_keys/ghspy-auth.pub";
               owner = "${constants.user_two}";
               mode = "0600";
             };
-            "keys/ssh/auth/ghcny-pub" = {
+            "keys/ssh/github/auth/ghcny-pub" = {
               name = "ghcny-auth.pub";
               path = "/home/${constants.user_two}/.ssh_keys/ghcny-auth.pub";
               owner = "${constants.user_two}";
@@ -223,7 +223,7 @@ in
 
         homeManager = mkHomeManagerSops {
           secrets = {
-            "keys/ssh/signing/ghcny-pub" = {
+            "keys/ssh/github/signing/ghcny-pub" = {
               sopsFile = hostSopsFile.mbp;
             };
           };
@@ -242,7 +242,7 @@ in
               generateKey = true;
             };
             secrets = {
-              "keys/ssh/auth/ghspy-pub" = {
+              "keys/ssh/github/auth/ghspy-pub" = {
                 name = "ghspy-pub";
                 sopsFile = sharedSopsFile;
                 path = "${userHome}/.ssh_keys/ghspy.pub";

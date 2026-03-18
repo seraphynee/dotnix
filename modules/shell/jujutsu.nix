@@ -230,7 +230,7 @@ in
         homeManager = mkJujutsuProfile {
           gitUser = "chianyungcode";
           gitEmail = "cnytechcode@gmail.com";
-          signingKeySecret = "keys/ssh/signing/ghcny-pub";
+          signingKeySecret = "keys/ssh/github/signing/ghcny-pub";
         };
       };
 
@@ -240,7 +240,7 @@ in
         homeManager = mkJujutsuProfile {
           gitUser = "seraphynee";
           gitEmail = "seraphyne31@gmail.com";
-          signingKeySecret = "keys/ssh/signing/ghspy-pub";
+          signingKeySecret = "keys/ssh/github/signing/ghspy-pub";
         };
       };
     };
