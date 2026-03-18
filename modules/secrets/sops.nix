@@ -156,9 +156,9 @@ in
         homeManager = mkHomeManagerSops {
           withSshInclude = true;
           secrets = {
-            "ssh/config" = {
-              sopsFile = sharedSopsFile;
-            };
+            # sopsFile defined in <secrets/sops> aspect in line 29
+            "ssh/config" = { };
+            "keys/ssh/workstation/users/${constants.user_two}" = { };
             "keys/ssh/signing/ghspy-pub" = {
               sopsFile = hostSopsFile.esquire;
             };
@@ -182,7 +182,7 @@ in
               owner = "${constants.user_two}";
               mode = "0600";
             };
-            "passwords/seraphyne" = {
+            "passwords/${constants.user_two}" = {
               sopsFile = sharedSopsFile;
               neededForUsers = true;
             };
@@ -196,16 +196,21 @@ in
         homeManager = mkHomeManagerSops {
           withSshInclude = true;
           secrets = {
-            "ssh/config" = {
-              sopsFile = sharedSopsFile;
-            };
+            # sopsFile defined in <secrets/sops> aspect in line 29
+            "ssh/config" = { };
+            "keys/ssh/workstation/users/${constants.user_two}" = { };
+            "keys/ssh/workstation/users/${constants.user_three}" = { };
           };
         };
 
         nixos = mkNixosSops {
           defaultSopsFile = hostSopsFile.acerus;
           secrets = {
-            "passwords/seraphyne" = {
+            "passwords/${constants.user_two}" = {
+              sopsFile = sharedSopsFile;
+              neededForUsers = true;
+            };
+            "passwords/${constants.user_three}" = {
               sopsFile = sharedSopsFile;
               neededForUsers = true;
             };
