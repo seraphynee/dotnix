@@ -38,9 +38,9 @@
             "uinput"
           ];
 
-          hashedPasswordFile = config.sops.secrets."passwords/chianyung".path;
-          openssh.authorizedKeys.keys = [
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAr35LjSF5Av8xcsrswXznvBwt4CNDhtD97IqZp0H4/n"
+          hashedPasswordFile = config.sops.secrets."passwords/${constants.user_one}".path;
+          openssh.authorizedKeys.keyFiles = [
+            config.sops.secrets."keys/ssh/workstation/users/${constants.user_one}".path
           ];
         };
       };

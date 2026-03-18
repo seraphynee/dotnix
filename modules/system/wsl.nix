@@ -1,3 +1,4 @@
+{ __findFile, constants, ... }:
 {
   den.aspects.system._.wsl =
     { inputs, ... }:
@@ -7,7 +8,7 @@
 
         wsl = {
           enable = true;
-          defaultUser = "chianyung";
+          defaultUser = "${constants.user_one}";
           docker-desktop.enable = true;
         };
       };

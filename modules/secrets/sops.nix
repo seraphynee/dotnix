@@ -185,7 +185,9 @@ in
               sopsFile = sharedSopsFile;
               neededForUsers = true;
             };
-            "keys/ssh/workstation/users/${constants.user_two}" = { };
+            "keys/ssh/workstation/users/${constants.user_two}" = {
+              sopsFile = sharedSopsFile;
+            };
           };
         };
       };
@@ -212,8 +214,12 @@ in
               sopsFile = sharedSopsFile;
               neededForUsers = true;
             };
-            "keys/ssh/workstation/users/${constants.user_two}" = { };
-            "keys/ssh/workstation/users/${constants.user_three}" = { };
+            "keys/ssh/workstation/users/${constants.user_two}" = {
+              sopsFile = sharedSopsFile;
+            };
+            "keys/ssh/workstation/users/${constants.user_three}" = {
+              sopsFile = sharedSopsFile;
+            };
           };
         };
       };
@@ -225,6 +231,15 @@ in
           secrets = {
             "keys/ssh/github/signing/ghcny-pub" = {
               sopsFile = hostSopsFile.mbp;
+            };
+          };
+        };
+
+        nixos = mkNixosSops {
+          defaultSopsFile = hostSopsFile.mbp;
+          secrets = {
+            "keys/ssh/workstation/users/${constants.user_one}" = {
+              sopsFile = sharedSopsFile;
             };
           };
         };
@@ -250,7 +265,7 @@ in
                 mode = "0600";
               };
 
-              "passwords/chianyung" = {
+              "passwords/${constants.user_one}" = {
                 sopsFile = sharedSopsFile;
                 neededForUsers = true;
               };
