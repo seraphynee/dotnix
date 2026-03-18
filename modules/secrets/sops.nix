@@ -157,7 +157,7 @@ in
           withSshInclude = true;
           secrets = {
             "ssh/config" = {
-              sopsFile = hostSopsFile.esquire;
+              sopsFile = sharedSopsFile;
             };
             "keys/ssh/signing/ghspy-pub" = {
               sopsFile = hostSopsFile.esquire;
@@ -192,6 +192,15 @@ in
 
       acerus = {
         includes = [ <secrets/sops> ];
+
+        homeManager = mkHomeManagerSops {
+          withSshInclude = true;
+          secrets = {
+            "ssh/config" = {
+              sopsFile = sharedSopsFile;
+            };
+          };
+        };
 
         nixos = mkNixosSops {
           defaultSopsFile = hostSopsFile.acerus;
