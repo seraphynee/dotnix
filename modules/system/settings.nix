@@ -28,7 +28,7 @@
           autohide-delay = 0.1;
         };
 
-        NSGlobalDomain._HIHideMenuBar = true;
+        NSGlobalDomain._HIHideMenuBar = false;
       };
     };
   };
