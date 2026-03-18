@@ -47,7 +47,9 @@
           ];
 
           hashedPasswordFile = config.sops.secrets."passwords/seraphyne".path;
-          openssh.authorizedKeys.keyFiles = config.sops.secrets."keys/ssh/workstation/users/seraphyne".path;
+          openssh.authorizedKeys.keyFiles = [
+            config.sops.secrets."keys/ssh/workstation/users/seraphyne".path
+          ];
         };
       };
   };

@@ -158,7 +158,6 @@ in
           secrets = {
             # sopsFile defined in <secrets/sops> aspect in line 29
             "ssh/config" = { };
-            "keys/ssh/workstation/users/${constants.user_two}" = { };
             "keys/ssh/signing/ghspy-pub" = {
               sopsFile = hostSopsFile.esquire;
             };
@@ -186,6 +185,7 @@ in
               sopsFile = sharedSopsFile;
               neededForUsers = true;
             };
+            "keys/ssh/workstation/users/${constants.user_two}" = { };
           };
         };
       };
@@ -198,8 +198,6 @@ in
           secrets = {
             # sopsFile defined in <secrets/sops> aspect in line 29
             "ssh/config" = { };
-            "keys/ssh/workstation/users/${constants.user_two}" = { };
-            "keys/ssh/workstation/users/${constants.user_three}" = { };
           };
         };
 
@@ -214,6 +212,8 @@ in
               sopsFile = sharedSopsFile;
               neededForUsers = true;
             };
+            "keys/ssh/workstation/users/${constants.user_two}" = { };
+            "keys/ssh/workstation/users/${constants.user_three}" = { };
           };
         };
       };

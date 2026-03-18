@@ -38,8 +38,10 @@
             "uinput"
           ];
 
-          hashedPasswordFile = config.sops.secrets."passwords/micha".path;
-          openssh.authorizedKeys.keyFiles = config.sops.secrets."keys/ssh/workstation/users/micha".path;
+          hashedPasswordFile = config.sops.secrets."passwords/${constants.user_three}".path;
+          openssh.authorizedKeys.keyFiles = [
+            config.sops.secrets."keys/ssh/workstation/users/${constants.user_three}".path
+          ];
         };
       };
   };
