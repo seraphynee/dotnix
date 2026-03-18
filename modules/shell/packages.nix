@@ -9,7 +9,7 @@
       homeManager =
         { pkgs, ... }:
         {
-          home.packages = [ inputs.momoi-say.packages.${pkgs.system}.momoiSay ];
+          home.packages = [ inputs.momoi-say.packages.${pkgs.stdenv.hostPlatform.system}.momoiSay ];
         };
     };
 

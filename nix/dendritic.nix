@@ -1,7 +1,9 @@
 { inputs, ... }:
 {
   imports = [
-    (inputs.flake-file.flakeModules.dendritic or { })
+    # Avoid flake-file's legacy `flake.modules` output, which triggers
+    # `unknown flake output 'modules'` on recent Nix versions.
+    (inputs.flake-file.flakeModules.default or { })
     (inputs.den.flakeModules.dendritic or { })
   ];
 

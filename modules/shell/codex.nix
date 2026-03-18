@@ -57,7 +57,7 @@
       nixos =
         { pkgs, ... }:
         let
-          inherit (inputs.nixpkgs-master.legacyPackages.${pkgs.system}) codex;
+          inherit (inputs.nixpkgs-master.legacyPackages.${pkgs.stdenv.hostPlatform.system}) codex;
         in
         {
           environment.systemPackages = [ codex ];
