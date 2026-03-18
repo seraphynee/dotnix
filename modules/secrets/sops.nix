@@ -129,9 +129,6 @@ in
       defaultSopsFile = sharedSopsFile;
       withSshInclude = true;
       secrets = {
-        "ssh/config" = {
-          sopsFile = hostSopsFile.esquire;
-        };
         "espanso/email" = {
         };
         "llm/context7_apikey" = {
