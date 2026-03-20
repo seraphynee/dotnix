@@ -18,6 +18,7 @@
       <shell/env>
 
       <shell/_1password>
+      <shell/ai>
       <shell/bash>
       <shell/fish>
       <shell/git>

@@ -20,6 +20,7 @@
       <shell/env>
 
       <shell/_1password>
+      <shell/ai>
       <shell/bash>
       <shell/codex>
       <shell/fish>
