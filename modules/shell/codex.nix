@@ -44,7 +44,7 @@
                 config.sops.placeholder."llm/ref_apikey"
                 config.sops.placeholder."llm/tavily_apikey"
               ]
-              (builtins.readFile ../../dots/dot_codex/config.toml.tmpl);
+              (builtins.readFile ../../dots/codex/config.toml.tmpl);
         in
         {
           sops.templates."codex-config.toml" = {
