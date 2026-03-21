@@ -40,8 +40,8 @@
           ];
 
           hashedPasswordFile = config.sops.secrets."passwords/${constants.user_three}".path;
-          openssh.authorizedKeys.keyFiles = [
-            config.sops.secrets."keys/ssh/workstation/users/${constants.user_three}".path
+          openssh.authorizedKeys.keys = [
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDRu2lSAzPbNC4T1ztmHLNPw81tqyoVTCBg1+uv3PGG5"
           ];
         };
       };
