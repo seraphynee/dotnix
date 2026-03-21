@@ -19,8 +19,6 @@ let
           "sd_mod"
           "sr_mod"
         ];
-
-        disko.devices.disk.btrfs.device = lib.mkForce constants.mainDisk;
       };
 
     includes = [
