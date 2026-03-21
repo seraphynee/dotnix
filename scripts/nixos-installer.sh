@@ -13,7 +13,7 @@ fi
 
 # Default values (can be overridden via environment variables)
 IP_TARGET_HOST="${IP_TARGET_HOST:-192.168.100.13}"
-KEY_FILE="${KEY_FILE:-$HOME/.local/ages/keys.txt}"
+KEY_FILE="${KEY_FILE:-$HOME/.local/state/ages/keys.txt}"
 FLAKE_HOST="${FLAKE_HOST:-esquire-installer}"
 TARGET_USER="${TARGET_USER:-root}"
 BUILD_ON="${BUILD_ON:-remote}"
@@ -35,7 +35,7 @@ IP_TARGET_HOST="$(gum input \
 
 KEY_FILE="$(gum input \
 	--prompt "Path keyfile: " \
-	--placeholder "$HOME/.local/ages/keys.txt" \
+	--placeholder "$HOME/.local/state/ages/keys.txt" \
 	--value "$KEY_FILE")"
 
 FLAKE_HOST="$(gum input \
