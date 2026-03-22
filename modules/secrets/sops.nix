@@ -129,8 +129,7 @@ in
       defaultSopsFile = sharedSopsFile;
       withSshInclude = true;
       secrets = {
-        "espanso/email" = {
-        };
+        "espanso/email.yaml" = { };
         "llm/context7_apikey" = {
           key = "keys/api/context7";
         };
