@@ -9,12 +9,18 @@
     nixos =
       { pkgs, ... }:
       {
-        environment.systemPackages = with pkgs; [ vscode ];
+        environment.systemPackages = with pkgs; [
+          vscode
+          code-cursor
+        ];
       };
     darwin =
       { pkgs, ... }:
       {
-        environment.systemPackages = with pkgs; [ vscode ];
+        environment.systemPackages = with pkgs; [
+          vscode
+          code-cursor
+        ];
       };
   };
 }
