@@ -23,6 +23,7 @@
       <shell/ai>
       <shell/bash>
       <shell/codex>
+      <shell/fastfetch>
       <shell/fish>
       <shell/git>
       <shell/jujutsu/seraphyne>
