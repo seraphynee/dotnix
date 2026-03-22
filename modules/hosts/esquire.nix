@@ -44,9 +44,10 @@ let
       <apps/discord>
       <apps/firefox>
       <apps/ghostty>
+      <apps/vscode>
       <apps/wezterm>
-      <apps/zen>
       <apps/zed>
+      <apps/zen>
 
       <services/tailscale>
       <services/kanata>
