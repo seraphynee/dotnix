@@ -130,6 +130,23 @@
         };
     };
 
-    personal = { };
+    personal = {
+      homeManager =
+        { pkgs, lib, ... }:
+        {
+          services = lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
+            jankyborders = {
+              enable = true;
+              settings = {
+                style = "round";
+                width = 9.0;
+                hidpi = "on";
+                active_color = "0xFFDD0303";
+                inactive_color = "0x00414550";
+              };
+            };
+          };
+        };
+    };
   };
 }
