@@ -26,6 +26,7 @@
       <shell/fastfetch>
       <shell/fish>
       <shell/git>
+      <shell/helix>
       <shell/jujutsu/seraphyne>
       <shell/lazygit>
       <shell/neovim>
