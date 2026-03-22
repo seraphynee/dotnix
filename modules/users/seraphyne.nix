@@ -19,6 +19,7 @@
       <shell/nh>
       <shell/env>
 
+      <shell/espanso>
       <shell/_1password>
       <shell/ai>
       <shell/bash>
