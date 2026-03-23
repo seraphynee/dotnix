@@ -11,7 +11,11 @@
   env.GREET = "devenv";
 
   # https://devenv.sh/packages/
-  packages = [ pkgs.git ];
+  packages = with pkgs; [
+    git
+    just
+    lefthook
+  ];
 
   # https://devenv.sh/languages/
   # languages.rust.enable = true;
@@ -34,10 +38,16 @@
   # '';
 
   # https://devenv.sh/tasks/
-  # tasks = {
-  #   "myproj:setup".exec = "mytool build";
-  #   "devenv:enterShell".after = [ "myproj:setup" ];
-  # };
+  tasks."repo:install-lefthook" = {
+    exec = "just hooks-install";
+    status = ''
+      [ -f .git/hooks/pre-commit ] &&
+      [ -f .git/hooks/pre-push ] &&
+      grep -q lefthook .git/hooks/pre-commit &&
+      grep -q lefthook .git/hooks/pre-push
+    '';
+    before = [ "devenv:enterShell" ];
+  };
 
   # https://devenv.sh/tests/
   enterTest = ''
