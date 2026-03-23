@@ -28,10 +28,6 @@
 
           nautilus # File Manager
           bibata-cursors
-
-          # Desktop Portals
-          xdg-desktop-portal
-          xdg-desktop-portal-wlr
         ];
       };
     provides = {
