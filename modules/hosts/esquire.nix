@@ -42,6 +42,7 @@ let
       <desktop/qs/noctalia>
 
       <apps/discord>
+      <apps/datagrip>
       <apps/firefox>
       <apps/ghostty>
       <apps/vscode>
