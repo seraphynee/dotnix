@@ -1,14 +1,6 @@
 { __findFile, inputs, ... }:
 {
   den.aspects.shell._.packages = {
-    includes = [ <shell/utils> ];
-
-    homeManager =
-      { pkgs, ... }:
-      {
-        home.packages = [ inputs.momoi-say.packages.${pkgs.stdenv.hostPlatform.system}.momoiSay ];
-      };
-
     nixos =
       { pkgs, ... }:
       {
@@ -149,6 +141,8 @@
         homeManager =
           { pkgs, lib, ... }:
           {
+            home.packages = [ inputs.momoi-say.packages.${pkgs.stdenv.hostPlatform.system}.momoisay ];
+
             services = lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
               jankyborders = {
                 enable = true;
@@ -161,11 +155,6 @@
                 };
               };
             };
-          };
-        nixos =
-          { pkgs, ... }:
-          {
-            environment.systemPackages = with pkgs; [ wlr-randr ];
           };
       };
     };
