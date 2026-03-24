@@ -24,8 +24,10 @@
         includes = [ <shell/packages> ];
 
         homeManager =
-          { pkgs, ... }:
+          { config, pkgs, ... }:
           {
+            home.sessionPath = [ "${config.home.homeDirectory}/go/bin" ];
+
             home.packages = with pkgs; [
               # Base tooling
               bat # Cat clone with syntax highlighting
