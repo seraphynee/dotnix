@@ -13,28 +13,29 @@
       # Automatically set default shell
       (<den/user-shell> "fish")
 
-      <shell/nix-tools>
-      <shell/utils>
       <shell/packages/dev>
-      <shell/nh>
-      <shell/env>
+      <shell/packages/personal>
+      <shell/nix-tools>
 
-      <shell/espanso>
       <shell/_1password>
       <shell/ai>
       <shell/bash>
       <shell/codex>
+      <shell/env>
+      <shell/espanso>
       <shell/fastfetch>
       <shell/fish>
       <shell/git>
       <shell/helix>
       <shell/jujutsu/seraphyne>
       <shell/lazygit>
+      <shell/nh>
       <shell/neovim>
-      <shell/opencode>
       <shell/ocr>
+      <shell/opencode>
       <shell/starship>
       <shell/tmux>
+      <shell/utils>
       <shell/yazi>
       <shell/zellij>
     ];

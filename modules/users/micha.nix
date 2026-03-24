@@ -11,21 +11,22 @@
       # Automatically set default shell
       (<den/user-shell> "zsh")
 
-      <shell/nix-tools>
-      <shell/utils>
       <shell/packages/dev>
-      <shell/nh>
-      <shell/env>
+      <shell/packages/personal>
+      <shell/nix-tools>
 
       <shell/_1password>
       <shell/ai>
       <shell/bash>
+      <shell/env>
       <shell/fish>
       <shell/git>
       <shell/lazygit>
+      <shell/nh>
       <shell/neovim>
       <shell/starship>
       <shell/tmux>
+      <shell/utils>
     ];
 
     nixos =
