@@ -1,6 +1,14 @@
 { __findFile, inputs, ... }:
 {
   den.aspects.desktop._.wm = {
+    homeManager =
+      { pkgs, lib, ... }:
+      {
+        home.sessionVariables = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+          CURSOR_THEME = "Bibata-Modern-Ice";
+          XCURSOR_SIZE = 24;
+        };
+      };
     nixos =
       { pkgs, ... }:
       {
