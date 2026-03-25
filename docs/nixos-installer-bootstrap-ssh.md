@@ -58,14 +58,14 @@ Run these commands on the source machine:
 ls -l ~/.ssh_keys
 test -f ~/.ssh_keys/<ssh_key_name>
 test -f ~/.ssh_keys/<ssh_key_name>.pub
-test -f ~/.local/ages/keys.txt
+test -f ~/.local/share/ages//keys.txt
 ./scripts/nixos-installer.sh
 ```
 
 What to enter in the installer prompt:
 
 - `IP target host`: the IP address shown on the target machine
-- `Path keyfile`: the local age key file, for example `~/.local/ages/keys.txt`
+- `Path keyfile`: the local age key file, for example `~/.local/share/ages/keys.txt`
 - `Flake host`: the bootstrap host defined in this repository, for example `esquire-installer`
 - `SSH mode`: choose `Bootstrap SSH key`
 - `SSH key name`: only the key name, for example `id_ed25519`
@@ -93,14 +93,14 @@ Example source machine session:
 ```bash
 test -f ~/.ssh_keys/id_ed25519
 test -f ~/.ssh_keys/id_ed25519.pub
-test -f ~/.local/ages/keys.txt
+test -f ~/.local/share/ages//keys.txt
 ./scripts/nixos-installer.sh
 ```
 
 Then enter:
 
 - target IP: `192.168.100.13`
-- key file: `~/.local/ages/keys.txt`
+- key file: `~/.local/share/ages//keys.txt`
 - flake host: `esquire-installer`
 - SSH mode: `Bootstrap SSH key`
 - SSH key name: `id_ed25519`

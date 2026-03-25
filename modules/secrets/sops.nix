@@ -55,7 +55,7 @@ let
         inherit secrets;
 
         age = {
-          keyFile = "${config.home.homeDirectory}/.local/state/ages/keys.txt";
+          keyFile = "${config.home.homeDirectory}/.local/share/ages/keys.txt";
           generateKey = false;
         };
       }
@@ -144,7 +144,7 @@ in
         };
       };
       extraConfig.home.sessionVariables = {
-        SOPS_AGE_KEY_FILE = "$HOME/.local/state/ages/keys.txt";
+        SOPS_AGE_KEY_FILE = "$HOME/.local/share/ages/keys.txt";
       };
     };
 
@@ -252,7 +252,7 @@ in
             defaultSopsFile = hostSopsFile.mbp;
             extraPackages = [ pkgs.ssh-to-age ];
             age = {
-              keyFile = "${userHome}/.local/state/ages/keys.txt";
+              keyFile = "${userHome}/.local/share/ages/keys.txt";
               generateKey = true;
             };
             secrets = {
