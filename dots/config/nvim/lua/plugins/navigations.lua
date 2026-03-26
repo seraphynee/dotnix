@@ -76,7 +76,7 @@ return {
   -- DESC: File picker, alternative to snacks.picker, telescope, mini.picker and etc.
   {
     "dmtrKovalenko/fff.nvim",
-    enabled = true,
+    enabled = false,
     build = "nix run .#release",
     opts = { -- (optional)
       debug = {
