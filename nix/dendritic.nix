@@ -137,5 +137,10 @@
     nixpkgs-master = {
       url = "github:NixOS/nixpkgs/master";
     };
+
+    msnap = {
+      url = "github:atheeq-rhxn/msnap";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 }

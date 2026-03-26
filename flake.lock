@@ -465,6 +465,26 @@
         "type": "github"
       }
     },
+    "msnap": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1774163357,
+        "narHash": "sha256-c1H+RqxDsnYx2L3c/G5ncP2GoOxCafHPyolm8cOCX9E=",
+        "owner": "atheeq-rhxn",
+        "repo": "msnap",
+        "rev": "6e385a13c2c47fcbfaf04cbf905333e40d39d34f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "atheeq-rhxn",
+        "repo": "msnap",
+        "type": "github"
+      }
+    },
     "niri": {
       "inputs": {
         "niri-stable": "niri-stable",
@@ -824,6 +844,7 @@
         "lanzaboote": "lanzaboote",
         "mango": "mango",
         "momoi-say": "momoi-say",
+        "msnap": "msnap",
         "niri": "niri",
         "nix-homebrew": "nix-homebrew",
         "nix-index-database": "nix-index-database",

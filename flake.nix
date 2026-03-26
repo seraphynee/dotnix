@@ -66,6 +66,10 @@
       url = "github:DreamMaoMao/mango";
     };
     momoi-say.url = "github:haruki-nikaidou/momoisay-rs";
+    msnap = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:atheeq-rhxn/msnap";
+    };
     niri = {
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:sodiboo/niri-flake";

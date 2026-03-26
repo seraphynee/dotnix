@@ -41,8 +41,8 @@
     provides = {
       niri = {
         includes = [
-          <desktop/sddm>
           <desktop/wm>
+          <desktop/sddm>
         ];
 
         nixos =
@@ -68,8 +68,9 @@
 
       mango = {
         includes = [
-          <desktop/sddm>
           <desktop/wm>
+          <desktop/sddm>
+          <shell/msnap>
         ];
 
         homeManager = {
