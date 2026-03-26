@@ -20,7 +20,7 @@ let
           "sr_mod"
         ];
 
-        disko.devices.disk.btrfs.device = lib.mkForce constants.mainDisk;
+        disko.devices.disk.btrfs.device = lib.mkForce constants.disk.pcMain;
       };
 
     includes = [
@@ -37,6 +37,7 @@ let
       <system/nvidia>
       <system/xdg>
       <system/settings>
+      <system/virt>
 
       <desktop/wm/mango>
       <desktop/qs/noctalia>

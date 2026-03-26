@@ -19,7 +19,7 @@
         spice
         spice-gtk
         spice-protocol
-        win-virtio
+        virtio-win
         win-spice
       ];
 
@@ -30,8 +30,6 @@
             package = pkgs.qemu_kvm;
             runAsRoot = true;
             swtpm.enable = true;
-            ovmf.enable = true;
-            ovmf.packages = [ pkgs.OVMFFull.fd ];
           };
         };
         spiceUSBRedirection.enable = true;
