@@ -43,6 +43,10 @@
               sesh
               gum
 
+              # Bootable USB
+              woeusb
+              ntfs3g
+
               # Screenshot utility
               grim
               swappy
