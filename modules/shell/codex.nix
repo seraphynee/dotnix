@@ -64,6 +64,13 @@
             codex
             pkgs.bubblewrap
           ];
+
+          # Codex currently probes for a system bubblewrap at /usr/bin/bwrap.
+          # NixOS exposes it in the system profile instead, so provide the path
+          # Codex expects to avoid the vendored bubblewrap fallback warning.
+          systemd.tmpfiles.rules = [
+            "L+ /usr/bin/bwrap - - - - ${pkgs.bubblewrap}/bin/bwrap"
+          ];
         };
     };
 }
