@@ -28,16 +28,17 @@ let
       bootloader
       <system/impermanence>
 
-      <system/locale>
-      <system/ssh>
-      <system/sshd>
       <system/audio>
       <system/fonts>
+      <system/locale>
       <system/networking>
       <system/nvidia>
-      <system/xdg>
+      <system/podman>
       <system/settings>
+      <system/ssh>
+      <system/sshd>
       <system/virt>
+      <system/xdg>
 
       <desktop/wm/mango>
       <desktop/qs/noctalia>
