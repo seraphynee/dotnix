@@ -33,6 +33,7 @@
       <shell/neovim>
       <shell/ocr>
       <shell/opencode>
+      <shell/opencommit>
       <shell/starship>
       <shell/tmux>
       <shell/utils>

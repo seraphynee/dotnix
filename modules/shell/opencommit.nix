@@ -1,5 +1,10 @@
 {
   den.aspects.shell._.opencommit = {
+    nixos =
+      { pkgs, ... }:
+      {
+        environment.systemPackages = with pkgs; [ opencommit ];
+      };
     homeManager =
       { config, pkgs, ... }:
       let

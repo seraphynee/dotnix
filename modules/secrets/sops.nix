@@ -142,6 +142,12 @@ in
         "llm/tavily_apikey" = {
           key = "keys/api/tavily";
         };
+        "llm/oco_api_url" = {
+          key = "keys/api/oco_url";
+        };
+        "llm/oco_api_key" = {
+          key = "keys/api/oco_key";
+        };
       };
       extraConfig.home.sessionVariables = {
         SOPS_AGE_KEY_FILE = "$HOME/.local/share/ages/keys.txt";
