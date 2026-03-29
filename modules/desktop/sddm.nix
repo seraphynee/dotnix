@@ -21,9 +21,8 @@
           extraPackages = [ pkgs.sddm-astronaut ];
           theme = "catppuccin-${flavor}-${accent}";
 
-          # TODO: Re-enable SDDM Wayland once this regression is fixed:
+          # The Weston 15/SDDM Wayland regression was fixed upstream.
           # https://github.com/NixOS/nixpkgs/issues/496361
-          # INFO: this has been fixed
           wayland.enable = true;
 
           # settings = {

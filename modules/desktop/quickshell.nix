@@ -29,7 +29,8 @@
             # configure options
             programs.noctalia-shell = {
               enable = true;
-              systemd.enable = true;
+              # Start Noctalia from Mango only to avoid duplicate/racy startup.
+              systemd.enable = false;
               plugins = {
                 sources = [
                   {
