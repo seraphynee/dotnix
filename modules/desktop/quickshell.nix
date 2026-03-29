@@ -158,8 +158,7 @@
                   density = "compact";
                 };
                 colorSchemes = {
-                  useWallpaperColors = false;
-                  predefinedScheme = "Vesper";
+                  useWallpaperColors = true;
                   darkMode = true;
                 };
                 general = {
