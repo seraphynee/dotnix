@@ -11,6 +11,7 @@ let
         imports = [ ];
 
         boot.initrd.availableKernelModules = [
+          "vmd"
           "nvme"
           "ahci"
           "xhci_pci"
