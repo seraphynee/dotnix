@@ -17,7 +17,7 @@
           shell-integration = "detect";
           shell-integration-features = "cursor,sudo,title";
 
-          background-opacity = 0.8;
+          background-opacity = 1;
           background-blur-radius = 10;
           theme = "oldworld-vibrant";
 
