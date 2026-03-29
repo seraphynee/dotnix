@@ -39,10 +39,10 @@ clean:
 
 # Host operations
 rb host:
-    if [ "$(uname -s)" = "Darwin" ]; then nh darwin switch . -H {{ host }}; else nh os switch . -H {{ host }}; fi
+    if [ "$(uname -s)" = "Darwin" ]; then nh darwin switch . -H {{ host }} -- --impure; else nh os switch . -H {{ host }} -- --impure; fi
 
 rbb host:
-    sudo nixos-rebuild boot --flake .#{{ host }}
+    sudo nixos-rebuild boot --impure --flake .#{{ host }}
 
 # Remote/bootstrap
 anywhere host target:

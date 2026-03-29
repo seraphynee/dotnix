@@ -104,6 +104,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:Mic92/sops-nix";
     };
+    stylix = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/stylix";
+    };
     systems.url = "github:nix-systems/default";
     treefmt-nix = {
       inputs.nixpkgs.follows = "nixpkgs";

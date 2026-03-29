@@ -75,7 +75,6 @@
             cudaSupport = true;
           };
           settings = {
-            color_theme = "Dracula";
             theme_background = false;
             vim_keys = true;
           };

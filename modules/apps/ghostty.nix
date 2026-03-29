@@ -17,11 +17,8 @@
           shell-integration = "detect";
           shell-integration-features = "cursor,sudo,title";
 
-          background-opacity = 0.8;
           background-blur-radius = 10;
-          theme = "oldworld-vibrant";
 
-          cursor-color = "#00FF98";
           cursor-style = "bar";
           cursor-style-blink = false;
 

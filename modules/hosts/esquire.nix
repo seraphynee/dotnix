@@ -37,6 +37,7 @@ let
       <system/settings>
       <system/ssh>
       <system/sshd>
+      <system/stylix>
       <system/virt>
       <system/xdg>
 

@@ -32,6 +32,7 @@ let
       <system/audio>
       <system/fonts>
       <system/networking>
+      <system/stylix>
       <system/xdg>
       <system/settings>
 
