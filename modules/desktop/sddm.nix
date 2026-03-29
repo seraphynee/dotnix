@@ -25,11 +25,16 @@
           # https://github.com/NixOS/nixpkgs/issues/496361
           wayland.enable = true;
 
-          # settings = {
-          #   General = {
-          #     InputMethod = ""; # Disables the virtual keyboard especially because it's showing in x11 display server
-          #   };
-          # };
+          settings = {
+            Theme = {
+              CursorTheme = "Bibata-Modern-Ice";
+              CursorSize = 24;
+            };
+
+            # General = {
+            #   InputMethod = ""; # Disables the virtual keyboard especially because it's showing in x11 display server
+            # };
+          };
         };
       };
     };
