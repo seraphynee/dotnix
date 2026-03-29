@@ -26,11 +26,11 @@
           # INFO: this has been fixed
           wayland.enable = true;
 
-          settings = {
-            General = {
-              InputMethod = ""; # Disables the virtual keyboard especially because it's showing in x11 display server
-            };
-          };
+          # settings = {
+          #   General = {
+          #     InputMethod = ""; # Disables the virtual keyboard especially because it's showing in x11 display server
+          #   };
+          # };
         };
       };
     };

@@ -7,7 +7,7 @@
           loader = {
             systemd-boot = {
               enable = true; # Enable systemd-boot as the bootloader.
-              configurationLimit = 10; # Keep the latest 10 boot entries.
+              # configurationLimit = 10; # Keep the latest 10 boot entries.
               editor = false; # Disable editing kernel parameters at boot.
             };
             efi.canTouchEfiVariables = true; # Allow updating EFI NVRAM boot entries.
@@ -32,7 +32,7 @@
 
             boot.loader.systemd-boot = {
               enable = lib.mkForce false; # Let Lanzaboote manage systemd-boot to avoid conflicts.
-              configurationLimit = 5; # Keep the latest 10 boot entries.
+              # configurationLimit = 10; # Keep the latest 10 boot entries.
               editor = false; # Disable editing kernel parameters at boot.
 
             };
