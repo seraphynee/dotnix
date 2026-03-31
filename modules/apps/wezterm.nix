@@ -65,7 +65,7 @@
             underline_thickness = 2.8,
             max_fps = 120,
 
-            window_background_opacity = 0.8,
+            window_background_opacity = 1,
             ${pkgs.lib.optionalString isDarwin "macos_window_background_blur = 8,"}
             window_decorations = "NONE",
             window_frame = {
