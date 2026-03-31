@@ -109,6 +109,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:numtide/treefmt-nix";
     };
+    worktrunk = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:max-sixty/worktrunk";
+    };
     zen-browser = {
       inputs = {
         home-manager.follows = "home-manager";

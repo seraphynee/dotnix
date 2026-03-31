@@ -142,5 +142,10 @@
       url = "github:atheeq-rhxn/msnap";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    worktrunk = {
+      url = "github:max-sixty/worktrunk";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 }

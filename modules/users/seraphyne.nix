@@ -37,6 +37,7 @@
       <shell/starship>
       <shell/tmux>
       <shell/utils>
+      <shell/worktrunk>
       <shell/yazi>
       <shell/zellij>
     ];
