@@ -58,8 +58,9 @@
       programs = {
         fish.interactiveShellInit = lib.mkAfter ''
           abbr --add tx tmux
-          abbr --add tl "tmux list-sessions"
           abbr --add ts --set-cursor 'tmux new -s "%"'
+          abbr --add tl "tmux list-sessions"
+          abbr --add tkss --set-cursor 'tmux kill-session -t "%"'
           abbr --add tksv "tmux kill-server"
         '';
       };
