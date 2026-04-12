@@ -6,7 +6,7 @@
 let
   mkAcerusAspect = bootloader: {
     nixos =
-      { lib, ... }:
+      { lib, pkgs, ... }:
       {
         imports = [ ];
 
@@ -20,6 +20,16 @@ let
           "sd_mod"
           "sr_mod"
         ];
+
+        # Acer Swift Go SFG14-73 is a modern Intel laptop, so prefer a newer
+        # kernel plus the usual firmware/microcode baseline.
+        boot.kernelPackages = pkgs.linuxPackages_latest;
+
+        hardware.cpu.intel.updateMicrocode = true;
+        hardware.enableRedistributableFirmware = true;
+
+        # services.fwupd.enable = true;
+        services.hardware.bolt.enable = true;
       };
 
     includes = [
