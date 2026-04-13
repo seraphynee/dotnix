@@ -41,6 +41,7 @@ let
       <system/ssh>
       <system/sshd>
       <system/audio>
+      <system/bluetooth>
       <system/fonts>
       <system/networking>
       <system/xdg>
