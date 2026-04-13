@@ -205,12 +205,24 @@ in
           secrets = {
             # sopsFile defined in <secrets/sops> aspect in line 29
             "ssh/config" = { };
+            "keys/ssh/github/signing/ghspy-pub" = {
+              sopsFile = hostSopsFile.acerus;
+            };
+            # "keys/pat/ghspy-pat" = {
+            #   sopsFile = hostSopsFile.acerus;
+            # };
           };
         };
 
         nixos = mkNixosSops {
           defaultSopsFile = hostSopsFile.acerus;
           secrets = {
+            "keys/ssh/github/auth/ghspy-pub" = {
+              name = "ghspy-auth.pub";
+              path = "/home/${constants.user_two}/.ssh_keys/ghspy-auth.pub";
+              owner = "${constants.user_two}";
+              mode = "0600";
+            };
             "passwords/${constants.user_two}" = {
               sopsFile = sharedSopsFile;
               neededForUsers = true;
