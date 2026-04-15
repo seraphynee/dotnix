@@ -53,6 +53,7 @@ let
       <apps/discord>
       <apps/firefox>
       <apps/ghostty>
+      <apps/helium>
       <apps/wezterm>
       <apps/zen>
       <apps/zed>

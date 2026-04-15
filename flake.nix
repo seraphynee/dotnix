@@ -36,6 +36,10 @@
       inputs.nixpkgs-lib.follows = "nixpkgs-lib";
       url = "github:hercules-ci/flake-parts";
     };
+    helium = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:AlvaroParker/helium-nix";
+    };
     hjem = {
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:feel-co/hjem";
