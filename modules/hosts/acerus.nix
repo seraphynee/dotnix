@@ -43,6 +43,7 @@ let
       <system/audio>
       <system/bluetooth>
       <system/fonts>
+      # <system/fingerprint>
       <system/networking>
       <system/xdg>
       <system/settings>
