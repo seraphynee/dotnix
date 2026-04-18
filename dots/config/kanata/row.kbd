@@ -59,20 +59,29 @@
   thl-v-zlj (tap-hold $tap-time $hold-time v (layer-while-held zellij))
   thl-m-zlj (tap-hold $tap-time $hold-time m (layer-while-held zellij))
 
+  {{ if eq .chezmoi.os "darwin" -}}
+  lmet_tab (tap-hold $tap-time $hold-time tab (macro M-tab))
+  {{- else if eq .chezmoi.os "linux" }}
   lmet_tab (tap-hold $tap-time $hold-time tab (macro A-tab))
+  {{- end }}
 
   ;; ==== MODIFIER KEYS + LETTER KEYS ====
   a (tap-hold $tap-time $hold-time a lsft)
   ; (tap-hold $tap-time $hold-time ; lsft)
 
   s (tap-hold $tap-time $hold-time s lctl)
-  d (tap-hold $tap-time $hold-time d lmet)
-  f (tap-hold $tap-time $hold-time f lalt)
+  d (tap-hold $tap-time $hold-time d lalt)
+  f (tap-hold $tap-time $hold-time f lmet)
   l (tap-hold $tap-time $hold-time l lctl)
-  k (tap-hold $tap-time $hold-time k lmet)
-  j (tap-hold $tap-time $hold-time j lalt)
+  k (tap-hold $tap-time $hold-time k lalt)
+  j (tap-hold $tap-time $hold-time j lmet)
+  {{ if eq .chezmoi.os "darwin" -}}
+  m (tap-hold $tap-time $hold-time m rmet)
+  v (tap-hold $tap-time $hold-time v rmet)
+  {{- else if eq .chezmoi.os "linux" }}
   m (tap-hold $tap-time $hold-time m lmet)
   v (tap-hold $tap-time $hold-time v lmet)
+  {{- end }}
   hyperkey (tap-hold $tap-time $hold-time spc (multi lsft lctl lalt lmet))
 
   ;; ==== OS SPECIFIC ====
@@ -104,11 +113,18 @@
 |#
 
 (defchordsv2
+  {{- if eq .chezmoi.os "darwin" }}
+  (m ,) C-a $input-chord-time all-released ()
+  ;; (i o) A-left 20 all-released ()
+  ;; (o p) A-right 20 all-released ()
+
+  {{- else if eq .chezmoi.os "linux" }}
   (m ,) C-a $input-chord-time all-released ()
   (i o) C-left 20 all-released ()
   (o p) C-right 20 all-released ()
   (lalt lsft [) C-S-tab 250 first-release ()
   (lalt lsft ]) C-tab 250 first-release ()
+  {{- end }}
 )
 
 ;; == Layers ==
@@ -152,14 +168,18 @@
 )
 
 (defalias
+  {{ if eq .chezmoi.os "darwin" }}
+  ly-rayc (tap-hold $tap-time $hold-time r (layer-while-held raycast))
+  {{ else if eq .chezmoi.os "linux" }}
   ly-rayc r
+  {{- end }}
 )
 
 (deflayer sublayers
        🔅    🔆    @mc   @sls  @dtn  @dnd  ◀◀    ▶⏸    ▶▶    🔇    🔉    🔊
   grv  o   XX   XX    XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   tab  XX   XX   XX   @ly-rayc   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  caps XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  caps 1   2   3   4   5   6   7   8   9   0   XX   XX
   lsft XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   lctl lmet lalt           spc            ralt rmet rctl
 )
@@ -226,7 +246,7 @@
        🔅        🔆        @mc              @sls           @dtn           @dnd           ◀◀        ▶⏸          ▶▶                    🔇            🔉            🔊
   grv  @tx-wdw-1          @tx-wdw-2         @tx-wdw-3      @tx-wdw-4      @tx-wdw-5      @tx-wdw-6             @tx-wdw-7           @tx-wdw-8                     9             0             @tx-splith         @tx-splitv         bspc
   lrld @tx-slcsession     @tx-slcwindow     @tx-detach     XX             f5             @tx-rsz-left          @tx-rsz-bottom        @tx-rsz-up    @tx-rsz-right @tx-plg-sesh       XX                 XX                \
-  @cw  @tx-sw-session     @tx-sw-window     @tx-sw-pane    @tx-flash              5              @tx-p-left            @tx-p-bottom          @tx-p-top     @tx-p-right   ;                  '                  ret
+  caps  @tx-sw-session     @tx-sw-window     @tx-sw-pane    @tx-flash              5              @tx-p-left            @tx-p-bottom          @tx-p-top     @tx-p-right   ;                  '                  ret
   lsft @tx-kill-window    @tx-kill-pane     @tx-new-window @tx-vi-mode    XX             @tx-kill-session      @tx-rn-session        @tx-rn-window @tx-rn-pane  /             rsft
   lctl lmet               lalt                             spc                                            ralt            rmet              rctl
 )
@@ -260,17 +280,41 @@
   zlj-pane (macro @zlj-prefix p)
   zlj-pane-cls (macro @zlj-prefix 25 p 25 x) ;; close pane
   zlj-pane-qs (macro @zlj-prefix 25 p 25 tab 25 esc) ;; switch last
+
+  ;; split pane
   zlj-splith (macro @zlj-prefix 25 p 25 -) ;; split horizontal
   zlj-splitv (macro @zlj-prefix 25 p 25 S-\) ;; split vertical
+
+  zlj-p-left (macro @zlj-prefix 25 p 25 left esc)
+  zlj-p-bottom (macro @zlj-prefix 25 p 25 down esc)
+  zlj-p-top (macro @zlj-prefix 25 p 25 up esc)
+  zlj-p-right (macro @zlj-prefix 25 p 25 right esc)
 )
 
 (deflayer zellij
        🔅    🔆    @mc   @sls  @dtn  @dnd  ◀◀    ▶⏸    ▶▶    🔇    🔉    🔊
   grv  @zlj-t-1  @zlj-t-2  @zlj-t-3  @zlj-t-4  @zlj-t-5  @zlj-t-6  @zlj-t-7  @zlj-t-8  @zlj-t-9   XX   @zlj-splith   @zlj-splitv   XX
   tab  @zlj-sessions  XX   @zlj-ses-dtch   @zlj-rsz  @zlj-tab  XX        XX   XX   @zlj-ses @zlj-pane     XX   XX XX
-  caps XX   @zlj-tab-qs   @zlj-pane-qs   XX   XX        XX        XX        XX   XX   XX       XX            XX
+  caps XX   @zlj-tab-qs   @zlj-pane-qs   XX   XX     @zlj-p-left    @zlj-p-bottom        @zlj-p-top   @zlj-p-right   XX       XX            XX
   lsft @zlj-tab-cls   @zlj-pane-cls   @zlj-new-tab   XX   XX        XX        XX        XX   XX   XX       XX
   lctl lmet lalt           spc            ralt rmet rctl
 )
 
+{{ if eq .chezmoi.os "darwin" -}}
+;; == RAYCAST ==
+(defalias
+  rrain (cmd open "raycast://extensions/lardissone/raindrop-io/search")
+  remoj (cmd open "raycast://extensions/raycast/emoji-symbols/search-emoji-symbols")
+  rspot (cmd open "raycast://extensions/mattisssa/spotify-player/search")
+  ryout (cmd open "raycast://extensions/tonka3000/youtube/search-videos?arguments=%7B%22query%22%3A%22%22%7D")
+)
 
+(deflayer raycast
+       🔅    🔆    @mc   @sls  @dtn  @dnd  ◀◀    ▶⏸    ▶▶    🔇    🔉    🔊
+  grv  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  tab  XX   XX   @remoj   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  caps XX   XX   XX   XX   XX   XX   @rspot   @rrain   @ryout   XX   XX   XX
+  lsft XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  lctl lmet lalt           spc            ralt rmet rctl
+)
+{{ end }}
