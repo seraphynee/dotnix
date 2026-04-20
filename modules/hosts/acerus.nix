@@ -50,10 +50,10 @@ let
       <desktop/wm/mango>
       <desktop/qs/noctalia>
 
+      <apps/chromium>
       <apps/discord>
       <apps/firefox>
       <apps/ghostty>
-      <apps/helium>
       <apps/wezterm>
       <apps/zen>
       <apps/zed>

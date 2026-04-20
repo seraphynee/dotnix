@@ -43,6 +43,7 @@ let
       <desktop/wm/mango>
       <desktop/qs/noctalia>
 
+      <apps/chromium>
       <apps/discord>
       <apps/datagrip>
       <apps/firefox>
