@@ -1,5 +1,13 @@
 return {
   {
+    "chenxin-yan/footnote.nvim",
+    enabled = false,
+    opts = {
+      -- add any configuration here
+    },
+  },
+
+  {
     "tris203/precognition.nvim",
     enabled = false,
     --event = "VeryLazy",
@@ -30,6 +38,7 @@ return {
       -- },
     },
   },
+
   {
     "johnpmitsch/vai.nvim",
     enabled = true,
