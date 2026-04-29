@@ -46,6 +46,8 @@ let
         GITHUB_TOKEN_FILE = githubPATPath;
       };
 
+      xdg.configFile."git/ignore".source = ../../dots/config/git/ignore;
+
       programs.fish.interactiveShellInit = lib.mkIf (githubPATPath != null) (
         lib.mkAfter ''
           if test -r "${githubPATPath}"
