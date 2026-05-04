@@ -9,17 +9,17 @@
       programs = {
         fzf = {
           enable = true;
-          enableFishIntegration = false;
+          enableFishIntegration = true;
         };
 
         eza = {
           enable = true;
-          enableFishIntegration = false;
+          enableFishIntegration = true;
         };
 
         zoxide = {
           enable = true;
-          enableFishIntegration = false;
+          enableFishIntegration = true;
           enableNushellIntegration = true;
         };
 
