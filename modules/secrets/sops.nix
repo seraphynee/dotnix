@@ -127,7 +127,6 @@ in
   den.aspects.secrets._.sops = {
     homeManager = mkHomeManagerSops {
       defaultSopsFile = sharedSopsFile;
-      withSshInclude = true;
       secrets = {
         "espanso/email.yaml" = { };
         "llm/context7_apikey" = {
