@@ -9,6 +9,7 @@
 
   den.aspects.${constants.user_one} = {
     includes = [
+      <den/host-aspects>
       <den/primary-user>
 
       <shell/git>

@@ -8,6 +8,7 @@
 
   den.aspects.${constants.user_two} = {
     includes = [
+      <den/host-aspects>
       <den/primary-user>
 
       # Automatically set default shell

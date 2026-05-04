@@ -72,7 +72,7 @@
       };
   };
 
-  den.base.user.classes = lib.mkDefault [
+  den.schema.user.classes = lib.mkDefault [
     "homeManager"
   ];
 

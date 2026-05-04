@@ -4,8 +4,6 @@
     {
       services.ssh-agent = {
         enable = true;
-        enableFishIntegration = false;
-        enableNushellIntegration = true;
       };
 
       programs = {

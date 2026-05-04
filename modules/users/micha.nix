@@ -8,6 +8,7 @@
 
   den.aspects.${constants.user_three} = {
     includes = [
+      <den/host-aspects>
       # Automatically set default shell
       (<den/user-shell> "zsh")
 

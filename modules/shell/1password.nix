@@ -37,8 +37,6 @@
         # Prevent Home Manager's ssh-agent service from overriding SSH_AUTH_SOCK.
         services.ssh-agent = {
           enable = lib.mkForce false;
-          enableFishIntegration = lib.mkForce false;
-          enableNushellIntegration = lib.mkForce false;
         };
         home.sessionVariables =
           lib.optionalAttrs (pkgs.stdenv.hostPlatform.isDarwin || pkgs.stdenv.hostPlatform.isLinux)
