@@ -4,7 +4,7 @@
     let
       inherit (pkgs.stdenv.hostPlatform) isDarwin;
       fontName = if isDarwin then "Jetbrains Mono" else "Jetbrains Mono";
-      fontSize = if isDarwin then 18.7 else 12.5;
+      fontSize = if isDarwin then 18.7 else 13.5;
       closeTabMods = if isDarwin then "CMD" else "CTRL|SHIFT";
     in
     {
@@ -61,7 +61,7 @@
             },
             color_scheme = "oldworld-vibrant",
             -- font = wezterm.font("${fontName}"),
-            -- font_size = ${builtins.toString fontSize},
+            font_size = ${builtins.toString fontSize},
             underline_thickness = 2.8,
             max_fps = 120,
 
