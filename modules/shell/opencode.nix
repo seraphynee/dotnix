@@ -67,6 +67,11 @@
                 url = "https://mcp.tavily.com/mcp/?tavilyApiKey=${config.sops.placeholder."llm/tavily_apikey"}";
                 enabled = true;
               };
+              ticktick = {
+                type = "remote";
+                url = "https://mcp.ticktick.com";
+                enableb = true;
+              };
             };
           };
         in
