@@ -58,13 +58,8 @@
                 enabled = false;
               };
               linear = {
-                type = "local";
-                command = [
-                  "bun"
-                  "x"
-                  "mcp-remote"
-                  "https://mcp.linear.app/mcp"
-                ];
+                type = "remote";
+                url = "https://mcp.linear.app/mcp";
                 enabled = true;
               };
               tavily = {

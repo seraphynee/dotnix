@@ -12,13 +12,21 @@ model_reasoning_effort = "high"
   url = "https://mcp.linear.app/mcp"
 
 [mcp_servers.context7]
-  args = ["-y", "@upstash/context7-mcp", "--api-key", "@context7_api_key@"]
-  command = "npx"
+  url = "https://mcp.context7.com/mcp"
+  http_headers = { "CONTEXT7_API_KEY" = "@context7_api_key@" }
 
 [mcp_servers.Ref]
   url = "https://api.ref.tools/mcp?apiKey=@ref_api_key@"
 
 [mcp_servers.tavily]
   url = "https://mcp.tavily.com/mcp/?tavilyApiKey=@tavily_api_key@"
+
+[mcp_servers.gitmcp]
+  url = "https://gitmcp.io/chianyungcode/dotfiles"
+  enabled = false
+
+[mcp_servers.grep]
+  url = "https://mcp.grep.app"
+  enabled = false
 
 @conditional_trusted_projects@
