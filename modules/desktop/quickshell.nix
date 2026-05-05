@@ -60,6 +60,10 @@
                     enabled = true;
                     sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
                   };
+                  cloudflare-warp = {
+                    enabled = true;
+                    sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
+                  };
                 };
                 version = 2;
               };
@@ -173,7 +177,8 @@
                     ];
                     right = [
                       {
-                        alwaysShowPercentage = false;
+                        displayMode = "icon-always";
+                        alwaysShowPercentage = true;
                         id = "Battery";
                         warningThreshold = 30;
                       }
@@ -188,6 +193,9 @@
                       }
                       {
                         id = "plugin:privacy-indicator";
+                      }
+                      {
+                        id = "plugin:cloudflare-warp";
                       }
                     ];
                   };

@@ -69,6 +69,7 @@ let
       <apps/zen>
       <apps/zed>
 
+      <services/cloudflare-warp>
       <services/tailscale>
       <services/kanata>
 
