@@ -51,6 +51,7 @@
       {
         users.users.${constants.user_two} = {
           extraGroups = [
+            "input"
             "uinput"
           ];
 

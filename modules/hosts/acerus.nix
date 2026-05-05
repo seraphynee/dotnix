@@ -25,6 +25,17 @@ let
         # kernel plus the usual firmware/microcode baseline.
         boot.kernelPackages = pkgs.linuxPackages_latest;
 
+        # The internal touchpad on SFG14-73 variants is exposed as an ACPI
+        # I2C-HID device behind Intel Serial IO. Load this stack early so the
+        # touchpad is consistently present for libinput/Wayland.
+        boot.initrd.kernelModules = [
+          "intel_lpss"
+          "intel_lpss_pci"
+          "i2c_designware_pci"
+          "i2c_hid_acpi"
+          "hid_multitouch"
+        ];
+
         hardware.cpu.intel.updateMicrocode = true;
         hardware.enableRedistributableFirmware = true;
 
