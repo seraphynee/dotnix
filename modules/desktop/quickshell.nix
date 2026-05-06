@@ -64,6 +64,10 @@
                     enabled = true;
                     sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
                   };
+                  screen-toolkit = {
+                    enabled = true;
+                    sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
+                  };
                 };
                 version = 2;
               };
@@ -186,7 +190,7 @@
                         id = "plugin:tailscale";
                       }
                       {
-                        id = "plugin:catwalk";
+                        id = "plugin:screen-toolkit";
                       }
                       {
                         id = "plugin:mangowc-layout-switcher";

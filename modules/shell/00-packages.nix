@@ -33,14 +33,18 @@
               bat # Cat clone with syntax highlighting
               uutils-coreutils-noprefix # Rust implementation of GNU coreutils
               curl # Data transfer tool for URLs
+              jq # JSON processor
               wget # File retrieval from web servers
               unzip # Extract ZIP archives
               zip # Create ZIP archives
               p7zip # 7z compression utility
               ffmpeg # Multimedia framework
+              gifski # High-quality GIF encoder
+              imagemagick # Image manipulation toolkit
               mkpasswd # Make password hash
               ouch # Command-line utility for easily compressing and decompressing files and directories
               sesh
+              translate-shell # Command-line translator
               gum
 
               # Bootable USB
@@ -51,8 +55,10 @@
               grim
               swappy
               slurp
+              zbar # Barcode and QR code scanner
 
               wf-recorder # for screen recording
+              wl-screenrec # Wayland screen recorder
 
               # Disk Usage Analyzers
               dua # Disk usage analyzer with TUI
