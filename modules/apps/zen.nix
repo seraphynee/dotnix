@@ -69,33 +69,23 @@
             };
             containersForce = true;
             containers = {
-              Business = {
-                color = "blue";
+              Work = {
+                color = "black";
                 icon = "briefcase";
                 id = 1;
               };
-              Productivity = {
-                color = "blue";
+              Personal = {
+                color = "green";
                 icon = "tree";
                 id = 2;
-              };
-              Code = {
-                color = "yellow";
-                icon = "dollar";
-                id = 3;
-              };
-              Personal = {
-                color = "yellow";
-                icon = "fingerprint";
-                id = 4;
               };
             };
             spacesForce = true;
             spaces = {
-              Business = {
+              Work = {
                 id = "9bf4a656-8bd0-4bc8-a5b1-0ee4f06146ff";
                 icon = "🚀";
-                container = containers.Business.id;
+                container = containers.Work.id;
                 position = 1000;
                 theme = {
                   type = "gradient";
@@ -116,10 +106,10 @@
                   opacity = 0.5;
                 };
               };
-              Productivity = {
+              Personal = {
                 id = "4978fdb5-eadf-4ab6-9281-d62f2d2e1eb8";
                 icon = "🍃";
-                container = containers.Productivity.id;
+                container = containers.Personal.id;
                 position = 2000;
                 theme = {
                   type = "gradient";
@@ -130,54 +120,6 @@
                       red = 48;
                       green = 54;
                       blue = 79;
-                      lightness = 50;
-                      position = {
-                        x = 51;
-                        y = 97;
-                      };
-                    }
-                  ];
-                  opacity = 0.5;
-                };
-              };
-              Code = {
-                id = "2d5fb7f4-d5e7-4903-b8ec-35dbd938a540";
-                icon = "💻";
-                container = containers.Code.id;
-                position = 4000;
-                theme = {
-                  type = "gradient";
-                  colors = [
-                    {
-                      algorithm = "floating";
-                      type = "explicit-lightness";
-                      red = 38;
-                      green = 38;
-                      blue = 38;
-                      lightness = 50;
-                      position = {
-                        x = 51;
-                        y = 97;
-                      };
-                    }
-                  ];
-                  opacity = 0.5;
-                };
-              };
-              Personal = {
-                id = "a46d490f-9de8-434f-94dd-b8fc2d8f2dc1";
-                icon = "👥";
-                container = containers.Personal.id;
-                position = 8000;
-                theme = {
-                  type = "gradient";
-                  colors = [
-                    {
-                      algorithm = "floating";
-                      type = "explicit-lightness";
-                      red = 75;
-                      green = 46;
-                      blue = 43;
                       lightness = 50;
                       position = {
                         x = 51;
