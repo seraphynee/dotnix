@@ -70,7 +70,7 @@
             containersForce = true;
             containers = {
               Work = {
-                color = "black";
+                color = "yellow";
                 icon = "briefcase";
                 id = 1;
               };
@@ -80,11 +80,34 @@
                 id = 2;
               };
             };
+            # Zen Browser Default Space Icons (SVG):
+            # airplane, american-football, baseball, basket
+            # bed, bell, bookmark, book
+            # briefcase, brush, bug, build
+            # cafe, call, card, chat
+            # checkbox, circle, cloud, code
+            # coins, construct, cutlery, egg
+            # extension-puzzle, eye, fast-food, fish
+            # flag, flame, flask, folder
+            # game-controller, globe-1, globe, grid-2x2
+            # grid-3x3, heart, ice-cream, image
+            # inbox, key, layers, leaf
+            # lightning, location, lock-closed, logo-rss
+            # logo-usd, mail, map, megaphone
+            # moon, music, navigate, nuclear
+            # page, palette, paw, people
+            # pizza, planet, present, rocket
+            # school, shapes, shirt, skull
+            # squares, square, star-1, star
+            # stats-chart, sun, tada, terminal
+            # ticket, time, trash, triangle
+            # video, volume-high, wallet, warning
+            # water, weight
             spacesForce = true;
             spaces = {
               Work = {
                 id = "9bf4a656-8bd0-4bc8-a5b1-0ee4f06146ff";
-                icon = "🚀";
+                icon = "💼";
                 container = containers.Work.id;
                 position = 1000;
                 theme = {
@@ -93,9 +116,9 @@
                     {
                       algorithm = "floating";
                       type = "explicit-lightness";
-                      red = 107;
-                      green = 126;
-                      blue = 148;
+                      red = 0;
+                      green = 0;
+                      blue = 0;
                       lightness = 50;
                       position = {
                         x = 51;
@@ -108,7 +131,7 @@
               };
               Personal = {
                 id = "4978fdb5-eadf-4ab6-9281-d62f2d2e1eb8";
-                icon = "🍃";
+                icon = "🏠";
                 container = containers.Personal.id;
                 position = 2000;
                 theme = {
@@ -117,9 +140,9 @@
                     {
                       algorithm = "floating";
                       type = "explicit-lightness";
-                      red = 48;
-                      green = 54;
-                      blue = 79;
+                      red = 148;
+                      green = 163;
+                      blue = 120;
                       lightness = 50;
                       position = {
                         x = 51;
