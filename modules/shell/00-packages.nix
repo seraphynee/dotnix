@@ -31,6 +31,7 @@
             home.packages = with pkgs; [
               # Base tooling
               bat # Cat clone with syntax highlighting
+              bottom # modern system monitor based on rust, alternative to btop
               uutils-coreutils-noprefix # Rust implementation of GNU coreutils
               curl # Data transfer tool for URLs
               jq # JSON processor
