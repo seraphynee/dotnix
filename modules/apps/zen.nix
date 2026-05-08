@@ -140,9 +140,9 @@
                     {
                       algorithm = "floating";
                       type = "explicit-lightness";
-                      red = 148;
-                      green = 163;
-                      blue = 120;
+                      red = 56;
+                      green = 66;
+                      blue = 55;
                       lightness = 50;
                       position = {
                         x = 51;
