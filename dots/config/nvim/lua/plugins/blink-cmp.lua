@@ -111,97 +111,110 @@ return {
           -- 	},
         },
       },
-    },
 
-    keymap = {
-      preset = "default", -- Opsi ini bisa dilihat disini https://github.com/Saghen/blink.cmp?tab=readme-ov-file#configuration khususnya bagian default-configuration toggle
-      -- ["<Tab>"] = {
-      --   "snippet_forward",
-      --   function() -- sidekick next edit suggestion
-      --     return require("sidekick").nes_jump_or_apply()
-      --   end,
-      --   function() -- if you are using Neovim's native inline completions
-      --     return vim.lsp.inline_completion.get()
-      --   end,
-      --   "fallback",
+      keymap = {
+        preset = "default", -- Opsi ini bisa dilihat disini https://github.com/Saghen/blink.cmp?tab=readme-ov-file#configuration khususnya bagian default-configuration toggle
+        -- ["<Tab>"] = {
+        --   "snippet_forward",
+        --   function() -- sidekick next edit suggestion
+        --     return require("sidekick").nes_jump_or_apply()
+        --   end,
+        --   function() -- if you are using Neovim's native inline completions
+        --     return vim.lsp.inline_completion.get()
+        --   end,
+        --   "fallback",
+        -- },
+        ["<A-1>"] = {
+          function(cmp)
+            cmp.accept({ index = 1 })
+          end,
+        },
+        ["<A-2>"] = {
+          function(cmp)
+            cmp.accept({ index = 2 })
+          end,
+        },
+        ["<A-3>"] = {
+          function(cmp)
+            cmp.accept({ index = 3 })
+          end,
+        },
+        ["<A-4>"] = {
+          function(cmp)
+            cmp.accept({ index = 4 })
+          end,
+        },
+        ["<A-5>"] = {
+          function(cmp)
+            cmp.accept({ index = 5 })
+          end,
+        },
+        ["<A-6>"] = {
+          function(cmp)
+            cmp.accept({ index = 6 })
+          end,
+        },
+        ["<A-7>"] = {
+          function(cmp)
+            cmp.accept({ index = 7 })
+          end,
+        },
+        ["<A-8>"] = {
+          function(cmp)
+            cmp.accept({ index = 8 })
+          end,
+        },
+        ["<A-9>"] = {
+          function(cmp)
+            cmp.accept({ index = 9 })
+          end,
+        },
+      },
+
+      -- completion = {
+      --   documentation = {
+      --     window = {
+      --       border = "single",
+      --     },
+      --   },
+      --   menu = {
+      --     border = "single",
+      --     scrollbar = false,
+      --     draw = {
+      --       columns = { { "item_idx" }, { "kind_icon" }, { "label", "label_description", gap = 1 } },
+      --       components = {
+      --         item_idx = {
+      --           text = function(ctx)
+      --             return tostring(ctx.idx)
+      --           end,
+      --           highlight = "BlinkCmpItemIdx", -- optional, only if you want to change its color
+      --           width = { fill = false },
+      --         },
+      --         -- label = { width = { fill = false } }, -- default is true
+      --         label_description = { width = { fill = true } },
+      --         -- kind_icon = { width = { fill = false } },
+      --       },
+      --     },
+      --   },
       -- },
-      ["<A-1>"] = {
-        function(cmp)
-          cmp.accept({ index = 1 })
-        end,
-      },
-      ["<A-2>"] = {
-        function(cmp)
-          cmp.accept({ index = 2 })
-        end,
-      },
-      ["<A-3>"] = {
-        function(cmp)
-          cmp.accept({ index = 3 })
-        end,
-      },
-      ["<A-4>"] = {
-        function(cmp)
-          cmp.accept({ index = 4 })
-        end,
-      },
-      ["<A-5>"] = {
-        function(cmp)
-          cmp.accept({ index = 5 })
-        end,
-      },
-      ["<A-6>"] = {
-        function(cmp)
-          cmp.accept({ index = 6 })
-        end,
-      },
-      ["<A-7>"] = {
-        function(cmp)
-          cmp.accept({ index = 7 })
-        end,
-      },
-      ["<A-8>"] = {
-        function(cmp)
-          cmp.accept({ index = 8 })
-        end,
-      },
-      ["<A-9>"] = {
-        function(cmp)
-          cmp.accept({ index = 9 })
-        end,
-      },
-    },
 
-    -- completion = {
-    --   documentation = {
-    --     window = {
-    --       border = "single",
-    --     },
-    --   },
-    --   menu = {
-    --     border = "single",
-    --     scrollbar = false,
-    --     draw = {
-    --       columns = { { "item_idx" }, { "kind_icon" }, { "label", "label_description", gap = 1 } },
-    --       components = {
-    --         item_idx = {
-    --           text = function(ctx)
-    --             return tostring(ctx.idx)
-    --           end,
-    --           highlight = "BlinkCmpItemIdx", -- optional, only if you want to change its color
-    --           width = { fill = false },
-    --         },
-    --         -- label = { width = { fill = false } }, -- default is true
-    --         label_description = { width = { fill = true } },
-    --         -- kind_icon = { width = { fill = false } },
-    --       },
-    --     },
-    --   },
-    -- },
-
-    completion = {
-      documentation = {
-        window = {
+      completion = {
+        documentation = {
+          window = {
+            border = {
+              { "╭", "FloatBorder" },
+              { "─", "FloatBorder" },
+              { "╮", "FloatBorder" },
+              { "│", "FloatBorder" },
+              { "╯", "FloatBorder" },
+              { "─", "FloatBorder" },
+              { "╰", "FloatBorder" },
+              { "│", "FloatBorder" },
+            },
+          },
+        },
+        menu = {
+          scrollbar = false,
           border = {
             { "╭", "FloatBorder" },
             { "─", "FloatBorder" },
@@ -212,35 +225,22 @@ return {
             { "╰", "FloatBorder" },
             { "│", "FloatBorder" },
           },
-        },
-      },
-      menu = {
-        scrollbar = false,
-        border = {
-          { "╭", "FloatBorder" },
-          { "─", "FloatBorder" },
-          { "╮", "FloatBorder" },
-          { "│", "FloatBorder" },
-          { "╯", "FloatBorder" },
-          { "─", "FloatBorder" },
-          { "╰", "FloatBorder" },
-          { "│", "FloatBorder" },
-        },
-        draw = {
-          columns = { { "item_idx" }, { "label", "label_description", gap = 1 }, { "kind_icon", "kind" } },
-          -- columns = { { "item_idx" }, { "kind_icon" }, { "label", "label_description", gap = 1 } },
-          -- columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind" } },
-          components = {
-            item_idx = {
-              text = function(ctx)
-                return tostring(ctx.idx)
-              end,
-              highlight = "BlinkCmpItemIdx", -- optional, only if you want to change its color
-              width = { fill = false },
+          draw = {
+            columns = { { "item_idx" }, { "label", "label_description", gap = 1 }, { "kind_icon", "kind" } },
+            -- columns = { { "item_idx" }, { "kind_icon" }, { "label", "label_description", gap = 1 } },
+            -- columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind" } },
+            components = {
+              item_idx = {
+                text = function(ctx)
+                  return tostring(ctx.idx)
+                end,
+                highlight = "BlinkCmpItemIdx", -- optional, only if you want to change its color
+                width = { fill = false },
+              },
+              label = { width = { fill = false } }, -- default is true
+              label_description = { width = { fill = true } },
+              kind_icon = { width = { fill = false } },
             },
-            label = { width = { fill = false } }, -- default is true
-            label_description = { width = { fill = true } },
-            kind_icon = { width = { fill = false } },
           },
         },
       },
