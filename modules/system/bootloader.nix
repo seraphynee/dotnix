@@ -1,13 +1,30 @@
-{ __findFile, inputs, ... }:
+{
+  __findFile,
+  inputs,
+  lib,
+  ...
+}:
 {
   den.aspects.system._.bootloader = {
     provides = {
+      grub.nixos = {
+        boot.loader = {
+          systemd-boot.enable = lib.mkDefault false;
+          grub = {
+            enable = lib.mkDefault true;
+            device = lib.mkDefault "";
+          };
+          timeout = 3; # Show the boot menu for 3 seconds.
+        };
+      };
+
       systemd-boot.nixos = {
         boot = {
           loader = {
+            grub.enable = lib.mkForce false;
             systemd-boot = {
               enable = true; # Enable systemd-boot as the bootloader.
-              # configurationLimit = 10; # Keep the latest 10 boot entries.
+              configurationLimit = 10; # Keep the latest 10 boot entries.
               editor = false; # Disable editing kernel parameters at boot.
             };
             efi.canTouchEfiVariables = true; # Allow updating EFI NVRAM boot entries.
@@ -36,6 +53,7 @@
               editor = false; # Disable editing kernel parameters at boot.
 
             };
+            boot.loader.grub.enable = lib.mkForce false;
             boot.lanzaboote = {
               enable = true;
               pkiBundle = "/etc/secureboot";

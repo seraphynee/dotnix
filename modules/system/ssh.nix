@@ -17,6 +17,8 @@
         settings = {
           AllowAgentForwarding = "yes";
           PasswordAuthentication = false;
+          KbdInteractiveAuthentication = false;
+          PermitRootLogin = "no";
         };
       };
     };

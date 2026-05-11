@@ -15,7 +15,7 @@ let
     esquire = ../../secrets/esquire/secrets.yaml;
     mbp = ../../secrets/mbp/secrets.yaml;
     acerus = ../../secrets/acerus/secrets.yaml;
-
+    vps = ../../secrets/vps/secrets.yaml;
   };
 
   commonSopsPackages =
@@ -154,6 +154,18 @@ in
     };
 
     provides = {
+      vps = {
+        includes = [ <secrets/sops> ];
+
+        nixos = mkNixosSops {
+          defaultSopsFile = hostSopsFile.vps;
+          secrets = {
+            "passwords/${constants.user_vps}" = {
+              neededForUsers = true;
+            };
+          };
+        };
+      };
       esquire = {
         includes = [ <secrets/sops> ];
 

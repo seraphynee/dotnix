@@ -29,3 +29,7 @@ creation_rules:
           - *acerus
           - *spy
           - *mca
+  - path_regex: ^secrets/vps/.*\.yaml$
+    key_groups:
+      - age:
+          - *spy
