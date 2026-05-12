@@ -7,6 +7,7 @@ keys:
     - &mbp age1enfye6t5navcpazam4xqvnqkx8ytm3rld7py65uwwhq88mjszpqqrpkvzw
     - &esquire age1h300zj028glm4592mtyj0k82ys6k3mnckrdlu2x22zqhl0z3qepsv9m3ef
     - &acerus age1y0q5pjaal8w9amxtk5rx6jj24n83fgd6ey8q7tyuf2cetk8h3v7smdx27w
+    - &vps age1fndkem8hj9xyurrwtnc2mk8clzw5utlg8j7sqwnfh2gfwzr3y5nqnv8jnw
 creation_rules:
   - path_regex: ^secrets/shared/.*\.yaml$
     key_groups:
@@ -32,4 +33,5 @@ creation_rules:
   - path_regex: ^secrets/vps/.*\.yaml$
     key_groups:
       - age:
+          - *vps
           - *spy
