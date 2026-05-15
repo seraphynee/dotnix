@@ -51,6 +51,7 @@
   lwh_sublayers (layer-while-held sublayers)
 
   spc_ly3 (tap-hold $tap-time $hold-time spc @lwh_symbols)
+  thl-space-sublayers (tap-hold $tap-time $hold-time spc @lwh_sublayers)
   thl-cap-nav (tap-hold $tap-time $hold-time esc @lwh_nav)
   ;; thl-ret-sublayers (tap-hold $tap-time $hold-time ret @lwh_sublayers)
   thl-ret-nums (tap-hold $tap-time $hold-time ret @lwh_nums)
