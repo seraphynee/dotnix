@@ -41,6 +41,25 @@ let
 
         # services.fwupd.enable = true;
         services.hardware.bolt.enable = true;
+
+        services.pipewire.wireplumber = {
+          enable = true;
+          extraConfig."51-acerus-internal-speakers" = {
+            "device.profile.priority.rules" = [
+              {
+                matches = [
+                  {
+                    "device.name" = "alsa_card.pci-0000_00_1f.3-platform-skl_hda_dsp_generic";
+                  }
+                ];
+                actions.update-props.priorities = [
+                  "HiFi (HDMI1, HDMI2, HDMI3, Mic1, Mic2, Speaker)"
+                  "HiFi (HDMI1, HDMI2, HDMI3, Headphones, Mic1, Mic2)"
+                ];
+              }
+            ];
+          };
+        };
       };
 
     includes = [
