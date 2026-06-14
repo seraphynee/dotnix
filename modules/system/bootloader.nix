@@ -49,7 +49,7 @@
 
             boot.loader.systemd-boot = {
               enable = lib.mkForce false; # Let Lanzaboote manage systemd-boot to avoid conflicts.
-              # configurationLimit = 10; # Keep the latest 10 boot entries.
+              configurationLimit = 10; # Keep the latest 10 boot entries.
               editor = false; # Disable editing kernel parameters at boot.
 
             };
