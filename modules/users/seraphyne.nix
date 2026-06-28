@@ -41,6 +41,7 @@
       <shell/worktrunk>
       <shell/yazi>
       <shell/zellij>
+      <shell/herdr>
     ];
 
     nixos =

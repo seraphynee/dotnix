@@ -358,6 +358,26 @@
         "type": "github"
       }
     },
+    "herdr": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1782561978,
+        "narHash": "sha256-G7G06oNOQD58hubEVFqLZkxHfPgBuI4yD6kDyY/lSgI=",
+        "owner": "ogulcancelik",
+        "repo": "herdr",
+        "rev": "4b650a12c74a6121bcbc0933d9d31c19b2aeac28",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ogulcancelik",
+        "repo": "herdr",
+        "type": "github"
+      }
+    },
     "hjem": {
       "inputs": {
         "nix-darwin": "nix-darwin",
@@ -926,6 +946,7 @@
         "flake-file": "flake-file",
         "flake-parts": "flake-parts",
         "helium": "helium",
+        "herdr": "herdr",
         "hjem": "hjem",
         "home-manager": "home-manager",
         "homebrew-cask": "homebrew-cask",
