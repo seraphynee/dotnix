@@ -12,7 +12,7 @@ let
 in
 {
   den.aspects.lib.provides = {
-    define-hostname = parametric.exactly {
+    define-hostname = {
       description = ''
         Automatically set hostname using den's host configuration
       '';
@@ -34,7 +34,7 @@ in
       ];
     };
 
-    define-hardware = parametric.exactly {
+    define-hardware = {
       description = ''
         Automatically set hardware configuration using nixos-facter
       '';
@@ -62,7 +62,7 @@ in
       ];
     };
 
-    define-user = parametric {
+    define-user = {
       description = ''
         Defines a user at OS and Home levels and automatically sets authorized keys and user password.
       '';
