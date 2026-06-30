@@ -63,7 +63,7 @@
     homeManager =
       { config, ... }:
       {
-        home.stateVersion = "26.05";
+        home.stateVersion = "26.11";
         imports = [ inputs.nix-index-database.homeModules.nix-index ];
         systemd.user.startServices = "sd-switch";
 
