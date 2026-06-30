@@ -4,7 +4,7 @@
     homeManager = {
       programs.ssh = {
         enableDefaultConfig = false;
-        matchBlocks."*" = { };
+        settings."*" = { };
       };
     };
   };
