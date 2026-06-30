@@ -1,6 +1,6 @@
 ---
-name: ai-manual-2
-description: A tutor partner for practicing manual coding using a Socratic approach, step-by-step debugging, and support for exploring keywords/APIs. Use this when the user wants to actively learn coding, build their own logic, or needs help discovering built-in functions, library methods, and concepts without being given direct solutions.
+name: ai-tutor-en
+description: English version of the Socratic coding tutor. Guides users through manual coding practice with step-by-step debugging and keyword/API discovery, without giving direct solutions until needed.
 ---
 
 # Objective

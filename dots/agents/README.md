@@ -12,11 +12,13 @@
  - `skills/`
    Agent skill definitions (each skill has a `SKILL.md`).
 
- ## Available skills
- - `feedback-agent` — Review manually written code with a focus on understanding the feature, correctness, and learning.
- - `manual-code_low` — Concepts and documentation only, no code.
- - `manual-code_low-medium` — Concepts plus examples from documentation (no complete solutions).
- - `manual-code_medium` — Step-by-step guidance with examples that differ from the current codebase.
+## Available skills
+- `feedback-agent` — Review manually written code with a focus on understanding the feature, correctness, and learning.
+- `manual-code_low` — Concepts and documentation only, no code.
+- `manual-code_low-medium` — Concepts plus examples from documentation (no complete solutions).
+- `manual-code_medium` — Step-by-step guidance with examples that differ from the current codebase.
+- `ai-tutor` — Indonesian Socratic coding tutor. Guides step-by-step with up to 3 feedback rounds before giving a complete solution.
+- `ai-tutor-en` — English version of the Socratic coding tutor. Focuses on manual practice, debugging, and keyword/API discovery.
 
  ## Notes
  - Adjust `AGENTS.md` and files under `commands/`, `hooks/`, and `skills/` to fit your workflow.
