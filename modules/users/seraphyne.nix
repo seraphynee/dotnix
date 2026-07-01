@@ -32,6 +32,7 @@
       <shell/hunk>
       <shell/jujutsu/seraphyne>
       <shell/lazygit>
+      <shell/my-scripts>
       <shell/nh>
       <shell/neovim>
       <shell/ocr>
