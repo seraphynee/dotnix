@@ -1,10 +1,8 @@
 { __findFile, inputs, ... }: {
   den.aspects.shell._.herdr = {
-    homeManager =
-      _:
-      {
-        xdg.configFile."herdr/config.toml".source = ../../dots/config/herdr/config.toml;
-      };
+    homeManager = _: {
+      xdg.configFile."herdr/config.toml".source = ../../dots/config/herdr/config.toml;
+    };
 
     nixos =
       { pkgs, ... }:

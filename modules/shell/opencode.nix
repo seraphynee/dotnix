@@ -20,6 +20,7 @@
           octZshCommand = "OPENCODE_CONFIG_DIR=$HOME/.config/opencode-thinking opencode";
           opencodeConfig = builtins.toJSON {
             "$schema" = "https://opencode.ai/config.json";
+            plugin = [ "superpowers@git+https://github.com/obra/superpowers.git" ];
             mcp = {
               "Ref" = {
                 type = "remote";
