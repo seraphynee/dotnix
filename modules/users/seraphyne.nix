@@ -28,6 +28,8 @@
       <shell/fish>
       <shell/git>
       <shell/helix>
+      <shell/herdr>
+      <shell/hunk>
       <shell/jujutsu/seraphyne>
       <shell/lazygit>
       <shell/nh>
@@ -41,7 +43,6 @@
       <shell/worktrunk>
       <shell/yazi>
       <shell/zellij>
-      <shell/herdr>
     ];
 
     nixos =
