@@ -15,6 +15,13 @@
     ])
   '';
 
+  flake-file.nixConfig = {
+    extra-substituters = [ "https://cache.numtide.com" ];
+    extra-trusted-public-keys = [
+      "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+    ];
+  };
+
   flake-file.inputs = {
     # Core
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
@@ -134,10 +141,6 @@
 
     momoi-say.url = "github:haruki-nikaidou/momoisay-rs";
 
-    nixpkgs-master = {
-      url = "github:NixOS/nixpkgs/master";
-    };
-
     msnap = {
       url = "github:atheeq-rhxn/msnap";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -162,5 +165,7 @@
       url = "github:modem-dev/hunk";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    llm-agents.url = "github:numtide/llm-agents.nix";
   };
 }

@@ -21,7 +21,6 @@
       <shell/_1password>
       <shell/ai>
       <shell/bash>
-      <shell/codex>
       <shell/env>
       <shell/espanso>
       <shell/fastfetch>
@@ -32,11 +31,11 @@
       <shell/hunk>
       <shell/jujutsu/seraphyne>
       <shell/lazygit>
+      <shell/llm_agents>
       <shell/my-scripts>
       <shell/nh>
       <shell/neovim>
       <shell/ocr>
-      <shell/opencode>
       <shell/opencommit>
       <shell/starship>
       <shell/tmux>

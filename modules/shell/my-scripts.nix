@@ -1,5 +1,4 @@
-_:
-{
+_: {
   den.aspects.shell._.my-scripts.homeManager =
     { pkgs, ... }:
     let
