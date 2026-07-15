@@ -10,9 +10,6 @@ let
     context7 = {
       type = "remote";
       url = "https://mcp.context7.com/mcp";
-      headers = {
-        CONTEXT7_API_KEY = config.sops.placeholder."llm/context7_apikey";
-      };
       enabled = true;
     };
 
@@ -64,26 +61,14 @@ let
 
   mkCodexMcpServer =
     name: server:
+    let
+      enabled = if server ? enabled then server.enabled else true;
+    in
     ''
       [mcp_servers.${name}]
       url = "${server.url}"
-    ''
-    + (
-      if server ? enabled && !server.enabled then
-        ''
-          enabled = false
-        ''
-      else
-        ""
-    )
-    + (
-      if name == "context7" then
-        ''
-          http_headers = { "CONTEXT7_API_KEY" = "${server.headers.CONTEXT7_API_KEY}" }
-        ''
-      else
-        ""
-    );
+      enabled = ${if enabled then "true" else "false"}
+    '';
 
   mkCodexConfig =
     {
@@ -133,6 +118,64 @@ let
       plugin = [ "superpowers@git+https://github.com/obra/superpowers.git" ];
       mcp = mkMcpServers config;
     };
+
+  mkGrokMcpServer =
+    name: server:
+    let
+      enabled = if server ? enabled then server.enabled else true;
+      headers =
+        if server ? headers && server.headers != { } then
+          let
+            headerEntries = builtins.attrValues (
+              builtins.mapAttrs (k: v: ''"${k}" = "${v}"'') server.headers
+            );
+          in
+          ''
+            headers = { ${builtins.concatStringsSep ", " headerEntries} }
+          ''
+        else
+          "";
+    in
+    ''
+      [mcp_servers.${name}]
+      url = "${server.url}"
+      enabled = ${if enabled then "true" else "false"}
+    ''
+    + headers;
+
+  mkGrokConfig =
+    config:
+    let
+      servers = mkMcpServers config;
+    in
+    ''
+      [cli]
+      installer = "internal"
+
+      [ui]
+      compact_mode         = false
+      fork_secondary_model = "grok-build"
+      max_thoughts_width   = 120
+      permission_mode      = "always-approve"
+      yolo                 = false
+
+      [marketplace]
+      official_marketplace_auto_installed = true
+
+      [[marketplace.sources]]
+        git  = "https://github.com/xai-org/plugin-marketplace.git"
+        name = "xAI Official"
+
+      [telemetry]
+      trace_upload = false
+
+      [harness]
+      disable_codebase_upload = true
+
+      ${builtins.concatStringsSep "\n" (
+        map (name: mkGrokMcpServer name servers.${name}) (builtins.attrNames servers)
+      )}
+    '';
 in
 {
   den.aspects.shell._.llm_agents =
@@ -149,6 +192,7 @@ in
           };
 
           opencodeConfig = mkOpencodeConfig config;
+          grokConfig = mkGrokConfig config;
           octFishCommand = "env OPENCODE_CONFIG_DIR=$HOME/.config/opencode-thinking opencode";
           octZshCommand = "OPENCODE_CONFIG_DIR=$HOME/.config/opencode-thinking opencode";
         in
@@ -157,6 +201,12 @@ in
             path = "${config.home.homeDirectory}/.codex/config.toml";
             mode = "0600";
             content = codexConfig;
+          };
+
+          sops.templates."grok-config.toml" = {
+            path = "${config.home.homeDirectory}/.grok/config.toml";
+            mode = "0600";
+            content = grokConfig;
           };
 
           sops.templates."opencode-config.json" = {
