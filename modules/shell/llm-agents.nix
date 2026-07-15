@@ -176,6 +176,13 @@ let
         map (name: mkGrokMcpServer name servers.${name}) (builtins.attrNames servers)
       )}
     '';
+
+  # Global pi agent settings (~/.config/pi/settings.json via PI_CODING_AGENT_DIR).
+  # Packages listed here are installed automatically on first use if missing.
+  mkPiConfig = builtins.toJSON {
+    theme = "dark";
+    packages = [ "npm:pi-mcp-adapter" ];
+  };
 in
 {
   den.aspects.shell._.llm_agents =
@@ -193,6 +200,7 @@ in
 
           opencodeConfig = mkOpencodeConfig config;
           grokConfig = mkGrokConfig config;
+          piConfig = mkPiConfig;
           octFishCommand = "env OPENCODE_CONFIG_DIR=$HOME/.config/opencode-thinking opencode";
           octZshCommand = "OPENCODE_CONFIG_DIR=$HOME/.config/opencode-thinking opencode";
         in
@@ -225,6 +233,11 @@ in
             source = ../../dots/config/opencode-thinking;
             recursive = true;
           };
+
+          # PI_CODING_AGENT_DIR relocates global agent config from ~/.pi/agent.
+          home.sessionVariables.PI_CODING_AGENT_DIR = "${config.xdg.configHome}/pi";
+
+          xdg.configFile."pi/settings.json".text = piConfig;
 
           programs = {
             fish.shellAliases = {
