@@ -4,7 +4,7 @@ let
     Ref = {
       type = "remote";
       url = "https://api.ref.tools/mcp?apiKey=${config.sops.placeholder."llm/ref_apikey"}";
-      enabled = true;
+      enabled = false;
     };
 
     context7 = {
@@ -20,14 +20,14 @@ let
       type = "remote";
       url = "https://mcp.deepwiki.com/mcp";
       headers = { };
-      enabled = true;
+      enabled = false;
     };
 
     exa = {
       type = "remote";
       url = "https://mcp.exa.ai/mcp";
       headers = { };
-      enabled = true;
+      enabled = false;
     };
 
     gitmcp = {
@@ -52,7 +52,7 @@ let
     tavily = {
       type = "remote";
       url = "https://mcp.tavily.com/mcp/?tavilyApiKey=${config.sops.placeholder."llm/tavily_apikey"}";
-      enabled = true;
+      enabled = false;
     };
 
     ticktick = {
