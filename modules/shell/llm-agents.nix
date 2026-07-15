@@ -183,6 +183,39 @@ let
     theme = "dark";
     packages = [ "npm:pi-mcp-adapter" ];
   };
+
+  # Cursor Agent CLI (~/.cursor/cli-config.json).
+  mkCursorCliConfig = builtins.toJSON {
+    version = 1;
+    editor = {
+      vimMode = false;
+    };
+    permissions = {
+      allow = [ ];
+      deny = [ ];
+    };
+  };
+
+  # Cursor Agent CLI MCP (~/.cursor/mcp.json).
+  # Cursor uses { mcpServers.<name> = { url, headers? } } — no enabled flag;
+  # disable unused servers with `agent mcp disable <name>`.
+  mkCursorMcpConfig =
+    config:
+    let
+      servers = mkMcpServers config;
+      toCursorServer =
+        _name: server:
+        { url = server.url; }
+        // (
+          if server ? headers && server.headers != { } then
+            { headers = server.headers; }
+          else
+            { }
+        );
+    in
+    builtins.toJSON {
+      mcpServers = builtins.mapAttrs toCursorServer servers;
+    };
 in
 {
   den.aspects.shell._.llm_agents =
@@ -201,6 +234,8 @@ in
           opencodeConfig = mkOpencodeConfig config;
           grokConfig = mkGrokConfig config;
           piConfig = mkPiConfig;
+          cursorCliConfig = mkCursorCliConfig;
+          cursorMcpConfig = mkCursorMcpConfig config;
           octFishCommand = "env OPENCODE_CONFIG_DIR=$HOME/.config/opencode-thinking opencode";
           octZshCommand = "OPENCODE_CONFIG_DIR=$HOME/.config/opencode-thinking opencode";
         in
@@ -228,6 +263,14 @@ in
             mode = "0600";
             content = opencodeConfig;
           };
+
+          sops.templates."cursor-mcp.json" = {
+            path = "${config.home.homeDirectory}/.cursor/mcp.json";
+            mode = "0600";
+            content = cursorMcpConfig;
+          };
+
+          home.file.".cursor/cli-config.json".text = cursorCliConfig;
 
           xdg.configFile."opencode-thinking" = {
             source = ../../dots/config/opencode-thinking;
@@ -258,6 +301,7 @@ in
         {
           environment.systemPackages = [
             llmPackages.codex
+            llmPackages.cursor-agent
             llmPackages.grok
             llmPackages.opencode
             llmPackages.pi
