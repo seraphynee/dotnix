@@ -1,27 +1,85 @@
+#  █████╗ ██████╗ ██████╗ ██████╗
+# ██╔══██╗██╔══██╗██╔══██╗██╔══██╗
+# ███████║██████╔╝██████╔╝██████╔╝
+# ██╔══██║██╔══██╗██╔══██╗██╔══██╗
+# ██║  ██║██████╔╝██████╔╝██║  ██║
+# ╚═╝  ╚═╝╚═════╝ ╚═════╝ ╚═╝  ╚═╝
+# abbreviations - user-defined words that are replaced with longer phrases when entered
+# https://fishshell.com/docs/current/cmds/abbr.html
+# cSpell:disable
+
+# Move through additional `%` placeholders left behind by --set-cursor.
+function __fish_abbr_cursor_next
+    set -l buffer $argv[1]
+    set -l cursor $argv[2]
+    set -l suffix (string sub --start (math $cursor + 1) -- "$buffer" | string collect)
+    set -l marker_offset (string match --index --regex '%' "$suffix" | string split ' ')[1]
+
+    if test -z "$marker_offset"
+        return 1
+    end
+
+    set -g __fish_abbr_cursor_next_position (math $cursor + $marker_offset - 1)
+    set -l marker_index $__fish_abbr_cursor_next_position
+    set -l before
+    if test $marker_index -gt 0
+        set before (string sub --start 1 --end $marker_index -- "$buffer" | string collect)
+    end
+    set -l after (string sub --start (math $marker_index + 2) -- "$buffer" | string collect)
+    set -g __fish_abbr_cursor_next_buffer "$before$after"
+end
+
+function __fish_abbr_cursor_next_widget
+    set -l buffer (commandline | string collect)
+    set -l cursor (commandline --cursor)
+
+    __fish_abbr_cursor_next "$buffer" "$cursor"; or return 0
+    commandline --replace "$__fish_abbr_cursor_next_buffer"
+    commandline --cursor "$__fish_abbr_cursor_next_position"
+    commandline -f repaint
+    set -e __fish_abbr_cursor_next_buffer __fish_abbr_cursor_next_position
+end
+
+if status is-interactive
+    # Advance through additional `%` placeholders with F2.
+    bind -M insert f2 __fish_abbr_cursor_next_widget
+end
+
+abbr -a --set-cursor ehc "echo % | pwd %"
+abbr --add testmulti --set-cursor 'echo % | pwd %'
+
 # better defaults
 abbr --add .. "cd .."
 abbr --add ... "cd ../.."
 abbr --add .... "cd ../../.."
 abbr --add ..... "cd ../../../.."
+abbr --add c clear
 abbr --add cat bat
-abbr --add cl clear
-abbr --add che chezmoi
 abbr --add nv nvim
 abbr --add lzg lazygit
 abbr --add lzd lazydocker
-abbr --add mux tmuxinator
-abbr --add fier tmuxifier
-abbr --add clrnvses 'rm -rf ~/.local/share/nvim/sessions/*'
 abbr --add ax 'chmod a+x'
 abbr --add untar 'tar -zxvf'
 abbr --add mktar 'tar -cvzf'
 abbr --add numfiles 'echo (ls -1 | wc -l)'
-abbr --add bkzsh 'bindkey | fzf'
-abbr --add bkfsh 'bind | fzf'
-abbr --add bktmux 'tmux list-keys | fzf'
-abbr --add dotf 'cd ~/.local/share/chezmoi'
-abbr --add conf 'cd ~/.config/'
+abbr --add bkfsh 'bind | sk'
+abbr --add bktmux 'tmux list-keys | sk'
+if type -q gping
+    abbr --add ping gping
+end
+
+# Personal abbreviations (unique only — shared defaults live in "better defaults" above)
 abbr --add exf 'exec fish'
+abbr --add dotf 'cd $XDG_DATA_HOME/chezmoi'
+abbr --add conf --set-cursor 'cd $XDG_CONFIG_HOME/%'
+abbr --add clrnvses 'rm -rf $XDG_DATA_HOME/nvim/sessions/*'
+abbr --add restart-kanata 'sudo launchctl kickstart -k system/com.example.kanata'
+abbr --add fixmounts "sudo automount -vcu"
+abbr --add fsh-alias fast-theme
+abbr --add ghh "git help"
+abbr --add prgl pretty_git_log
+abbr --add run-help man
+abbr --add dopr "doppler run -- "
 
 # pueue
 abbr --add pue pueue
@@ -76,7 +134,7 @@ abbr --add bd "bun run dev"
 abbr --add bdocs "bun run docs"
 abbr --add bfmt "bun run format"
 abbr --add bfu "brew upgrade --formula"
-# abbr "bfzf"="bun run \"\$(jq -r '.scripts | keys[]' package.json | fzf --no-border)\""
+
 abbr --add bga "bun add --global"
 abbr --add bgls "bun pm ls --global"
 abbr --add bgrm "bun remove --global"
@@ -134,7 +192,7 @@ abbr --add dndcn "docker network disconnect"
 abbr --add dni "docker network inspect"
 abbr --add dnls "docker network ls"
 abbr --add dnrm "docker network rm"
-abbr --add dotf "cd ~/.local/share/chezmoi"
+abbr --add dotf "cd $XDG_DATA_HOME/chezmoi"
 abbr --add dpo "docker container port"
 abbr --add dps "docker ps"
 abbr --add dpsa "docker ps -a"
@@ -164,7 +222,6 @@ abbr --add llt "eza -lah --classify=always --tree --level=2 --icons=auto"
 abbr --add ls "eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
 abbr --add lt "eza --tree --level=2 --icons=auto"
 abbr --add lx "eza -lbhHigUmuSa@ --icons=auto --git"
-abbr --add cyh "eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
 
 # npm
 abbr --add npmD "npm i -D "
@@ -206,10 +263,9 @@ abbr --add tailmbp "ssh tailmbp"
 abbr --add tailpc "ssh tailpc-nixos"
 abbr --add tailprefs "tailscale debug prefs"
 abbr --add ax "chmod a+x"
-abbr --add bktmux "tmux list-keys | fzf"
-abbr --add bkfish "bind | fzf"
+abbr --add bktmux "tmux list-keys | sk"
+abbr --add bkfish "bind | sk"
 abbr --add hidedot "defaults write com.apple.finder AppleShowAllFiles FALSE"
-abbr --add cpwd "echo $(pwd) | pbcopy"
 abbr --add bsra "bsr --all"
 abbr --add caff "caffeinate -ism"
 abbr --add cleanupLS "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"
@@ -265,7 +321,8 @@ abbr --add gcb "git checkout -b"
 abbr --add gcd "git checkout \$(git_develop_branch)"
 abbr --add gcf "git config --list"
 abbr --add gcfu "git commit --fixup"
-abbr --add gcl "git clone --recurse-submodules"
+abbr --add gcl "git clone"
+abbr --add gclr "git clone --recurse-submodules"
 abbr --add gclean "git clean --interactive -d"
 abbr --add gclf "git clone --recursive --shallow-submodules --filter=blob:none --also-filter-submodules"
 abbr --add gcm "git checkout \$(git_main_branch)"
@@ -324,7 +381,7 @@ abbr --add glol 'git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s 
 abbr --add glolaa 'git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset" --all'
 abbr --add glola 'git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset" --branches --remotes --tags'
 abbr --add glols 'git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset" --stat'
-abbr --add glp _git_log_prettily
+abbr --add glp 'git log-patch'
 abbr --add gluc "git pull upstream \$(git_current_branch)"
 abbr --add glum "git pull upstream \$(git_main_branch)"
 abbr --add gm "git merge"
@@ -390,7 +447,7 @@ abbr --add grup "git remote update"
 abbr --add grv "git remote --verbose"
 abbr --add gsb "git status --short --branch"
 abbr --add gsd "git svn dcommit"
-abbr --add gsh "git show"
+abbr --add gsh "git sh"
 abbr --add gsi "git submodule init"
 abbr --add gsps "git show --pretty=short --show-signature"
 abbr --add gsr "git svn rebase"
@@ -446,17 +503,24 @@ abbr --add gwtrm "git worktree remove"
 # Jujutsu
 abbr -a j jj # I use `jj` to exit insert mode
 abbr -a jh 'jj -h'
+abbr -a ji jjui
 
 abbr -a jst 'jj status'
-abbr -a jsh --set-cursor 'jj show %'
+abbr -a jab --set-cursor 'jj abandon %'
+abbr -a jabso 'jj absorb'
+abbr -a je --set-cursor 'jj edit %'
+
+abbr -a jsh --set-cursor 'jj show -r "@%"'
+abbr -a jshs --set-cursor 'jj show -s -r "@%"'
+abbr -a jshst --set-cursor 'jj show -r "@%" --stat'
 
 abbr -a jbl 'jj bookmark list -a'
 abbr -a jbm --set-cursor 'jj bookmark move % --to @-'
 abbr -a jbmm 'jj bookmark move main --to @-'
 abbr -a jbsc 'jj bookmark set -r @'
 
-abbr -a jdf 'jj diff'
-abbr -a je --set-cursor 'jj edit %'
+abbr -a jdf --set-cursor 'jj diff -r "@%"'
+abbr -a jdfs --set-cursor 'jj diff -s -r "@%"'
 
 abbr -a jgf 'jj git fetch'
 abbr -a jgpa 'jj git push'
@@ -466,37 +530,64 @@ abbr -a jgpsm --set-cursor 'jj git push -b main'
 abbr -a jl 'jj log'
 abbr -a jla "jj log 'all()'"
 abbr -a jlt --set-cursor "jj log -T %"
+abbr -a jls --set-cursor 'jj log -s'
+abbr -a jlsr --set-cursor 'jj log -s -r "@%"'
+abbr -a jlsp --set-cursor 'jj log -s -p'
+abbr -a jlspr --set-cursor 'jj log -s -p -r "@%"'
+abbr -a jlp --set-cursor 'jj log -p'
+abbr -a jlps --set-cursor 'jj log -p -s'
+abbr -a jlpsr --set-cursor 'jj log -p -s -r "@%"'
 
-abbr -a jrh --set-cursor 'jj rebase -h'
-abbr -a jrs --set-cursor 'jj rebase -s % -d @-'
-abbr -a jrr --set-cursor 'jj rebase -r % -o '
+abbr -a jrs --set-cursor 'jj restore %'
+abbr -a jrsi 'jj restore -i'
 
-abbr -a jsp 'jj split'
-abbr -a jspi 'jj split -i'
+abbr -a jrb --set-cursor 'jj rebase %'
+abbr -a jrbh --set-cursor 'jj rebase -h'
+abbr -a jrbs --set-cursor 'jj rebase -s % -o @-'
+abbr -a jrbr --set-cursor 'jj rebase -r % -o '
 
-abbr -a jsq 'jj squash'
-abbr -a jsqi 'jj squash -i'
-abbr -a jsqc --set-cursor 'jj squash -t %'
+abbr -a jsp --set-cursor 'jj split -r "@%"'
+abbr -a jspi --set-cursor 'jj split -i -r "@%"'
+abbr -a jspa --set-cursor 'jj split -A %'
+abbr -a jspb --set-cursor 'jj split -B %'
 
-abbr -a jab --set-cursor 'jj abandon %'
+abbr -a jsq --set-cursor 'jj squash -r "@%"'
+abbr -a jsqi --set-cursor 'jj squash -i -r "@%"'
+abbr -a jsqft --set-cursor 'jj squash -f "@%" -t "%"'
+abbr -a jsqift --set-cursor 'jj squash -i -f "@%" -t "%"'
 
-abbr -a jd --set-cursor 'jj desc -m "%"'
-abbr -a jdc 'jj desc -m "$(koji --stdout)"'
+abbr -a jd --set-cursor 'jj desc -m "%" -r "@%"'
+abbr -a jdc --set-cursor 'jj desc -m "$(koji --stdout)" -r "@%"'
 
 abbr -a jc 'jj commit'
 abbr -a jcc 'jj commit -m "$(koji --stdout)"'
 
 abbr -a jn --set-cursor 'jj new %'
+abbr -a jna --set-cursor 'jj new -A %'
+abbr -a jnb --set-cursor 'jj new -B %'
 abbr -a jnc 'jj new -m "$(koji --stdout)"'
 
 abbr -a judo 'jj undo'
-abbr -a jopl 'jj op log'
-abbr -a jevl 'jj evolog'
+
+abbr -a jop --set-cursor 'jj op %'
+abbr -a jopl --set-cursor 'jj op log %'
+abbr -a jopd --set-cursor 'jj op diff %'
+abbr -a jopa --set-cursor 'jj op abandon %'
+abbr -a joprs --set-cursor 'jj op restore %'
+abbr -a joprv --set-cursor 'jj op revert %'
+
+abbr -a jevl --set-cursor 'jj evolog -r "@%"'
+abbr -a jevlp --set-cursor 'jj evolog -p -r "@%"'
+
+# hunk
+abbr -a hd --set-cursor 'hunk diff "@%"'
+abbr -a hs --set-cursor "hunk show '@%'"
 
 # tmux
 abbr --add tx tmux
-abbr --add tl "tmux list-sessions"
 abbr --add ts --set-cursor 'tmux new -s "%"'
+abbr --add tl "tmux list-sessions"
+abbr --add tkss --set-cursor 'tmux kill-session -t "%"'
 abbr --add tksv "tmux kill-server"
 
 # tmuxifier
@@ -516,33 +607,9 @@ abbr --add zlls "zellij list-sessions"
 abbr --add vercel "op plugin run -- vercel"
 abbr --add gh "op plugin run -- gh"
 
-abbr --add chp --set-cursor 'chezmoi apply -P ~/.config/%'
-
-abbr --add untar "tar -zxvf"
 # abbr "urldecode"="python -c \"import sys, urllib as ul; print ul.unquote_plus(sys.argv[1])\""
 abbr --add which-command whence
 
-# Personal abbreviations
+# chezmoi
 abbr --add ch chezmoi
-abbr --add tmuxconf "\$EDITOR ~/.local/share/chezmoi/chezmoi/dot_config/tmux/tmux.conf.tmpl"
-abbr restart-kanata sudo launchctl kickstart -k system/com.example.kanata
-abbr --add nv nvim
-abbr --add nvdot "nvim ~/.local/share/chezmoi"
-abbr --add numfiles "echo \$(ls -1 | wc -l)"
-abbr --add exf "exec fish"
-abbr --add cat bat
-abbr --add cl clear
-abbr --add clrnvses "rm -rf ~/.local/share/nvim/sessions/*"
-abbr --add config "cd ~/.config/"
-abbr --add fier tmuxifier
-abbr --add fixmounts "sudo automount -vcu"
-abbr --add fsh-alias fast-theme
-abbr --add ghh "git help"
-abbr --add lzd lazydocker
-abbr --add lzg lazygit
-abbr --add mktar "tar -cvzf"
-abbr --add mux tmuxinator
-abbr --add ping gping
-abbr --add prgl pretty_git_log
-abbr --add run-help man
-abbr dopr "doppler run -- "
+abbr --add chp --set-cursor 'chezmoi apply -P $XDG_CONFIG_HOME/%'

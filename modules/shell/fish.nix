@@ -3,11 +3,24 @@
     { pkgs, ... }:
     let
       inherit (pkgs.stdenv.hostPlatform) isDarwin isLinux;
+      clipboardCommand =
+        if isDarwin then
+          "pbcopy"
+        else if isLinux then
+          "wl-copy"
+        else
+          "";
 
       commonAliases =
         if isDarwin then
           ''
-            alias cpwd "echo -n $(pwd) | pbcopy"
+            function cpwd
+                if not command -q ${clipboardCommand}
+                    echo "cpwd: ${clipboardCommand} is not available" >&2
+                    return 1
+                end
+                printf '%s' "$PWD" | ${clipboardCommand}
+            end
 
             === DARWIN ===
             alias caff="caffeinate -ism"           # Run command without letting mac sleep
@@ -20,7 +33,13 @@
           ''
         else if isLinux then
           ''
-            alias cpwd "echo -n $(pwd) | wl-copy"
+            function cpwd
+                if not command -q ${clipboardCommand}
+                    echo "cpwd: ${clipboardCommand} is not available" >&2
+                    return 1
+                end
+                printf '%s' "$PWD" | ${clipboardCommand}
+            end
 
             # === LINUX ===
             alias ctl='systemctl'
@@ -56,13 +75,19 @@
 
       xdg.configFile."fish/fish_plugins".source = ../../dots/config/fish/fish_plugins;
       xdg.configFile."fish/conf.d/colors.fish".source = ../../dots/config/fish/conf.d/colors.fish;
+      xdg.configFile."fish/conf.d/atuin.fish".source = ../../dots/config/fish/conf.d/atuin.fish;
+      xdg.configFile."fish/conf.d/bat.fish".source = ../../dots/config/fish/conf.d/bat.fish;
       xdg.configFile."fish/conf.d/common_functions.fish".source =
         ../../dots/config/fish/conf.d/common_functions.fish;
       xdg.configFile."fish/conf.d/common_aliases.fish" = {
         text = commonAliasesFish;
       };
+      xdg.configFile."fish/conf.d/chezmoi.fish".source = ../../dots/config/fish/conf.d/chezmoi.fish;
       xdg.configFile."fish/conf.d/abbreviations.fish".source =
         ../../dots/config/fish/conf.d/abbreviations.fish;
+      xdg.configFile."fish/conf.d/herdr.fish".source = ../../dots/config/fish/conf.d/herdr.fish;
+      xdg.configFile."fish/conf.d/jujutsu.fish".source = ../../dots/config/fish/conf.d/jujutsu.fish;
+      xdg.configFile."fish/conf.d/yazi.fish".source = ../../dots/config/fish/conf.d/yazi.fish;
 
       programs = {
         command-not-found.enable = false;
@@ -82,6 +107,9 @@
             # Untuk vi mode jika diaktifkan
             bind -M insert \eu 'sesh-connect-picker'
             bind -M default \eu 'sesh-connect-picker'
+
+            # Advance through additional % placeholders left by --set-cursor.
+            bind -M insert f2 __fish_abbr_cursor_next_widget
 
           '';
           plugins = [

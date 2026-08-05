@@ -1,3 +1,29 @@
+# ██╔════╝██║   ██║████╗  ██║██╔════╝╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
+# █████╗  ██║   ██║██╔██╗ ██║██║        ██║   ██║██║   ██║██╔██╗ ██║███████╗
+# ██╔══╝  ██║   ██║██║╚██╗██║██║        ██║   ██║██║   ██║██║╚██╗██║╚════██║
+# ██║     ╚██████╔╝██║ ╚████║╚██████╗   ██║   ██║╚██████╔╝██║ ╚████║███████║
+# ╚═╝      ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
+
+function fish_title
+    set -q argv[1]; or set argv fish
+    echo (set -lx fish_prompt_pwd_dir_length 1; prompt_pwd): $argv
+end
+
+function ff
+    # Find file under the current directory
+    find . -name $argv[1]
+end
+
+function ffs
+    # Find file whose name starts with a given string
+    find . -name "$argv[1]*"
+end
+
+function ffe
+    # Find file whose name ends with a given string
+    find . -name "*$argv[1]"
+end
+
 function path
     string split : $PATH
 end
@@ -86,7 +112,7 @@ function whichcli
 
     echo "Other installs :"
     for p in $others
-        set -l source_label PATH
+        set -l source_label "PATH"
         if string match -qr -- '/Cellar/|^/opt/homebrew/|^/usr/local/' $p
             set source_label "Homebrew?"
         end
@@ -97,7 +123,151 @@ function whichcli
     end
 end
 
+function upabbr
+    echo "Resetting zsh-abbr..."
+    rm -rfv "$XDG_CONFIG_HOME/zsh-abbr"
+    if command -q abbr
+        echo "Importing aliases..."
+        abbr import-aliases
+    else
+        echo "Warning: 'abbr' command not found. Skipping import."
+    end
+    echo "Reset complete. Reloading shell now..."
+    exec fish
+end
+
+function alias-select
+    set -l picked (
+        alias | fzf \
+            --prompt="Select Alias > " \
+            --preview="string split -m1 -f2 \"'\" -- {} | string trim --chars=\"'\"" \
+            --preview-window=right:50%:wrap
+    )
+
+    # keluar kalau dibatalkan
+    test -n "$picked"; or return
+
+    # Ambil 'word' (nama alias) dari baris: alias word 'command...'
+    set -l name (string match -r --groups-only '^alias[[:space:]]+(\S+)' -- $picked)
+
+    if test -n "$name"
+        commandline --replace -- $name
+        # Jika lebih suka menambah di posisi kursor (bukan replace):
+        # commandline --insert -- $name
+    end
+end
+
+bind \ce alias-select
+
+
+# Bind ke Ctrl+E
+bind \ce alias-select
+
+function mkcd
+    if test -d $argv[1]
+        echo "It already exists! cd to the directory."
+        cd $argv[1]
+    else
+        mkdir -p $argv[1]; cd $argv[1]
+    end
+end
+
 function mcd
     mkdir -pv $argv[1]
     cd $argv[1]
 end
+
+function su
+    if test (count $argv) -eq 0
+        sudo (history | tail -n1 | string trim)
+    else
+        sudo $argv
+    end
+end
+
+function sshlist
+    awk '$1 ~ /Host$/ {for (i=2; i<=NF; i++) print $i}' ~/.ssh/config
+end
+
+function explain
+    if test (count $argv) -eq 0
+        while read -P "Command: " cmd
+            curl -Gs "https://www.mankier.com/api/explain/?cols="(tput cols) --data-urlencode "q=$cmd"
+        end
+        echo "Bye!"
+    else
+        curl -Gs "https://www.mankier.com/api/explain/?cols="(tput cols) --data-urlencode "q=$argv"
+    end
+end
+
+function md5Check
+    set md5 $argv[1]
+    set file $argv[2]
+    if not command -q md5sum
+        echo "Can not find 'md5sum' utility"
+        return 1
+    end
+    if not test -e $file
+        echo "Can not find $file"
+        return 1
+    end
+    set filemd5 (md5sum $file | awk '{ print $1 }')
+    if test $filemd5 = $md5
+        echo "The two md5 hashes match"
+    else
+        echo "The two md5 hashes do not match"
+    end
+end
+
+function myip
+    set options "icanhazip (Default gateway)" "AWS (Default gateway)" "ipify (VPN)" "ipecho (Bypass VPN)" "Quit"
+    for i in (seq (count $options))
+        echo "$i) $options[$i]"
+    end
+    read -P "Enter a number: " choice
+    switch $choice
+        case 1
+            curl -s https://icanhazip.com
+        case 2
+            curl -s https://checkip.amazonaws.com
+        case 3
+            curl -s https://api.ipify.org
+        case 4
+            curl -s https://ipecho.net/plain
+        case 5
+            return
+        case '*'
+            echo "Invalid option"
+    end
+end
+
+function buf
+    set filename $argv[1]
+    set filetime (date +%Y%m%d_%H%M%S)
+    cp -a $filename "{$filename}_$filetime"
+end
+
+function chgext
+    for f in *.$argv[1]
+        mv $f (string replace ".$argv[1]" ".$argv[2]" $f)
+    end
+end
+
+function escape
+    printf "%s" "$argv" | sed 's/[]\.|$(){}?+*^]/\\&/g'
+end
+
+function urlencode
+    set length (string length -- $argv[1])
+    for i in (seq 1 $length)
+        set c (string sub -s $i -l 1 -- $argv[1])
+        switch $c
+            case [a-zA-Z0-9.~_-]
+                printf "%s" "$c"
+            case '*'
+                printf '%%%02X' (printf "%d" "'$c")
+        end
+    end
+end
+
+alias urldecode='python3 -c "import sys, urllib.parse as ul; print(ul.unquote_plus(sys.argv[1]))"'
