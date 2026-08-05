@@ -1,6 +1,6 @@
 # Task 1 Report: Define Home Manager XDG environment values
 
-Commit: 122f58d9eb3b3095e05d444d7c23bd01ae6687b2
+Commit: e844d736675de5d20c1274816ebd321032c39ce0
 
 ## Files changed
 
