@@ -1,0 +1,24 @@
+function pet-select
+    if not type -q pet; or not type -q sk
+        commandline -f repaint
+        return
+    end
+
+    # Simpan hasil dari pet search ke variable BUFFER
+    set -l buffer (pet search --query (commandline -b))
+    # Set command line ke hasil
+    commandline --replace "$buffer"
+    # Pindahkan cursor ke akhir input
+    commandline --cursor (string length -- "$buffer")
+end
+if type -q pet; and type -q sk
+    # Bind ke Ctrl+F di semua mode
+    bind \cf pet-select  # default (mirip emacs mode)
+    bind -M insert \cf pet-select  # vi insert mode
+    bind -M default \cf pet-select # vi command mode
+end
+
+if type -q pet
+    alias pexec "pet exec -t"
+    alias psc "pet search"
+end

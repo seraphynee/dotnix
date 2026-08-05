@@ -88,6 +88,9 @@
       xdg.configFile."fish/conf.d/herdr.fish".source = ../../dots/config/fish/conf.d/herdr.fish;
       xdg.configFile."fish/conf.d/jujutsu.fish".source = ../../dots/config/fish/conf.d/jujutsu.fish;
       xdg.configFile."fish/conf.d/yazi.fish".source = ../../dots/config/fish/conf.d/yazi.fish;
+      xdg.configFile."fish/conf.d/pet.fish".source = ../../dots/config/fish/conf.d/pet.fish;
+      xdg.configFile."fish/conf.d/sk-git.fish".source = ../../dots/config/fish/conf.d/sk-git.fish;
+      xdg.configFile."fish/conf.d/skim.fish".source = ../../dots/config/fish/conf.d/skim.fish;
 
       programs = {
         command-not-found.enable = false;
