@@ -8,6 +8,14 @@
 let
   inherit (lib) optionalAttrs recursiveUpdate;
 
+  runtimeSecretNames = [
+    "llm/context7_apikey"
+    "llm/openrouter_apikey"
+    "productivity/wakatime_apikey"
+  ];
+
+  runtimeSecretPath = config: name: "${config.xdg.configHome}/sops-nix/secrets/${name}";
+
   # `sops-nix` activation runs as root; use absolute path, not `~`.
   # This file can contain AGE secret keys and/or AGE-PLUGIN-YUBIKEY identities.
   sharedSopsFile = ../../secrets/shared/secrets.yaml;
@@ -47,12 +55,24 @@ let
       extraConfig ? { },
     }:
     { config, ... }:
+    let
+      runtimeSecrets = lib.mapAttrs (
+        name: secret:
+        if
+          (builtins.elem name runtimeSecretNames || lib.hasPrefix "keys/pat/" name)
+          && !(secret ? path)
+        then
+          secret // { path = runtimeSecretPath config name; }
+        else
+          secret
+      ) secrets;
+    in
     recursiveUpdate {
       imports = [ inputs.sops-nix.homeManagerModules.sops ];
 
       sops = {
         validateSopsFiles = false;
-        inherit secrets;
+        secrets = runtimeSecrets;
 
         age = {
           keyFile = "${config.home.homeDirectory}/.local/share/ages/keys.txt";
