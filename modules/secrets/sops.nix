@@ -135,6 +135,10 @@ in
         "llm/openrouter_apikey" = {
           key = "keys/api/openrouter";
         };
+        "productivity/wakatime_apikey" = {
+          key = "keys/api/wakatime";
+          mode = "0600";
+        };
         "llm/ref_apikey" = {
           key = "keys/api/ref";
         };
