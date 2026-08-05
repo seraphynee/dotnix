@@ -322,6 +322,11 @@ function sk_git_worktrees
 end
 
 function sk_git_help
+    if not __sk_git_is_repository
+        commandline -f repaint
+        return
+    end
+
     printf '%s\n' \
         'ctrl-g ?  show this help' \
         'ctrl-g h  show commit hashes' \
