@@ -59,4 +59,4 @@ The platform-owned `dots/config/fish/env.d/000-xdg.fish` and `030-secrets.fish` 
 
 ### Fix commit
 
-- Pending at report creation; this section is completed by the fix commit below.
+- Fix commit: `e14bf6b` (`fix(shell): address fish review findings`).
