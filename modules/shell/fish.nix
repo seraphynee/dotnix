@@ -108,9 +108,6 @@
             bind -M insert \eu 'sesh-connect-picker'
             bind -M default \eu 'sesh-connect-picker'
 
-            # Advance through additional % placeholders left by --set-cursor.
-            bind -M insert f2 __fish_abbr_cursor_next_widget
-
           '';
           plugins = [
             {

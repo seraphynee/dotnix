@@ -41,3 +41,22 @@ The platform-owned `dots/config/fish/env.d/000-xdg.fish` and `030-secrets.fish` 
 
 - A full Home Manager/NixOS evaluation was not run; the requested Fish syntax and structural checks plus Nix parsing passed.
 - The first commit-hook attempt was blocked by the sandbox's read-only Nix fetcher cache. The approved retry passed. The hook formatter also touched two unrelated files; those formatter-only working-tree changes were restored and are not part of the implementation commit.
+
+## Fix round 1
+
+### Findings addressed
+
+- Guarded the Herdr hook scan with `type -q herdr`, safely collected matching hooks with `find`, and retained first-readable-hook sourcing.
+- Removed the redundant F2 binding from `modules/shell/fish.nix`; the abbreviations file remains the sole owner of the helper and insert-mode binding.
+
+### Verification
+
+- `fish --no-config -n` over every `dots/config/fish/**/*.fish`: exit 0; 12 files checked; empty output.
+- `rg -n 'type -q herdr' dots/config/fish/conf.d/herdr.fish`: exit 0; command guard present.
+- `rg -n 'bind .*f2' dots/config/fish modules/shell/fish.nix | wc -l`: output `1`; the sole binding is in `abbreviations.fish`.
+- `rg -n -i 'onepasswordRead|\\.shell_env|\\.xdg\\.|\\{\\{' dots/config/fish`: exit 1 as expected because no forbidden expressions matched; empty output.
+- `git diff --check`: exit 0; empty output.
+
+### Fix commit
+
+- Pending at report creation; this section is completed by the fix commit below.
