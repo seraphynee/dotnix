@@ -50,5 +50,5 @@ The blocker was resolved with explicit safe access. The implementation:
 - `just secrets-scan` — exit 0; gitleaks scanned 1,365 commits and approximately 17.18 MB, reporting no leaks.
 - `git diff --check` — exit 0.
 
-Implementation commit hash: pending commit.
+Implementation commit hash: `b82a80a` (`feat(secrets): add wakatime sops declaration`).
 Concerns: none load-bearing; sops reformatted the encrypted YAML as part of its normal update workflow.
