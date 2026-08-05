@@ -52,3 +52,5 @@ The blocker was resolved with explicit safe access. The implementation:
 
 Implementation commit hash: `b82a80a` (`feat(secrets): add wakatime sops declaration`).
 Concerns: none load-bearing; sops reformatted the encrypted YAML as part of its normal update workflow.
+
+Post-commit concern: the repository pre-commit `nix fmt` hook left an unrelated, unstaged formatting change in `modules/shell/llm-agents.nix`. It was preserved and not included in the Task 2 commits.
