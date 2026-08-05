@@ -10,6 +10,9 @@
 result
 result-*
 
+# Local implementation worktrees
+.worktrees/
+
 # Ignore automatically generated direnv output
 .direnv
 
