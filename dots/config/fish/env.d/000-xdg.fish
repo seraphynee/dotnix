@@ -15,7 +15,7 @@ for xdg_dir in $xdg_data_dirs
     end
 end
 if not contains -- "$XDG_DATA_HOME" $xdg_unique_data_dirs
-    set -a xdg_unique_data_dirs "$XDG_DATA_HOME"
+    set -p xdg_unique_data_dirs "$XDG_DATA_HOME"
 end
 set -gx XDG_DATA_DIRS (string join : $xdg_unique_data_dirs)
 

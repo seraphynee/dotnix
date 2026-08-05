@@ -32,3 +32,11 @@ Commit: e844d736675de5d20c1274816ebd321032c39ce0
 
 - The environment lacks a system `zsh`; the required Zsh checks were run through the pinned Nix package instead.
 - Repository-wide formatting checks remain red because treefmt wants to reformat unrelated existing changes in `modules/shell/llm-agents.nix`. That file was preserved and is excluded from this focused commit.
+
+## Round 1 fix report
+
+- Root cause: Fish used `set -a`, appending `XDG_DATA_HOME` when it was absent, unlike the Zsh implementation.
+- Fix: changed the Fish operation to `set -p xdg_unique_data_dirs "$XDG_DATA_HOME"`, which prepends the configured data home while retaining the existing de-duplication guard.
+- `fish --no-config -n dots/config/fish/env.d/000-xdg.fish` — exit 0; empty output.
+- `nix shell nixpkgs#zsh --command zsh -n dots/config/zsh/env.d/000-xdg.sh` — exit 0; empty output.
+- Focused rendering command — exit 0. With empty `XDG_DATA_DIRS`, Fish output was `/tmp/xdg-data` and Zsh output was `/tmp/xdg-data`; with `/usr/share:/tmp/xdg-data:/usr/share`, Fish output was `/usr/share:/tmp/xdg-data` and Zsh output was `/usr/share:/tmp/xdg-data`. Each output contained `/tmp/xdg-data` exactly once.
