@@ -64,3 +64,5 @@ vendor/
 issue-cheatsheets/
 issue-steps/
 
+# ignores only .codemark directory in the repository root
+/.codemark/

@@ -82,9 +82,8 @@ let
             pf = "!git push --force-with-lease \"$@\"";
             cam = "commit --amend --no-edit";
 
-            dl = "-c diff.external=difft log -p --ext-diff";
-            ds = "-c diff.external=difft show --ext-diff";
-            dft = "-c diff.external=difft diff";
+            "log-patch" = "-c diff.external=difft log -p --ext-diff";
+            sh = "-c diff.external=difft show --ext-diff";
 
             build = mkConventionalAlias "build";
             chore = mkConventionalAlias "chore";
