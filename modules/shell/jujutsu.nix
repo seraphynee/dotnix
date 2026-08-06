@@ -29,7 +29,14 @@ let
           };
 
           ui = {
-            "default-command" = "log";
+            "default-command" = [
+              "log"
+              "-r"
+              "@"
+              "--no-graph"
+              "-p"
+              "-s"
+            ];
             "diff-formatter" = [
               "difft"
               "--color=always"
@@ -37,6 +44,7 @@ let
               "$right"
             ];
             "diff-editor" = "gitpatch";
+            "merge-editor" = "diffconflicts";
             editor = "nvim";
           };
 
@@ -60,15 +68,35 @@ let
             ];
           };
 
+          "merge-tools".diffconflicts = {
+            program = "nvim";
+            "merge-args" = [
+              "-c"
+              "let g:jj_diffconflicts_marker_length=$marker_length"
+              "-c"
+              "JJDiffConflicts!"
+              "$output"
+              "$base"
+              "$left"
+              "$right"
+            ];
+            "merge-tool-edits-conflict-markers" = true;
+          };
+
           remotes.origin."auto-track-bookmarks" = "glob:*";
 
-          signing = {
-            behavior = "own";
-            backend = "ssh";
-          }
-          // lib.optionalAttrs (signingKeyPath != null) {
-            key = signingKeyPath;
-          };
+          signing =
+            if signingKeyPath != null then
+              {
+                behavior = "own";
+                backend = "ssh";
+                key = signingKeyPath;
+              }
+            else
+              {
+                behavior = "drop";
+                backend = "none";
+              };
 
           templates.git_push_bookmark = "\"${gitUser}/push-\" ++ change_id.short()";
 
@@ -119,7 +147,115 @@ let
               "bookmark"
               "track"
             ];
+            wl = [
+              "workspace"
+              "list"
+            ];
+            wa = [
+              "util"
+              "exec"
+              "--"
+              "bash"
+              "-c"
+              ''
+                set -euo pipefail
+                root=$(jj workspace root)
+                base=$(basename "$root")
+                name="$base.$0"
+                dest="$(dirname "$root")/$name"
+                jj workspace add --name "$name" --revision main "$dest"
+              ''
+            ];
+            wacd = [
+              "util"
+              "exec"
+              "--"
+              "bash"
+              "-c"
+              ''
+                set -euo pipefail
+                arg="$0"
+                if [ -z "$arg" ]; then
+                  echo "usage: jj wacd <workspace>" >&2
+                  exit 2
+                fi
+                root=$(jj workspace root)
+                base=$(basename "$root")
+                name="$base.$arg"
+                dest="$(dirname "$root")/$name"
+                jj workspace add --name "$name" --revision main "$dest" 1>&2
+                printf '%s\n' "$dest"
+              ''
+            ];
+            wq = [
+              "util"
+              "exec"
+              "--"
+              "bash"
+              "-c"
+              ''
+                set -euo pipefail
+                root=$(jj workspace root)
+                repo="$root/.jj/repo"
+                if [ -f "$repo" ]; then
+                  repo_ref=$(cat "$repo")
+                  shared_repo=$(cd "$root/.jj" && cd "$repo_ref" && pwd -P)
+                  root=$(dirname "$(dirname "$shared_repo")")
+                fi
+                printf '%s\n' "$root"
+              ''
+            ];
+            wcd = [
+              "util"
+              "exec"
+              "--"
+              "bash"
+              "-c"
+              ''
+                set -euo pipefail
+                arg="$0"
+                if [ -z "$arg" ]; then
+                  echo "usage: jj wcd <workspace>" >&2
+                  exit 2
+                fi
+                if dest=$(jj workspace root --name "$arg" 2>/dev/null); then
+                  printf '%s\n' "$dest"
+                else
+                  root=$(jj wq)
+                  base=$(basename "$root")
+                  jj workspace root --name "$base.$arg"
+                fi
+              ''
+            ];
+            wd = [
+              "util"
+              "exec"
+              "--"
+              "bash"
+              "-c"
+              ''
+                set -euo pipefail
+                arg="$0"
+                if dest=$(jj workspace root --name "$arg" 2>/dev/null); then
+                  name="$arg"
+                else
+                  root=$(jj workspace root --name default 2>/dev/null || jj workspace root)
+                  base=$(basename "$root")
+                  name="$base.$arg"
+                  dest=$(jj workspace root --name "$name")
+                fi
+                if [ "$name" = "default" ]; then
+                  echo "refusing to forget/delete the default workspace" >&2
+                  exit 1
+                fi
+                jj workspace forget "$name"
+                rm -rf -- "$dest"
+                echo "Forgot and deleted workspace: $name ($dest)"
+              ''
+            ];
           };
+
+          snapshot."auto-update-stale" = true;
 
           lazyjj = {
             "diff-tool" = "difft";
@@ -172,17 +308,23 @@ in
             # Jujutsu
             abbr -a j jj # I use `jj` to exit insert mode
             abbr -a jh 'jj -h'
+            abbr -a ji jjui
 
             abbr -a jst 'jj status'
-            abbr -a jsh --set-cursor 'jj show %'
+            abbr -a jab --set-cursor 'jj abandon %'
+            abbr -a je --set-cursor 'jj edit %'
+
+            abbr -a jsh --set-cursor 'jj show -r "@%"'
+            abbr -a jshs --set-cursor 'jj show -s -r "@%"'
+            abbr -a jshst --set-cursor 'jj show -r "@%" --stat'
 
             abbr -a jbl 'jj bookmark list -a'
             abbr -a jbm --set-cursor 'jj bookmark move % --to @-'
             abbr -a jbmm 'jj bookmark move main --to @-'
             abbr -a jbsc 'jj bookmark set -r @'
 
-            abbr -a jdf 'jj diff'
-            abbr -a je --set-cursor 'jj edit %'
+            abbr -a jdf --set-cursor 'jj diff -r "@%"'
+            abbr -a jdfs --set-cursor 'jj diff -s -r "@%"'
 
             abbr -a jgf 'jj git fetch'
             abbr -a jgpa 'jj git push'
@@ -192,19 +334,29 @@ in
             abbr -a jl 'jj log'
             abbr -a jla "jj log 'all()'"
             abbr -a jlt --set-cursor "jj log -T %"
+            abbr -a jls --set-cursor 'jj log -s'
+            abbr -a jlsr --set-cursor 'jj log -s -r "@%"'
+            abbr -a jlsp --set-cursor 'jj log -s -p'
+            abbr -a jlspr --set-cursor 'jj log -s -p -r "@%"'
+            abbr -a jlp --set-cursor 'jj log -p'
+            abbr -a jlps --set-cursor 'jj log -p -s'
+            abbr -a jlpsr --set-cursor 'jj log -p -s -r "@%"'
 
-            abbr -a jrh --set-cursor 'jj rebase -h'
-            abbr -a jrs --set-cursor 'jj rebase -s % -d @-'
-            abbr -a jrr --set-cursor 'jj rebase -r % -o '
+            abbr -a jrs --set-cursor 'jj restore %'
+            abbr -a jrsi 'jj restore -i'
 
-            abbr -a jsp 'jj split'
-            abbr -a jspi 'jj split -i'
+            abbr -a jrb --set-cursor 'jj rebase %'
+            abbr -a jrbh --set-cursor 'jj rebase -h'
+            abbr -a jrbs --set-cursor 'jj rebase -s % -o @-'
+            abbr -a jrbr --set-cursor 'jj rebase -r % -o '
 
-            abbr -a jsq 'jj squash'
-            abbr -a jsqi 'jj squash -i'
-            abbr -a jsqc --set-cursor 'jj squash -t %'
+            abbr -a jsp --set-cursor 'jj split -r "@%"'
+            abbr -a jspi --set-cursor 'jj split -i -r "@%"'
 
-            abbr -a jab --set-cursor 'jj abandon %'
+            abbr -a jsq --set-cursor 'jj squash -r "@%"'
+            abbr -a jsqi --set-cursor 'jj squash -i -r "@%"'
+            abbr -a jsqft --set-cursor 'jj squash -f "@%" -t "%"'
+            abbr -a jsqift --set-cursor 'jj squash -i -f "@%" -t "%"'
 
             abbr -a jd --set-cursor 'jj desc -m "%"'
             abbr -a jdc 'jj desc -m "$(koji --stdout)"'
@@ -216,8 +368,14 @@ in
             abbr -a jnc 'jj new -m "$(koji --stdout)"'
 
             abbr -a judo 'jj undo'
+            abbr -a jop --set-cursor 'jj op %'
             abbr -a jopl 'jj op log'
-            abbr -a jevl 'jj evolog'
+            abbr -a jopd --set-cursor 'jj op diff %'
+            abbr -a jopa --set-cursor 'jj op abandon %'
+            abbr -a joprs --set-cursor 'jj op restore %'
+            abbr -a joprv --set-cursor 'jj op revert %'
+            abbr -a jevl --set-cursor 'jj evolog -r "@%"'
+            abbr -a jevlp --set-cursor 'jj evolog -p -r "@%"'
           '';
 
         };
