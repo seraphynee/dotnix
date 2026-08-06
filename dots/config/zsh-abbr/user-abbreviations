@@ -1,3 +1,6 @@
+# Preserve `%` cursor placeholders in expansions (zsh-abbr v5+).
+ABBR_SET_EXPANSION_CURSOR=1
+
 # coding agents
 abbr "oc"="opencode"
 abbr "cx"="codex"
