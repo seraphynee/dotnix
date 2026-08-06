@@ -30,3 +30,21 @@ Task 3 completed in the existing worktree. The prior uncommitted Zsh tree was pr
 
 - A full Home Manager/NixOS evaluation was not run because the local Nix daemon socket is sandbox-restricted; module syntax parsing and the required shell checks passed using the pinned Nix Zsh package.
 - The Zsh module is optional and is not included in user modules by this task, as required.
+
+## Round 1 takeover fix
+
+- Removed the duplicate `programs.zsh.dotDir` assignment from `modules/shell/zsh.nix`; `modules/defaults.nix` remains the single owner and keeps the Home Manager dot directory at `config.home.homeDirectory`.
+- Aligned runtime `ZDOTDIR` with that owner and changed startup loading to source the managed XDG `zsh/env.d` and `zsh/conf.d` trees explicitly, so `exec zsh` and `upabbr` restart into the same configured tree.
+
+## Fix verification
+
+- `nix-instantiate --parse modules/shell/zsh.nix`: exit 0.
+- Pinned `nix shell nixpkgs#zsh` syntax check over every installed `.sh`, `.zsh`, and `.bak` file: exit 0; empty diagnostic output.
+- Clean startup smoke test with `env -i HOME=... PATH=... zsh -d -f`, sourcing the rendered `conf.d` tree: exit 0.
+- Missing-command guard smoke test with `PATH=/nonexistent`: exit 0 and no startup error.
+- Focused restart-path/config-dir check: no module-local `dotDir`, `ZDOTDIR` is `config.home.homeDirectory`, and startup paths target `${config.xdg.configHome}/zsh/{env.d,conf.d}`.
+- `git diff --check`: exit 0.
+
+## Fix concerns
+
+- Full Home Manager/NixOS evaluation remains unavailable because the local Nix daemon socket is sandbox-restricted; module parse plus the pinned-Zsh checks passed with elevated daemon access.

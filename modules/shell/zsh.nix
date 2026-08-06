@@ -10,7 +10,7 @@
       zshConfig = ../../dots/config/zsh;
       sourceConfD = ''
         setopt extendedglob null_glob
-        for file in "$ZDOTDIR/conf.d"/**/*.(zsh|sh)(N); do
+        for file in "${config.xdg.configHome}/zsh/conf.d"/**/*.(zsh|sh)(N); do
           [[ -r "$file" ]] && source "$file"
         done
       '';
@@ -18,10 +18,9 @@
     {
       programs.zsh = {
         enable = true;
-        dotDir = config.xdg.configHome;
         initContent = lib.mkOrder 1000 ''
-          export ZDOTDIR="${config.xdg.configHome}/zsh"
-          for file in "$ZDOTDIR/env.d"/*.sh(N); do [[ -r "$file" ]] && source "$file"; done
+          export ZDOTDIR="${config.home.homeDirectory}"
+          for file in "${config.xdg.configHome}/zsh/env.d"/*.sh(N); do [[ -r "$file" ]] && source "$file"; done
           if [[ -r "${pkgs.zsh-abbr}/share/zsh-abbr/zsh-abbr.zsh" ]]; then
             source "${pkgs.zsh-abbr}/share/zsh-abbr/zsh-abbr.zsh"
           elif [[ -r "${pkgs.zsh-abbr}/share/zsh-abbr/zsh-abbr.plugin.zsh" ]]; then
