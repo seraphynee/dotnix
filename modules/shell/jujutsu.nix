@@ -5,6 +5,7 @@ let
       gitUser,
       gitEmail,
       signingKeySecret ? null,
+      workstation ? false,
     }:
     { config, ... }:
     let
@@ -37,15 +38,17 @@ let
               "-p"
               "-s"
             ];
+            "diff-editor" = "gitpatch";
+            "merge-editor" = "diffconflicts";
+            editor = "nvim";
+          }
+          // lib.optionalAttrs workstation {
             "diff-formatter" = [
               "difft"
               "--color=always"
               "$left"
               "$right"
             ];
-            "diff-editor" = "gitpatch";
-            "merge-editor" = "diffconflicts";
-            editor = "nvim";
           };
 
           "merge-tools".gitpatch = {
@@ -258,8 +261,10 @@ let
           snapshot."auto-update-stale" = true;
 
           lazyjj = {
-            "diff-tool" = "difft";
             "layout-percent" = 30;
+          }
+          // lib.optionalAttrs workstation {
+            "diff-tool" = "difft";
           };
         };
       };
@@ -389,6 +394,7 @@ in
           gitUser = "chianyungcode";
           gitEmail = "cnytechcode@gmail.com";
           signingKeySecret = "keys/ssh/github/signing/ghcny-pub";
+          workstation = true;
         };
       };
 
@@ -399,6 +405,7 @@ in
           gitUser = "seraphynee";
           gitEmail = "seraphyne31@gmail.com";
           signingKeySecret = "keys/ssh/github/signing/ghspy-pub";
+          workstation = true;
         };
       };
     };
