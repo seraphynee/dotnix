@@ -317,6 +317,7 @@ in
 
             abbr -a jst 'jj status'
             abbr -a jab --set-cursor 'jj abandon %'
+            abbr -a jabso 'jj absorb'
             abbr -a je --set-cursor 'jj edit %'
 
             abbr -a jsh --set-cursor 'jj show -r "@%"'
@@ -357,24 +358,28 @@ in
 
             abbr -a jsp --set-cursor 'jj split -r "@%"'
             abbr -a jspi --set-cursor 'jj split -i -r "@%"'
+            abbr -a jspa --set-cursor 'jj split -A %'
+            abbr -a jspb --set-cursor 'jj split -B %'
 
             abbr -a jsq --set-cursor 'jj squash -r "@%"'
             abbr -a jsqi --set-cursor 'jj squash -i -r "@%"'
             abbr -a jsqft --set-cursor 'jj squash -f "@%" -t "%"'
             abbr -a jsqift --set-cursor 'jj squash -i -f "@%" -t "%"'
 
-            abbr -a jd --set-cursor 'jj desc -m "%"'
-            abbr -a jdc 'jj desc -m "$(koji --stdout)"'
+            abbr -a jd --set-cursor 'jj desc -m "%" -r "@%"'
+            abbr -a jdc --set-cursor 'jj desc -m "$(koji --stdout)" -r "@%"'
 
             abbr -a jc 'jj commit'
             abbr -a jcc 'jj commit -m "$(koji --stdout)"'
 
             abbr -a jn --set-cursor 'jj new %'
+            abbr -a jna --set-cursor 'jj new -A %'
+            abbr -a jnb --set-cursor 'jj new -B %'
             abbr -a jnc 'jj new -m "$(koji --stdout)"'
 
             abbr -a judo 'jj undo'
             abbr -a jop --set-cursor 'jj op %'
-            abbr -a jopl 'jj op log'
+            abbr -a jopl --set-cursor 'jj op log %'
             abbr -a jopd --set-cursor 'jj op diff %'
             abbr -a jopa --set-cursor 'jj op abandon %'
             abbr -a joprs --set-cursor 'jj op restore %'
