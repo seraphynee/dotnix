@@ -28,6 +28,7 @@
       <shell/starship>
       <shell/tmux>
       <shell/utils>
+      <shell/zsh>
     ];
 
     nixos =

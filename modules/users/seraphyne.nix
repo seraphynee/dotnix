@@ -31,13 +31,18 @@
       <shell/hunk>
       <shell/jujutsu/seraphyne>
       <shell/lazygit>
+      <shell/lla>
       <shell/llm_agents>
       <shell/my-scripts>
+      <shell/nano>
       <shell/nh>
       <shell/neovim>
       <shell/ocr>
       <shell/opencommit>
+      <shell/pet>
       <shell/starship>
+      <shell/superfile>
+      <shell/television>
       <shell/tmux>
       <shell/utils>
       <shell/worktrunk>
