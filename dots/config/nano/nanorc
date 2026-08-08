@@ -1,0 +1,11 @@
+# enables the minibar feature
+set minibar
+
+# disables the shortcut hints
+set nohelp
+
+# disable inverse text for the minibar
+set titlecolor normal,normal
+
+# Include syntax highlighters (add more from @XDG_DATA_HOME@/nano)
+include @XDG_DATA_HOME@/nano/*.nanorc
