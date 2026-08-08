@@ -155,7 +155,9 @@ let
       headers =
         if server ? headers && server.headers != { } then
           let
-            headerEntries = builtins.attrValues (builtins.mapAttrs (k: v: ''"${k}" = "${v}"'') server.headers);
+            headerEntries = builtins.attrValues (
+              builtins.mapAttrs (k: v: ''"${k}" = "${v}"'') server.headers
+            );
           in
           ''
             headers = { ${builtins.concatStringsSep ", " headerEntries} }
@@ -232,10 +234,13 @@ let
       servers = mkMcpServers config;
       toCursorServer =
         _name: server:
-        {
-          url = server.url;
-        }
-        // (if server ? headers && server.headers != { } then { headers = server.headers; } else { });
+        { url = server.url; }
+        // (
+          if server ? headers && server.headers != { } then
+            { headers = server.headers; }
+          else
+            { }
+        );
     in
     builtins.toJSON {
       mcpServers = builtins.mapAttrs toCursorServer servers;
