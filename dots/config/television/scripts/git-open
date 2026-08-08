@@ -58,6 +58,11 @@ http://*|https://*)
     http://*/*|https://*/*) ;;
     *) exit 1 ;;
     esac
+    https_authority=${remote_url#*://}
+    https_authority=${https_authority%%/*}
+    case "$https_authority" in
+    *@*) exit 1 ;;
+    esac
     ;;
 ssh://*)
     authority_path=${remote_url#ssh://}
