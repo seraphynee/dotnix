@@ -31,5 +31,9 @@ vim.keymap.set("t", "<C-_>", function()
   end
 end, { noremap = true, silent = true, desc = "Hide terminal" })
 
+-- Add empty lines before and after cursor line
+vim.keymap.set("n", "<S-CR>", "<Cmd>call append(line('.') - 1, repeat([''], v:count1))<CR>")
+vim.keymap.set("n", "<CR>", "<Cmd>call append(line('.'),     repeat([''], v:count1))<CR>")
+
 -- Syntax
 -- vim.keymap.set("mode-vim", "keymaps", "command / function", { desc = "Wormhole Close Labels" })
