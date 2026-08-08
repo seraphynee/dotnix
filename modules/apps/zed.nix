@@ -13,13 +13,13 @@
               [
                 (
                   ''
-                        "wakatime": {
-                          "initialization_options": {
-                            "api-key": "${config.sops.placeholder."productivity/wakatime_apikey"}"
-                          }
-                        },
-                    ''
-                  + ''    "nil": {''
+                    "wakatime": {
+                      "initialization_options": {
+                        "api-key": "${config.sops.placeholder."productivity/wakatime_apikey"}"
+                      }
+                    },
+                  ''
+                  + ''"nil": {''
                 )
               ]
               staticSettings
