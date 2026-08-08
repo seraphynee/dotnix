@@ -1,22 +1,14 @@
 [[plugin.deps]]
-  hash = "e02a788e5b8ae0fb47fd0193dda589cc"
-  rev  = "a603d9e"
-  use  = "dedukun/relative-motions"
+use = "dedukun/relative-motions"
+rev = "a603d9e"
+hash = "e02a788e5b8ae0fb47fd0193dda589cc"
 
 [[plugin.deps]]
-  hash = "6fa6a05a81c98dd000fbca3cca6e9682"
-  rev  = "1962818"
-  use  = "yazi-rs/plugins:full-border"
+use = "yazi-rs/plugins:full-border"
+rev = "5d5c480"
+hash = "7b625412411be411153886894d9acaf"
 
-[[plugin.deps]]
-  hash = "26db011a778f261d730d4f5f8bf24b3f"
-  rev  = "1962818"
-  use  = "yazi-rs/plugins:git"
-
-[[plugin.deps]]
-  hash = "7a4b4237223aaa94e589d1c01a23542a"
-  rev  = "1962818"
-  use  = "yazi-rs/plugins:jump-to-char"
-
-[flavor]
-  deps = []
+[[flavor.deps]]
+use = "identityapproved/lain"
+rev = "e2a3bb2"
+hash = "992f7d08d6093732621ff49022ef6053"
