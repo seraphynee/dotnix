@@ -3,25 +3,23 @@
     nixos =
       { pkgs, ... }:
       let
-        inherit (pkgs.stdenv.hostPlatform) isDarwin isLinux;
-
         conditionalLmetTab =
-          if isDarwin then
+          if pkgs.stdenv.hostPlatform.isDarwin then
             "  lmet_tab (tap-hold $tap-time $hold-time tab (macro M-tab))"
-          else if isLinux then
+          else if pkgs.stdenv.hostPlatform.isLinux then
             "  lmet_tab (tap-hold $tap-time $hold-time tab (macro A-tab))"
           else
             "";
 
         conditionalHomeRowMods =
-          if isDarwin then
+          if pkgs.stdenv.hostPlatform.isDarwin then
             ''
               d (tap-hold $tap-time $hold-time d lalt)
               f (tap-hold $tap-time $hold-time f lmet)
               k (tap-hold $tap-time $hold-time k lalt)
               j (tap-hold $tap-time $hold-time j lmet)
             ''
-          else if isLinux then
+          else if pkgs.stdenv.hostPlatform.isLinux then
             ''
               d (tap-hold $tap-time $hold-time d lmet)
               f (tap-hold $tap-time $hold-time f lalt)
@@ -32,12 +30,12 @@
             "";
 
         conditionalMVMods =
-          if isDarwin then
+          if pkgs.stdenv.hostPlatform.isDarwin then
             ''
               m (tap-hold $tap-time $hold-time m rmet)
               v (tap-hold $tap-time $hold-time v rmet)
             ''
-          else if isLinux then
+          else if pkgs.stdenv.hostPlatform.isLinux then
             ''
               m (tap-hold $tap-time $hold-time m lmet)
               v (tap-hold $tap-time $hold-time v lmet)
@@ -46,13 +44,13 @@
             "";
 
         conditionalInputChords =
-          if isDarwin then
+          if pkgs.stdenv.hostPlatform.isDarwin then
             ''
               (m ,) C-a $input-chord-time all-released ()
               ;; (i o) A-left 20 all-released ()
               ;; (o p) A-right 20 all-released ()
             ''
-          else if isLinux then
+          else if pkgs.stdenv.hostPlatform.isLinux then
             ''
               (m ,) C-a $input-chord-time all-released ()
               (i o) C-left 20 all-released ()
@@ -64,15 +62,15 @@
             "";
 
         conditionalLyRayc =
-          if isDarwin then
+          if pkgs.stdenv.hostPlatform.isDarwin then
             "  ly-rayc (tap-hold $tap-time $hold-time r (layer-while-held raycast))"
-          else if isLinux then
+          else if pkgs.stdenv.hostPlatform.isLinux then
             "  ly-rayc r"
           else
             "";
 
         conditionalRaycastLayer =
-          if isDarwin then
+          if pkgs.stdenv.hostPlatform.isDarwin then
             ''
               ;; == RAYCAST ==
               (defalias
@@ -126,7 +124,7 @@
           serviceConfig = {
             Type = "simple";
             ExecStart = "${pkgs.kanata-with-cmd}/bin/kanata -c /etc/kanata/row.kbd";
-            Restart = "always";
+          Restart = "on-failure";
           };
         };
       };
