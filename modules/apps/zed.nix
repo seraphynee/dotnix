@@ -4,22 +4,27 @@
     homeManager =
       { config, pkgs, ... }:
       let
+        staticSettings = builtins.readFile ../../dots/config/zed/settings.json;
+        hasWakatimeSecret = config.sops.secrets ? "productivity/wakatime_apikey";
         settings =
-          builtins.replaceStrings
-            [ "    \"nil\": {" ]
-            [
-              (
-                ''
-                      "wakatime": {
-                        "initialization_options": {
-                          "api-key": "${config.sops.placeholder."productivity/wakatime_apikey"}"
-                        }
-                      },
+          if hasWakatimeSecret then
+            builtins.replaceStrings
+              [ "    \"nil\": {" ]
+              [
+                (
                   ''
-                + ''    "nil": {''
-              )
-            ]
-            (builtins.readFile ../../dots/config/zed/settings.json);
+                        "wakatime": {
+                          "initialization_options": {
+                            "api-key": "${config.sops.placeholder."productivity/wakatime_apikey"}"
+                          }
+                        },
+                    ''
+                  + ''    "nil": {''
+                )
+              ]
+              staticSettings
+          else
+            staticSettings;
       in
       {
         home.packages = [ pkgs.zed-editor ];
