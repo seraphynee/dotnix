@@ -1,10 +1,5 @@
 # Custom keymap for yazi
 [[mgr.prepend_keymap]]
-  desc = "Jump to char"
-  on   = "f"
-  run  = "plugin jump-to-char"
-
-[[mgr.prepend_keymap]]
   desc = "Move in relative steps"
   on   = ["1"]
   run  = "plugin relative-motions 1"
