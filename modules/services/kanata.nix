@@ -124,7 +124,7 @@
           serviceConfig = {
             Type = "simple";
             ExecStart = "${pkgs.kanata-with-cmd}/bin/kanata -c /etc/kanata/row.kbd";
-          Restart = "on-failure";
+            Restart = "always";
           };
         };
       };
