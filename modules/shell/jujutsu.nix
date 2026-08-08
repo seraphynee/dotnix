@@ -354,7 +354,7 @@ in
             abbr -a jrb --set-cursor 'jj rebase %'
             abbr -a jrbh --set-cursor 'jj rebase -h'
             abbr -a jrbs --set-cursor 'jj rebase -s % -o @-'
-            abbr -a jrbr --set-cursor 'jj rebase -r % -o '
+            abbr -a jrbr --set-cursor 'jj rebase -r % -o %'
 
             abbr -a jsp --set-cursor 'jj split -r "@%"'
             abbr -a jspi --set-cursor 'jj split -i -r "@%"'

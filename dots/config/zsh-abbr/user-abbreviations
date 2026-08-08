@@ -365,11 +365,11 @@ abbr jbsc="jj bookmark set -r @"
 abbr jc="jj commit"
 abbr jcc='jj commit -m "$(koji --stdout)"'
 
-abbr jd='jj desc -m "%" -r "@"'
+abbr jd='jj desc -m "%" -r "@%"'
 abbr jdc='jj desc -m "$(koji --stdout)" -r "@%"'
 
 abbr jdf='jj diff -r "@%"'
-abbr jdfs='jj diff -s "@%"'
+abbr jdfs='jj diff -s -r "@%"'
 
 abbr jgf="jj git fetch"
 abbr jgpa="jj git push"
@@ -379,10 +379,13 @@ abbr jgpsm="jj git push -b main"
 abbr jl="jj log"
 abbr jla="jj log 'all()'"
 abbr jlt="jj log -T %"
-abbr jls='jj log -s -r "@%"'
-abbr jlsp='jj log -s -p -r "@%"'
-abbr jlp='jj log -p -r "@%"'
-abbr jlps='jj log -p -s -r "@%"'
+abbr jls='jj log -s'
+abbr jlsr='jj log -s -r "@%"'
+abbr jlsp='jj log -s -p'
+abbr jlspr='jj log -s -p -r "@%"'
+abbr jlp='jj log -p'
+abbr jlps='jj log -p -s'
+abbr jlpsr='jj log -p -s -r "@%"'
 
 abbr jn="jj new %"
 abbr jna="jj new -A %"
@@ -404,13 +407,13 @@ abbr jspb="jj split -B %"
 
 abbr jsq='jj squash -r "@%"'
 abbr jsqi='jj squash -i -r "@%"'
-abbr jsqft='jj squash -f "@%" -t ""'
-abbr jsqift='jj squash -i -f "@%" -t ""'
+abbr jsqft='jj squash -f "@%" -t "%"'
+abbr jsqift='jj squash -i -f "@%" -t "%"'
 
 abbr judo="jj undo"
 
+abbr jop="jj op %"
 abbr jopl="jj op log %"
-abbr jopl='jj op log %'
 abbr jopd='jj op diff %'
 abbr jopa='jj op abandon %'
 abbr joprs='jj op restore %'
