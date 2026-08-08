@@ -10,6 +10,9 @@ let
     context7 = {
       type = "remote";
       url = "https://mcp.context7.com/mcp";
+      headers = {
+        CONTEXT7_API_KEY = config.sops.placeholder."llm/context7_apikey";
+      };
       enabled = true;
     };
 
@@ -115,8 +118,34 @@ let
     config:
     builtins.toJSON {
       "$schema" = "https://opencode.ai/config.json";
+      theme = "opencode";
       plugin = [ "superpowers@git+https://github.com/obra/superpowers.git" ];
       mcp = mkMcpServers config;
+      provider = {
+        openrouter = {
+          models = {
+            "z-ai/glm-5" = {
+              options.provider = {
+                order = [
+                  "baseten"
+                  "z.ai"
+                ];
+                allow_fallbacks = false;
+              };
+            };
+            "moonshotai/kimi-k2.5" = {
+              options.provider = {
+                order = [
+                  "novitaai"
+                  "moonshotai"
+                ];
+                allow_fallbacks = false;
+              };
+            };
+          };
+          options.apiKey = "{env:OPENROUTER_API_KEY}";
+        };
+      };
     };
 
   mkGrokMcpServer =
@@ -126,9 +155,7 @@ let
       headers =
         if server ? headers && server.headers != { } then
           let
-            headerEntries = builtins.attrValues (
-              builtins.mapAttrs (k: v: ''"${k}" = "${v}"'') server.headers
-            );
+            headerEntries = builtins.attrValues (builtins.mapAttrs (k: v: ''"${k}" = "${v}"'') server.headers);
           in
           ''
             headers = { ${builtins.concatStringsSep ", " headerEntries} }
@@ -205,13 +232,10 @@ let
       servers = mkMcpServers config;
       toCursorServer =
         _name: server:
-        { url = server.url; }
-        // (
-          if server ? headers && server.headers != { } then
-            { headers = server.headers; }
-          else
-            { }
-        );
+        {
+          url = server.url;
+        }
+        // (if server ? headers && server.headers != { } then { headers = server.headers; } else { });
     in
     builtins.toJSON {
       mcpServers = builtins.mapAttrs toCursorServer servers;
