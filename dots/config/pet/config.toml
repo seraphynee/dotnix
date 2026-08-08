@@ -1,0 +1,25 @@
+[General]
+backend = "gist"
+cmd = ["sh", "-c"]
+color = false
+column = 40
+editor = "nvim"
+format = "$description $tags\t$command"
+selectcmd = "sk --ansi --reverse --border=rounded --height=90% --cycle --prompt='Snippets: ' --delimiter='\\t' --with-nth=1 --preview='printf \"%s\\n\" {2}' --preview-window=down:40%:wrap"
+snippetdirs = ["~/.config/pet/snippets"]
+snippetfile = "~/.config/pet/snippet-general.toml"
+sortby = "description"
+
+[Gist]
+access_token = ""
+auto_sync = false
+file_name = "pet-snippet.toml"
+gist_id = ""
+public = false
+
+[GitLab]
+access_token = ""
+auto_sync = false
+file_name = "pet-snippet.toml"
+id = ""
+visibility = "private"

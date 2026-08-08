@@ -1,0 +1,44 @@
+# LLA configuration. Keep this file static so it works on every Home Manager platform.
+default_sort = "name"
+default_format = "default"
+show_icons = true
+include_dirs = true
+permission_format = "symbolic"
+theme = "vesper"
+enabled_plugins = []
+plugins_dir = "~/.config/lla/plugins"
+exclude_paths = []
+default_depth = 3
+
+[sort]
+dirs_first = true
+case_sensitive = true
+natural = true
+
+[filter]
+case_sensitive = true
+no_dotfiles = true
+respect_gitignore = true
+
+[formatters.tree]
+max_lines = 20000
+
+[formatters.grid]
+ignore_width = false
+max_width = 200
+
+[formatters.long]
+hide_group = true
+relative_dates = true
+date_format = "%b %d %H:%M"
+columns = ["permissions", "size", "modified", "user", "group", "name"]
+
+[formatters.table]
+columns = ["permissions", "size", "modified", "name"]
+
+[listers.recursive]
+max_entries = 20000
+
+[listers.fuzzy]
+ignore_patterns = ["node_modules", "target", ".git", ".idea", ".vscode"]
+editor = ""

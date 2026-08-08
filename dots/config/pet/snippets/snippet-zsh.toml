@@ -1,0 +1,11 @@
+[[Snippets]]
+Description = "Search all keybindings for zsh"
+Output = ""
+Tag = ["zsh"]
+command = "bindkey | sk"
+
+[[Snippets]]
+Description = "Generate completions for cli tools"
+Output = ""
+Tag = ["zsh"]
+command = "mkdir -p \"${XDG_CONFIG_HOME:-$HOME/.config}/zsh/completions\" && <cli_command_to_generate_completion> > \"${XDG_CONFIG_HOME:-$HOME/.config}/zsh/completions/_<cli_name>\""
