@@ -7,12 +7,6 @@ vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,
 
 -- force to use zsh shell in neovim instance
 -- needed because of this https://github.com/NickvanDyke/opencode.nvim/issues/18#issue-3312038123
-{{ if eq .chezmoi.os "darwin" -}}
--- vim.opt.shell = "/bin/zsh"
-{{ else if eq .chezmoi.os "linux" -}}
--- vim.opt.shell = "/usr/bin/zsh"
-
-{{ end -}}
 
 -- set cursor back to terminal cursor style after quitting neovim
 -- https://neovim.io/doc/user/faq.html#faq
