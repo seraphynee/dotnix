@@ -9,9 +9,10 @@
       enableFishIntegration = false;
       settings = {
         git = {
-          pagers = [
+          diffRenderers = [
             {
-              externalDiffCommand = "difft --color=always";
+              type = "extDiff";
+              command = "difft --color=always";
             }
           ];
         };
