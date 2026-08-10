@@ -42,7 +42,6 @@
         zshConfig + "/conf.d/060-common-functions.sh";
       xdg.configFile."zsh/conf.d/090-personal.sh".source = zshConfig + "/conf.d/090-personal.sh";
       xdg.configFile."zsh/conf.d/third-party".source = zshConfig + "/conf.d/third-party";
-      xdg.configFile."zsh/.zshrc.bak".source = zshConfig + "/.zshrc.bak";
       xdg.configFile."zsh-abbr/user-abbreviations".source = ../../dots/config/zsh-abbr/user-abbreviations;
     };
 }

@@ -65,7 +65,7 @@ let
   mkCodexMcpServer =
     name: server:
     let
-      enabled = if server ? enabled then server.enabled else true;
+      enabled = server.enabled or true;
     in
     ''
       [mcp_servers.${name}]
@@ -151,13 +151,11 @@ let
   mkGrokMcpServer =
     name: server:
     let
-      enabled = if server ? enabled then server.enabled else true;
+      enabled = server.enabled or true;
       headers =
         if server ? headers && server.headers != { } then
           let
-            headerEntries = builtins.attrValues (
-              builtins.mapAttrs (k: v: ''"${k}" = "${v}"'') server.headers
-            );
+            headerEntries = builtins.attrValues (builtins.mapAttrs (k: v: ''"${k}" = "${v}"'') server.headers);
           in
           ''
             headers = { ${builtins.concatStringsSep ", " headerEntries} }
@@ -234,13 +232,10 @@ let
       servers = mkMcpServers config;
       toCursorServer =
         _name: server:
-        { url = server.url; }
-        // (
-          if server ? headers && server.headers != { } then
-            { headers = server.headers; }
-          else
-            { }
-        );
+        {
+          inherit (server) url;
+        }
+        // (if server ? headers && server.headers != { } then { inherit (server) headers; } else { });
     in
     builtins.toJSON {
       mcpServers = builtins.mapAttrs toCursorServer servers;

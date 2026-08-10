@@ -34,8 +34,8 @@ vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,
 
 vim.opt.list = true
 vim.opt.listchars = {
-  eol = "⤶",       -- line break | ⤶ | ↩ | ↵ |
-  tab = "→ ",      -- tab icon
-  trail = "",     -- trailing space icon
+  eol = "⤶", -- line break | ⤶ | ↩ | ↵ |
+  tab = "→ ", -- tab icon
+  trail = "", -- trailing space icon
   -- space = "·",     -- optional show normal space too
 }

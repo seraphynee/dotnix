@@ -59,8 +59,7 @@ let
       runtimeSecrets = lib.mapAttrs (
         name: secret:
         if
-          (builtins.elem name runtimeSecretNames || lib.hasPrefix "keys/pat/" name)
-          && !(secret ? path)
+          (builtins.elem name runtimeSecretNames || lib.hasPrefix "keys/pat/" name) && !(secret ? path)
         then
           secret // { path = runtimeSecretPath config name; }
         else

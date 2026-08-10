@@ -22,7 +22,7 @@
                 printf '%s' "$PWD" | ${clipboardCommand}
             end
 
-            === DARWIN ===
+            # === DARWIN ===
             alias caff="caffeinate -ism"           # Run command without letting mac sleep
 
             alias showdot='defaults write com.apple.finder AppleShowAllFiles TRUE'  # show dot files in Finder

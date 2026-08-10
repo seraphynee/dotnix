@@ -1,90 +1,107 @@
 default_channel = "files"
-tick_rate = 50
-history_size = 200
-global_history = false
+global_history  = false
+history_size    = 200
+tick_rate       = 50
 
 [ui]
-ui_scale = 100
-orientation = "landscape"
-theme = "default"
+  orientation = "landscape"
+  theme       = "default"
+  ui_scale    = 100
 
-[ui.input_bar]
-position = "top"
-prompt = ">"
-border_type = "rounded"
+  [ui.input_bar]
+    border_type = "rounded"
+    position    = "top"
+    prompt      = ">"
 
-[ui.status_bar]
-hidden = false
-separator_close = ""
-separator_open = ""
+  [ui.status_bar]
+    hidden          = false
+    separator_close = ""
+    separator_open  = ""
 
-[ui.results_panel]
-border_type = "rounded"
+  [ui.results_panel]
+    border_type = "rounded"
 
-[ui.preview_panel]
-size = 65
-border_type = "rounded"
-scrollbar = true
-hidden = false
+  [ui.preview_panel]
+    border_type = "rounded"
+    hidden      = false
+    scrollbar   = true
+    size        = 65
 
-[ui.help_panel]
-hidden = true
-show_categories = true
+  [ui.help_panel]
+    hidden          = true
+    show_categories = true
 
-[ui.remote_control]
-show_channel_descriptions = true
-sort_alphabetically = true
+  [ui.remote_control]
+    show_channel_descriptions = true
+    sort_alphabetically       = true
 
 [keybindings]
-ctrl-c = "quit"
-esc = "quit"
-ctrl-j = "select_next_entry"
-ctrl-k = "select_prev_entry"
-ctrl-n = "select_next_entry"
-ctrl-p = "select_prev_entry"
-down = "select_next_entry"
-up = "select_prev_entry"
-ctrl-down = "select_next_history"
-ctrl-up = "select_prev_history"
-backtab = "toggle_selection_up"
-enter = "confirm_selection"
-tab = "toggle_selection_down"
-ctrl-f = "cycle_previews"
-pagedown = "scroll_preview_half_page_down"
-pageup = "scroll_preview_half_page_up"
-ctrl-r = "reload_source"
-ctrl-s = "cycle_sources"
-ctrl-y = "copy_entry_to_clipboard"
-ctrl-h = "toggle_help"
-ctrl-l = "toggle_layout"
-ctrl-o = "toggle_preview"
-ctrl-t = "toggle_remote_control"
-ctrl-x = "toggle_action_picker"
-f12 = "toggle_status_bar"
-backspace = "delete_prev_char"
-ctrl-a = "go_to_input_start"
-ctrl-e = "go_to_input_end"
-ctrl-u = "delete_line"
-ctrl-w = "delete_prev_word"
-delete = "delete_next_char"
-end = "go_to_input_end"
-home = "go_to_input_start"
-left = "go_to_prev_char"
-right = "go_to_next_char"
+  backspace = "delete_prev_char"
+  backtab   = "toggle_selection_up"
+  ctrl-a    = "go_to_input_start"
+  ctrl-c    = "quit"
+  ctrl-down = "select_next_history"
+  ctrl-e    = "go_to_input_end"
+  ctrl-f    = "cycle_previews"
+  ctrl-h    = "toggle_help"
+  ctrl-j    = "select_next_entry"
+  ctrl-k    = "select_prev_entry"
+  ctrl-l    = "toggle_layout"
+  ctrl-n    = "select_next_entry"
+  ctrl-o    = "toggle_preview"
+  ctrl-p    = "select_prev_entry"
+  ctrl-r    = "reload_source"
+  ctrl-s    = "cycle_sources"
+  ctrl-t    = "toggle_remote_control"
+  ctrl-u    = "delete_line"
+  ctrl-up   = "select_prev_history"
+  ctrl-w    = "delete_prev_word"
+  ctrl-x    = "toggle_action_picker"
+  ctrl-y    = "copy_entry_to_clipboard"
+  delete    = "delete_next_char"
+  down      = "select_next_entry"
+  end       = "go_to_input_end"
+  enter     = "confirm_selection"
+  esc       = "quit"
+  f12       = "toggle_status_bar"
+  home      = "go_to_input_start"
+  left      = "go_to_prev_char"
+  pagedown  = "scroll_preview_half_page_down"
+  pageup    = "scroll_preview_half_page_up"
+  right     = "go_to_next_char"
+  tab       = "toggle_selection_down"
+  up        = "select_prev_entry"
 
 [shell_integration]
-fallback_channel = "files"
+  fallback_channel = "files"
 
-[shell_integration.channel_triggers]
-alias = ["alias", "unalias"]
-dirs = ["cd", "ls", "rmdir", "z"]
-env = ["export", "unset"]
-files = [
-  "cat", "less", "head", "tail", "vim", "nano", "bat", "cp", "mv",
-  "rm", "touch", "chmod", "chown", "ln", "tar", "zip", "unzip", "gzip",
-  "gunzip", "xz",
-]
+  [shell_integration.channel_triggers]
+    alias = ["alias", "unalias"]
+    dirs = ["cd", "ls", "rmdir", "z"]
+    env = ["export", "unset"]
+    files = [
+      "cat",
+      "less",
+      "head",
+      "tail",
+      "vim",
+      "nano",
+      "bat",
+      "cp",
+      "mv",
+      "rm",
+      "touch",
+      "chmod",
+      "chown",
+      "ln",
+      "tar",
+      "zip",
+      "unzip",
+      "gzip",
+      "gunzip",
+      "xz",
+    ]
 
-[shell_integration.keybindings]
-smart_autocomplete = "ctrl-t"
-command_history = "ctrl-r"
+  [shell_integration.keybindings]
+    command_history    = "ctrl-r"
+    smart_autocomplete = "ctrl-t"
