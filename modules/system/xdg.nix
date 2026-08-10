@@ -18,6 +18,14 @@
             "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
           };
         };
+
+        # Mango is launched directly by SDDM and does not activate
+        # graphical-session.target. xdg-desktop-portal 1.22 otherwise refuses
+        # to start because its upstream unit requires that target to be active.
+        systemd.user.services.xdg-desktop-portal = {
+          overrideStrategy = "asDropin";
+          unitConfig.Requisite = "";
+        };
       };
 
     homeManager = _: {
