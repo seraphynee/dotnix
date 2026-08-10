@@ -91,6 +91,9 @@
       xdg.configFile."fish/conf.d/pet.fish".source = ../../dots/config/fish/conf.d/pet.fish;
       xdg.configFile."fish/conf.d/sk-git.fish".source = ../../dots/config/fish/conf.d/sk-git.fish;
       xdg.configFile."fish/conf.d/skim.fish".source = ../../dots/config/fish/conf.d/skim.fish;
+      xdg.configFile."fish/completions/just.fish".text = ''
+        command just --completions fish | source
+      '';
 
       programs = {
         command-not-found.enable = false;

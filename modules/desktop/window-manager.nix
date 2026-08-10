@@ -99,12 +99,9 @@
         nixos =
           { pkgs, ... }:
           {
-            imports = [
-              inputs.mango.nixosModules.mango
-            ];
-
             programs.mango = {
               enable = true;
+              package = inputs.mango.packages.${pkgs.system}.default;
             };
 
             environment.systemPackages = with pkgs; [

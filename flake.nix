@@ -66,7 +66,10 @@
     };
     hunk = {
       url = "github:modem-dev/hunk";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        bun2nix.inputs.systems.follows = "systems-linux";
+        nixpkgs.follows = "nixpkgs";
+      };
     };
     impermanence = {
       url = "github:nix-community/impermanence";
@@ -121,6 +124,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     systems.url = "github:nix-systems/default";
+    systems-linux.url = "github:nix-systems/x86_64-linux";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";

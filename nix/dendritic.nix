@@ -38,6 +38,7 @@
 
     import-tree.url = "github:vic/import-tree";
     systems.url = "github:nix-systems/default";
+    systems-linux.url = "github:nix-systems/x86_64-linux";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -164,6 +165,7 @@
     hunk = {
       url = "github:modem-dev/hunk";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.bun2nix.inputs.systems.follows = "systems-linux";
     };
 
     llm-agents.url = "github:numtide/llm-agents.nix";
