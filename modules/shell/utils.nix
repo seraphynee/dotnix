@@ -9,7 +9,7 @@
       programs = {
         fzf = {
           enable = true;
-          enableFishIntegration = true;
+          enableFishIntegration = false;
         };
 
         eza = {
