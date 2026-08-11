@@ -93,10 +93,10 @@ let
           ''
         else if isLinux then
           ''
-            [projects."/home/${username}/dotnix"]
+            [projects."/home/${username}/Code/Personal/Projects/dotnix"]
             trust_level = "trusted"
 
-            [projects."/home/${username}/Code/Personal/dotfiles"]
+            [projects."/home/${username}/Code/Personal/Projects/dotfiles"]
             trust_level = "trusted"
           ''
         else
@@ -104,7 +104,7 @@ let
     in
     ''
       model = "gpt-5.6-sol"
-      model_reasoning_effort = "xhigh"
+      model_reasoning_effort = "high"
 
       [features]
       ${builtins.concatStringsSep "\n" (
@@ -112,6 +112,10 @@ let
       )}
 
       ${trustedProjects}
+
+      [tui]
+      status_line = ["model-with-reasoning", "current-dir", "context-used", "weekly-limit"]
+      status_line_use_colors = true
     '';
 
   mkOpencodeConfig =
@@ -124,20 +128,11 @@ let
       provider = {
         openrouter = {
           models = {
-            "z-ai/glm-5" = {
+            "z-ai/glm-5.2" = {
               options.provider = {
                 order = [
-                  "baseten"
+                  "fireworks"
                   "z.ai"
-                ];
-                allow_fallbacks = false;
-              };
-            };
-            "moonshotai/kimi-k2.5" = {
-              options.provider = {
-                order = [
-                  "novitaai"
-                  "moonshotai"
                 ];
                 allow_fallbacks = false;
               };
