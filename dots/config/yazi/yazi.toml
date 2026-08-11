@@ -4,3 +4,9 @@
   show_hidden  = false
   sort_by      = "mtime"   # sort by last modified time
   sort_reverse = true
+
+[plugin]
+  prepend_previewers = [
+    { url = "*.lock", run = 'piper -- bat -n --color=always "$1"' },
+    { mime = "text/*", run = 'piper -- bat -n --color=always "$1"' },
+  ]
