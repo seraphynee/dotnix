@@ -85,7 +85,6 @@
       xdg.configFile."fish/conf.d/chezmoi.fish".source = ../../dots/config/fish/conf.d/chezmoi.fish;
       xdg.configFile."fish/conf.d/abbreviations.fish".source =
         ../../dots/config/fish/conf.d/abbreviations.fish;
-      xdg.configFile."fish/conf.d/herdr.fish".source = ../../dots/config/fish/conf.d/herdr.fish;
       xdg.configFile."fish/conf.d/jujutsu.fish".source = ../../dots/config/fish/conf.d/jujutsu.fish;
       xdg.configFile."fish/conf.d/yazi.fish".source = ../../dots/config/fish/conf.d/yazi.fish;
       xdg.configFile."fish/conf.d/pet.fish".source = ../../dots/config/fish/conf.d/pet.fish;

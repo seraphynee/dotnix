@@ -162,6 +162,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    herdr-automatic-rename = {
+      url = "github:qu8n/herdr-automatic-rename";
+      flake = false;
+    };
+
     hunk = {
       url = "github:modem-dev/hunk";
       inputs.nixpkgs.follows = "nixpkgs";

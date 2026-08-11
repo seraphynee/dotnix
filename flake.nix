@@ -48,6 +48,10 @@
       url = "github:ogulcancelik/herdr";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    herdr-automatic-rename = {
+      url = "github:qu8n/herdr-automatic-rename";
+      flake = false;
+    };
     hjem = {
       url = "github:feel-co/hjem";
       inputs.nixpkgs.follows = "nixpkgs";
