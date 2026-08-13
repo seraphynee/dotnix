@@ -34,6 +34,7 @@
           modules = [
             ../lib/shell/vcs/profile.nix
             ../lib/shell/vcs/git.nix
+            ../lib/shell/vcs/jujutsu.nix
             {
               home = {
                 username = "vcs-test";
@@ -72,6 +73,10 @@
         };
         github.username = "seraphynee";
         git.enable = true;
+        jujutsu = {
+          enable = true;
+          workstation = true;
+        };
       };
 
       chianyung = mkVcsHome {
@@ -81,6 +86,18 @@
         };
         github.username = "chianyungcode";
         git.enable = true;
+      };
+
+      explicitPrefix = mkVcsHome {
+        identity = {
+          name = "author-name";
+          email = "author@example.test";
+        };
+        github.username = "forge-name";
+        jujutsu = {
+          enable = true;
+          bookmarkPrefix = "custom-prefix";
+        };
       };
     in
     {
@@ -106,6 +123,22 @@
         assert
           seraphyne.config.programs.git.settings.credential."https://github.com".username == "seraphynee";
         assert seraphyne.config.programs.git.settings.alias.co == "checkout";
+        assert
+          seraphyne.config.programs.jujutsu.settings.user == seraphyne.config.programs.git.settings.user;
+        assert
+          seraphyne.config.programs.jujutsu.settings.templates.git_push_bookmark
+          == ''"seraphynee/push-" ++ change_id.short()'';
+        assert
+          seraphyne.config.programs.jujutsu.settings.ui."diff-formatter" == [
+            "difft"
+            "--color=always"
+            "$left"
+            "$right"
+          ];
+        assert !chianyung.config.programs.jujutsu.enable;
+        assert
+          explicitPrefix.config.programs.jujutsu.settings.templates.git_push_bookmark
+          == ''"custom-prefix/push-" ++ change_id.short()'';
         pkgs.runCommand "vcs-identity-evaluation" { } ''
           touch "$out"
         '';
