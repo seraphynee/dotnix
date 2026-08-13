@@ -12,9 +12,19 @@
       <den/host-aspects>
       <den/primary-user>
 
-      <shell/git>
+      <shell/vcs>
       <shell/nix-tools>
     ];
+
+    homeManager.dotnix.vcs = {
+      identity = {
+        name = "chianyungcode";
+        email = "cnytechcode@gmail.com";
+      };
+      github.username = "chianyungcode";
+      signing.keySecret = "keys/ssh/github/signing/ghcny-pub";
+      git.enable = true;
+    };
 
     darwin =
       { config, ... }:

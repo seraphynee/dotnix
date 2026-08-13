@@ -21,7 +21,6 @@
       <shell/bash>
       <shell/env>
       <shell/fish>
-      <shell/git>
       <shell/lazygit>
       <shell/nh>
       <shell/neovim>

@@ -25,11 +25,10 @@
       <shell/espanso>
       <shell/fastfetch>
       <shell/fish>
-      <shell/git>
+      <shell/vcs>
       <shell/helix>
       <shell/herdr>
       <shell/hunk>
-      <shell/jujutsu/seraphyne>
       <shell/lazygit>
       <shell/lla>
       <shell/llm_agents>
@@ -49,6 +48,23 @@
       <shell/yazi>
       <shell/zellij>
     ];
+
+    homeManager.dotnix.vcs = {
+      identity = {
+        name = "seraphynee";
+        email = "seraphyne31@gmail.com";
+      };
+      github = {
+        username = "seraphynee";
+        patSecret = "keys/pat/ghspy-pat";
+      };
+      signing.keySecret = "keys/ssh/github/signing/ghspy-pub";
+      git.enable = true;
+      jujutsu = {
+        enable = true;
+        workstation = true;
+      };
+    };
 
     nixos =
       {
