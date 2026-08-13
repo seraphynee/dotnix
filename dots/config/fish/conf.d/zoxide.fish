@@ -1,0 +1,28 @@
+zoxide init fish | source
+
+function fzf_zoxide_widget
+    # Ambil pilihan dari zoxide + fzf dengan preview
+    set selection (zoxide query -ls | sort -nr | fzf \
+        --height=40% \
+        --no-sort \
+        --reverse \
+        --prompt="Zoxide > " \
+        --preview 'eza -TL 2 --color=always --icons=always {2} 2>/dev/null || ls -la --color=always {2}' \
+        --preview-window=right:40%:wrap)
+
+    # Ambil kolom path saja (kolom kedua dan seterusnya)
+    if test -n "$selection"
+        # Ambil kolom 2 dst dengan awk
+        set dir (echo $selection | awk '{ $1=""; sub(/^ /,""); print }')
+        if test -n "$dir"
+            # Pindah direktori
+            builtin cd $dir
+            # Refresh command line (tidak perlu accept-line di Fish)
+            commandline -f repaint
+        end
+    end
+end
+
+# Key binding untuk Ctrl+Alt+Z menggunakan format Fish shell
+bind -M default ctrl-alt-z fzf_zoxide_widget
+bind -M insert ctrl-alt-z fzf_zoxide_widget
