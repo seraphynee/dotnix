@@ -167,7 +167,7 @@ The user modules also own their existing GitHub usernames, PAT secret names, sig
 ### Positive evaluations
 
 - Evaluate `nixosConfigurations.acerus.config.home-manager.users.seraphyne` and confirm both Git and Jujutsu contain the preserved Seraphyne author identity.
-- Evaluate `homeConfigurations.seraphyne` and confirm its Git and Jujutsu author values match the NixOS-hosted result.
+- Evaluate the VCS modules through an isolated standalone `home-manager.lib.homeManagerConfiguration` fixture and confirm its Git and Jujutsu author values match the NixOS-hosted result. The repository's full `homeConfigurations.seraphyne` output is currently blocked independently by `modules/shell/opencommit.nix` requiring undeclared standalone sops placeholders; NDD-91 does not expand to repair that module.
 - Evaluate `darwinConfigurations.mbp.config.home-manager.users.chianyung` and confirm Git contains Chianyung's profile while Jujutsu remains disabled.
 - Compare the generated Git and Jujutsu `user` settings for Seraphyne and require exact equality.
 - Evaluate two distinct user-profile fixtures in the same test and assert that each generated configuration retains only its own identity. This directly covers the multi-user isolation acceptance criterion.
