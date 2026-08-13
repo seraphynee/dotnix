@@ -1,0 +1,287 @@
+{
+  __findFile,
+  inputs,
+  ...
+}:
+{
+  den.aspects.apps._.chromium = {
+    nixos =
+      { pkgs, ... }:
+      {
+        environment.systemPackages = [
+          # inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
+          pkgs.brave
+          # pkgs.google-chrome
+        ];
+      };
+  };
+
+  den.aspects.apps._.firefox = {
+    nixos =
+      { pkgs, ... }:
+      {
+        environment.systemPackages = with pkgs; [
+          google-chrome
+          slack
+        ];
+      };
+    homeManager = {
+      programs.firefox = {
+        enable = true;
+        profiles.default = {
+          settings = {
+            "extensions.activeThemeID" = "firefox-compact-dark@mozilla.org";
+          };
+        };
+      };
+    };
+  };
+
+  den.aspects.apps._.zen = {
+    homeManager =
+      {
+        pkgs,
+        config,
+        ...
+      }:
+      {
+        imports = [ inputs.zen-browser.homeModules.default ];
+        programs.zen-browser = {
+          enable = true;
+          darwinDefaultsId = pkgs.lib.mkIf pkgs.stdenv.isDarwin "org.mozilla.firefox.plist";
+          profiles.default = rec {
+            search = {
+              force = true; # Needed for nix to overwrite search settings on rebuild
+              default = "google"; # Aliased to duckduckgo, see other aliases in the link above
+              engines = {
+
+                nixos_search = {
+                  name = "NixOS Search";
+                  urls = [
+                    {
+                      template = "https://search.nixos.org/packages?channel=25.11&query={searchTerms}";
+                    }
+                  ];
+
+                  icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+                  definedAliases = [ "@nos" ]; # Keep in mind that aliases defined here only work if they start with "@"
+                };
+
+                darwin_search = {
+                  name = "Darwin Modules Search";
+                  urls = [
+                    {
+                      template = "https://searchix.ovh/options/darwin/search?query={searchTerms}";
+                    }
+                  ];
+
+                  icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+                  definedAliases = [ "@dw" ]; # Keep in mind that aliases defined here only work if they start with "@"
+                };
+
+                hm_search = {
+                  name = "Home Manager Search";
+                  urls = [
+                    {
+                      template = "https://home-manager-options.extranix.com/?query={searchTerms}";
+                    }
+                  ];
+
+                  icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+                  definedAliases = [ "@hm" ]; # Keep in mind that aliases defined here only work if they start with "@"
+                };
+
+                mynixos = {
+                  name = "My NixOS";
+                  urls = [
+                    {
+                      template = "https://mynixos.com/search?q={searchTerms}";
+                    }
+                  ];
+
+                  icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+                  definedAliases = [ "@nx" ]; # Keep in mind that aliases defined here only work if they start with "@"
+                };
+              };
+            };
+            containersForce = true;
+            containers = {
+              Work = {
+                color = "yellow";
+                icon = "briefcase";
+                id = 1;
+              };
+              Personal = {
+                color = "green";
+                icon = "tree";
+                id = 2;
+              };
+            };
+            # Zen Browser Default Space Icons (SVG):
+            # airplane, american-football, baseball, basket
+            # bed, bell, bookmark, book
+            # briefcase, brush, bug, build
+            # cafe, call, card, chat
+            # checkbox, circle, cloud, code
+            # coins, construct, cutlery, egg
+            # extension-puzzle, eye, fast-food, fish
+            # flag, flame, flask, folder
+            # game-controller, globe-1, globe, grid-2x2
+            # grid-3x3, heart, ice-cream, image
+            # inbox, key, layers, leaf
+            # lightning, location, lock-closed, logo-rss
+            # logo-usd, mail, map, megaphone
+            # moon, music, navigate, nuclear
+            # page, palette, paw, people
+            # pizza, planet, present, rocket
+            # school, shapes, shirt, skull
+            # squares, square, star-1, star
+            # stats-chart, sun, tada, terminal
+            # ticket, time, trash, triangle
+            # video, volume-high, wallet, warning
+            # water, weight
+            spacesForce = true;
+            spaces = {
+              Work = {
+                id = "9bf4a656-8bd0-4bc8-a5b1-0ee4f06146ff";
+                icon = "💼";
+                container = containers.Work.id;
+                position = 1000;
+                theme = {
+                  type = "gradient";
+                  colors = [
+                    {
+                      algorithm = "floating";
+                      type = "explicit-lightness";
+                      red = 0;
+                      green = 0;
+                      blue = 0;
+                      lightness = 50;
+                      position = {
+                        x = 51;
+                        y = 97;
+                      };
+                    }
+                  ];
+                  opacity = 0.5;
+                };
+              };
+              Personal = {
+                id = "4978fdb5-eadf-4ab6-9281-d62f2d2e1eb8";
+                icon = "🏠";
+                container = containers.Personal.id;
+                position = 2000;
+                theme = {
+                  type = "gradient";
+                  colors = [
+                    {
+                      algorithm = "floating";
+                      type = "explicit-lightness";
+                      red = 56;
+                      green = 66;
+                      blue = 55;
+                      lightness = 50;
+                      position = {
+                        x = 51;
+                        y = 97;
+                      };
+                    }
+                  ];
+                  opacity = 0.5;
+                };
+              };
+            };
+            keyboardShortcuts = [
+              # Change compact mode toggle to Ctrl+Alt+S
+              {
+                id = "zen-compact-mode-toggle";
+                key = "s";
+                modifiers =
+                  (pkgs.lib.optionalAttrs pkgs.stdenv.isDarwin {
+                    alt = true;
+                  })
+                  // (pkgs.lib.optionalAttrs pkgs.stdenv.isLinux {
+                    control = true;
+                  });
+              }
+              {
+                id = "zen-new-empty-split-view";
+                key = "8";
+                modifiers = {
+                  control = true;
+                  shift = true;
+                };
+              }
+              {
+                id = "zen-split-view-unsplit";
+                key = ";";
+                modifiers = {
+                  control = true;
+                };
+              }
+              {
+                id = "zen-split-view-vertical";
+                key = "=";
+                modifiers = {
+                  control = true;
+                };
+              }
+              {
+                id = "zen-split-view-horizontal";
+                key = "-";
+                modifiers = {
+                  control = true;
+                };
+              }
+              {
+                id = "zen-workspace-switch-1";
+                key = "1";
+                modifiers = {
+                  control = true;
+                };
+              }
+              {
+                id = "zen-workspace-switch-2";
+                key = "2";
+                modifiers = {
+                  control = true;
+                };
+              }
+              {
+                id = "zen-workspace-switch-3";
+                key = "3";
+                modifiers = {
+                  control = true;
+                };
+              }
+              {
+                id = "zen-workspace-switch-4";
+                key = "4";
+                modifiers = {
+                  control = true;
+                };
+              }
+              {
+                id = "zen-close-all-unpinned-tabs";
+                key = "k";
+                modifiers = {
+                  control = true;
+                  shift = true;
+                };
+              }
+              {
+                id = "key_webconsole";
+                key = "";
+                modifiers = {
+                  control = false;
+                };
+              }
+            ];
+            # Fails activation on schema changes to detect potential regressions
+            # Find this in about:config or prefs.js of your profile
+            keyboardShortcutsVersion = 18;
+          };
+        };
+      };
+  };
+}

@@ -1,0 +1,87 @@
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-5-before-services/cloudflare-warp.nix modules/services/cloudflare-warp.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-5-before-services/cloudflare-warp.nix	2026-08-14 06:17:32.857180369 +0700
++++ modules/services/cloudflare-warp.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,14 +0,0 @@
+-{
+-  den.aspects.services._."cloudflare-warp".nixos =
+-    { pkgs, ... }:
+-    {
+-      environment.systemPackages = [
+-        pkgs.cloudflare-warp
+-      ];
+-
+-      services.cloudflare-warp = {
+-        enable = true;
+-        package = pkgs.cloudflare-warp;
+-      };
+-    };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-5-before-services/networking.nix modules/services/networking.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-5-before-services/networking.nix	1970-01-01 07:00:00.000000000 +0700
++++ modules/services/networking.nix	2026-08-14 07:29:30.720008155 +0700
+@@ -0,0 +1,38 @@
++{
++  # Cloudflare WARP
++  den.aspects.services._."cloudflare-warp".nixos =
++    { pkgs, ... }:
++    {
++      environment.systemPackages = [
++        pkgs.cloudflare-warp
++      ];
++
++      services.cloudflare-warp = {
++        enable = true;
++        package = pkgs.cloudflare-warp;
++      };
++    };
++
++  # Tailscale
++  den.aspects.services._.tailscale.nixos =
++    {
++      pkgs,
++      config,
++      ...
++    }:
++    {
++      environment.systemPackages = [
++        pkgs.tailscale
++      ];
++
++      services.tailscale = {
++        enable = true;
++        package = pkgs.tailscale;
++        useRoutingFeatures = "both";
++      };
++
++      networking.firewall.allowedUDPPorts = [ config.services.tailscale.port ];
++      # Allow Tailscale traffic
++      networking.firewall.trustedInterfaces = [ "tailscale0" ];
++    };
++}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-5-before-services/tailscale.nix modules/services/tailscale.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-5-before-services/tailscale.nix	2026-08-14 06:17:32.857333506 +0700
++++ modules/services/tailscale.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,23 +0,0 @@
+-{
+-  den.aspects.services._.tailscale.nixos =
+-    {
+-      pkgs,
+-      config,
+-      ...
+-    }:
+-    {
+-      environment.systemPackages = [
+-        pkgs.tailscale
+-      ];
+-
+-      services.tailscale = {
+-        enable = true;
+-        package = pkgs.tailscale;
+-        useRoutingFeatures = "both";
+-      };
+-
+-      networking.firewall.allowedUDPPorts = [ config.services.tailscale.port ];
+-      # Allow Tailscale traffic
+-      networking.firewall.trustedInterfaces = [ "tailscale0" ];
+-    };
+-}

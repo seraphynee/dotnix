@@ -1,0 +1,274 @@
+{ __findFile, inputs, ... }:
+{
+  # Package profiles
+  den.aspects.shell._.packages = {
+    nixos =
+      { pkgs, ... }:
+      {
+        environment.systemPackages = with pkgs; [
+          wlr-randr # Wayland output management
+
+          wl-clipboard # Wayland clipboard utilities
+          wl-clip-persist # Keep clipboard contents after app exit
+          cliphist # Clipboard history manager
+
+          wf-recorder # Wayland screen recorder
+
+          xdg-desktop-portal # Desktop portal backend dispatcher
+          xdg-desktop-portal-wlr # Portal backend for wlroots compositors
+          xdg-desktop-portal-gtk # GTK-based portal backend
+        ];
+      };
+
+    provides = {
+      dev = {
+        includes = [ <shell/packages> ];
+
+        homeManager =
+          { config, pkgs, ... }:
+          {
+            home.sessionPath = [ "${config.home.homeDirectory}/go/bin" ];
+
+            home.packages = with pkgs; [
+              # Base tooling
+              bat # Cat clone with syntax highlighting
+              bottom # modern system monitor based on rust, alternative to btop
+              uutils-coreutils-noprefix # Rust implementation of GNU coreutils
+              curl # Data transfer tool for URLs
+              jq # JSON processor
+              wget # File retrieval from web servers
+              unzip # Extract ZIP archives
+              zip # Create ZIP archives
+              p7zip # 7z compression utility
+              ffmpeg # Multimedia framework
+              gifski # High-quality GIF encoder
+              imagemagick # Image manipulation toolkit
+              mkpasswd # Make password hash
+              ouch # Command-line utility for easily compressing and decompressing files and directories
+              sesh
+              translate-shell # Command-line translator
+              gum
+
+              # Bootable USB
+              woeusb
+              ntfs3g
+
+              # Screenshot utility
+              grim
+              swappy
+              slurp
+              zbar # Barcode and QR code scanner
+
+              wf-recorder # for screen recording
+              wl-screenrec # Wayland screen recorder
+
+              # Disk Usage Analyzers
+              dua # Disk usage analyzer with TUI
+              gdu # Fast disk usage analyzer
+              dust # More intuitive du replacement
+
+              # Process & System Monitoring
+              procs # Modern process viewer (ps alternative)
+              gping # ping, but with graph
+
+              # File Searching
+              fd # User-friendly find alternative
+              ripgrep # Ultra-fast grep alternative
+              skim # fuzzy-finder alternative to fzf
+
+              # Keys
+              age
+              age-plugin-yubikey
+              yubikey-manager # optional but handy (ykman)
+              yubico-piv-tool # optional but handy (PIV debugging)
+              pcsclite
+              ssh-to-age
+
+              # Development Tools
+              hyperfine # Command-line benchmarking tool
+              just # Command runner (make alternative)
+              devenv # Reproducible development environments
+              devbox # Development environment manager
+              watchexec # Run commands when files change
+              entr # Run commands when files change
+              epy # Simple Python package manager
+              zlib # Compression library
+
+              # Typescript
+              nodejs # JavaScript runtime
+              bun # JavaScript runtime & toolkit
+              pnpm # Fast JavaScript package manager
+              biome # JavaScript and Typescript lsp
+
+              # Golang
+              go # Go programming language
+              gopls # Go lsp
+
+              #Rust
+              cargo # Rust package manager
+              rustc # Rust compiler
+
+              #Zig
+              zig # Zig programming language
+              zls # Zig lsp
+
+              # Haskell
+              stack # Haskell build tool
+              cabal-install # Haskell package manager
+              # ghc # Glasgow Haskell Compiler
+              hpack # Haskell package manager
+              # haskell-language-server # Haskell language server
+              ghciwatch # GHCi file watcher
+
+              # Lua
+              lua
+              stylua # Lua formatter
+              lua-language-server # Lua language server
+
+              # C C++
+              gcc # GNU Compiler Collection
+              gnumake # GNU Make
+              clang-tools # Clang tools
+
+              # Python
+              uv # Python package manager
+              ruff # Python linter & formatter
+              basedpyright # Python lsp
+              pipx
+              python315
+
+              # Editors
+              # neovim
+              # zed-editor
+
+              # Android Development
+              scrcpy # Android device mirroring
+              android-tools # Android platform tools
+
+              # Cosmetics
+              cmatrix
+            ];
+          };
+      };
+
+      personal = {
+        homeManager =
+          { pkgs, lib, ... }:
+          {
+            home.packages = [ inputs.momoi-say.packages.${pkgs.stdenv.hostPlatform.system}.momoisay ];
+
+            services = lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
+              jankyborders = {
+                enable = true;
+                settings = {
+                  style = "round";
+                  width = 9.0;
+                  hidpi = "on";
+                  active_color = "0xFFDD0303";
+                  inactive_color = "0x00414550";
+                };
+              };
+            };
+          };
+      };
+    };
+  };
+  # Configured utilities
+  den.aspects.shell._.utils.homeManager =
+    { pkgs, ... }:
+    {
+      services.ssh-agent = {
+        enable = true;
+      };
+
+      programs = {
+        fzf = {
+          enable = true;
+          enableFishIntegration = false;
+        };
+
+        eza = {
+          enable = true;
+          enableFishIntegration = true;
+        };
+
+        zoxide = {
+          enable = true;
+          enableFishIntegration = true;
+          enableNushellIntegration = true;
+        };
+
+        broot = {
+          enable = true;
+          enableFishIntegration = false;
+          enableNushellIntegration = true;
+        };
+
+        direnv = {
+          enable = true;
+          nix-direnv.enable = true;
+        };
+
+        carapace = {
+          enable = true;
+          enableFishIntegration = false;
+          enableNushellIntegration = true;
+        };
+
+        atuin = {
+          enable = true;
+          enableFishIntegration = true;
+          enableNushellIntegration = true;
+        };
+
+        pay-respects = {
+          enable = true;
+          enableFishIntegration = false;
+          enableNushellIntegration = true;
+        };
+
+        bat = {
+          enable = true;
+          config = {
+            theme = "Catppuccin Mocha";
+          };
+          extraPackages = with pkgs.bat-extras; [
+            batgrep
+            batman
+            batpipe
+            batwatch
+            batdiff
+            prettybat
+          ];
+        };
+
+        btop = {
+          enable = true;
+          package = pkgs.btop.override {
+            cudaSupport = true;
+          };
+          settings = {
+            color_theme = "Dracula";
+            theme_background = false;
+            vim_keys = true;
+          };
+        };
+      };
+    };
+  # Local scripts
+  den.aspects.shell._.my-scripts.homeManager =
+    { pkgs, ... }:
+    let
+      testspeed = pkgs.writeShellApplication {
+        name = "testspeed";
+        runtimeInputs = [
+          pkgs.gum
+          pkgs.ookla-speedtest
+        ];
+        text = builtins.readFile ../../scripts/testspeed.sh;
+      };
+    in
+    {
+      home.packages = [ testspeed ];
+    };
+}

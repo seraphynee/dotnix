@@ -1,0 +1,19 @@
+# Task 6 fix round 1 review package
+
+## Scratch artifacts added
+
+- `task-6-audit.sh`: rerunnable no-Git comparison implementation.
+- `task-6-baseline.txt`: JJ baseline commit/change identifiers and manifest-generation commands.
+- `task-6-unchanged-scope-baseline.manifest`: 170 path/hash entries.
+- `task-6-modules-outside-baseline.manifest`: 18 path/hash entries.
+- `task-6-audit-output.txt`: complete 65 assignment plus manifest audit output.
+- `task-6-host-user-includes.txt`: full atomic include output.
+
+## Report corrections
+
+- Describes standalone Home Manager as the same semantic failure with an expected moved source path.
+- Relabels the 24 paths as migrated-category paths.
+- Qualifies flake-resolver failures by limitation class rather than byte-identical error text.
+- Links every compensating audit input and records its exact rerun command and exit result.
+
+No repository source/configuration file changed.

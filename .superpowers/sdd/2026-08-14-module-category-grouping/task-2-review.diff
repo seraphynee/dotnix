@@ -1,0 +1,2819 @@
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/00-packages.nix modules/shell/00-packages.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/00-packages.nix	2026-08-14 06:17:32.857448736 +0700
++++ modules/shell/00-packages.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,175 +0,0 @@
+-{ __findFile, inputs, ... }:
+-{
+-  den.aspects.shell._.packages = {
+-    nixos =
+-      { pkgs, ... }:
+-      {
+-        environment.systemPackages = with pkgs; [
+-          wlr-randr # Wayland output management
+-
+-          wl-clipboard # Wayland clipboard utilities
+-          wl-clip-persist # Keep clipboard contents after app exit
+-          cliphist # Clipboard history manager
+-
+-          wf-recorder # Wayland screen recorder
+-
+-          xdg-desktop-portal # Desktop portal backend dispatcher
+-          xdg-desktop-portal-wlr # Portal backend for wlroots compositors
+-          xdg-desktop-portal-gtk # GTK-based portal backend
+-        ];
+-      };
+-
+-    provides = {
+-      dev = {
+-        includes = [ <shell/packages> ];
+-
+-        homeManager =
+-          { config, pkgs, ... }:
+-          {
+-            home.sessionPath = [ "${config.home.homeDirectory}/go/bin" ];
+-
+-            home.packages = with pkgs; [
+-              # Base tooling
+-              bat # Cat clone with syntax highlighting
+-              bottom # modern system monitor based on rust, alternative to btop
+-              uutils-coreutils-noprefix # Rust implementation of GNU coreutils
+-              curl # Data transfer tool for URLs
+-              jq # JSON processor
+-              wget # File retrieval from web servers
+-              unzip # Extract ZIP archives
+-              zip # Create ZIP archives
+-              p7zip # 7z compression utility
+-              ffmpeg # Multimedia framework
+-              gifski # High-quality GIF encoder
+-              imagemagick # Image manipulation toolkit
+-              mkpasswd # Make password hash
+-              ouch # Command-line utility for easily compressing and decompressing files and directories
+-              sesh
+-              translate-shell # Command-line translator
+-              gum
+-
+-              # Bootable USB
+-              woeusb
+-              ntfs3g
+-
+-              # Screenshot utility
+-              grim
+-              swappy
+-              slurp
+-              zbar # Barcode and QR code scanner
+-
+-              wf-recorder # for screen recording
+-              wl-screenrec # Wayland screen recorder
+-
+-              # Disk Usage Analyzers
+-              dua # Disk usage analyzer with TUI
+-              gdu # Fast disk usage analyzer
+-              dust # More intuitive du replacement
+-
+-              # Process & System Monitoring
+-              procs # Modern process viewer (ps alternative)
+-              gping # ping, but with graph
+-
+-              # File Searching
+-              fd # User-friendly find alternative
+-              ripgrep # Ultra-fast grep alternative
+-              skim # fuzzy-finder alternative to fzf
+-
+-              # Keys
+-              age
+-              age-plugin-yubikey
+-              yubikey-manager # optional but handy (ykman)
+-              yubico-piv-tool # optional but handy (PIV debugging)
+-              pcsclite
+-              ssh-to-age
+-
+-              # Development Tools
+-              hyperfine # Command-line benchmarking tool
+-              just # Command runner (make alternative)
+-              devenv # Reproducible development environments
+-              devbox # Development environment manager
+-              watchexec # Run commands when files change
+-              entr # Run commands when files change
+-              epy # Simple Python package manager
+-              zlib # Compression library
+-
+-              # Typescript
+-              nodejs # JavaScript runtime
+-              bun # JavaScript runtime & toolkit
+-              pnpm # Fast JavaScript package manager
+-              biome # JavaScript and Typescript lsp
+-
+-              # Golang
+-              go # Go programming language
+-              gopls # Go lsp
+-
+-              #Rust
+-              cargo # Rust package manager
+-              rustc # Rust compiler
+-
+-              #Zig
+-              zig # Zig programming language
+-              zls # Zig lsp
+-
+-              # Haskell
+-              stack # Haskell build tool
+-              cabal-install # Haskell package manager
+-              # ghc # Glasgow Haskell Compiler
+-              hpack # Haskell package manager
+-              # haskell-language-server # Haskell language server
+-              ghciwatch # GHCi file watcher
+-
+-              # Lua
+-              lua
+-              stylua # Lua formatter
+-              lua-language-server # Lua language server
+-
+-              # C C++
+-              gcc # GNU Compiler Collection
+-              gnumake # GNU Make
+-              clang-tools # Clang tools
+-
+-              # Python
+-              uv # Python package manager
+-              ruff # Python linter & formatter
+-              basedpyright # Python lsp
+-              pipx
+-              python315
+-
+-              # Editors
+-              # neovim
+-              # zed-editor
+-
+-              # Android Development
+-              scrcpy # Android device mirroring
+-              android-tools # Android platform tools
+-
+-              # Cosmetics
+-              cmatrix
+-            ];
+-          };
+-      };
+-
+-      personal = {
+-        homeManager =
+-          { pkgs, lib, ... }:
+-          {
+-            home.packages = [ inputs.momoi-say.packages.${pkgs.stdenv.hostPlatform.system}.momoisay ];
+-
+-            services = lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
+-              jankyborders = {
+-                enable = true;
+-                settings = {
+-                  style = "round";
+-                  width = 9.0;
+-                  hidpi = "on";
+-                  active_color = "0xFFDD0303";
+-                  inactive_color = "0x00414550";
+-                };
+-              };
+-            };
+-          };
+-      };
+-    };
+-  };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/aerospace.nix modules/shell/aerospace.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/aerospace.nix	2026-08-14 06:17:32.857585598 +0700
++++ modules/shell/aerospace.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,16 +0,0 @@
+-{
+-  den.aspects.shell._.aerospace = {
+-    homeManager = {
+-      xdg.configFile."aerospace" = {
+-        source = ../../dots/config/aerospace;
+-        recursive = true;
+-      };
+-    };
+-
+-    darwin =
+-      { pkgs, ... }:
+-      {
+-        environment.systemPackages = with pkgs; [ aerospace ];
+-      };
+-  };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/ai.nix modules/shell/ai.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/ai.nix	2026-08-14 06:17:32.857632568 +0700
++++ modules/shell/ai.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,9 +0,0 @@
+-{
+-  den.aspects.shell._.ai = {
+-    homeManager = {
+-      home.file.".agents" = {
+-        source = ../../dots/agents;
+-      };
+-    };
+-  };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/bash.nix modules/shell/bash.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/bash.nix	2026-08-14 06:17:32.857676865 +0700
++++ modules/shell/bash.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,21 +0,0 @@
+-{
+-  den.aspects.shell._.bash = {
+-    homeManager = {
+-      programs.bash = {
+-        enable = true;
+-        enableCompletion = true;
+-        # TODO add your custom bashrc here
+-        bashrcExtra = ''
+-          export PATH="$PATH:$HOME/bin:$HOME/.local/bin:$HOME/go/bin"
+-        '';
+-
+-        # set some aliases, feel free to add more or remove some
+-        shellAliases = {
+-          k = "kubectl";
+-          urldecode = "python3 -c 'import sys, urllib.parse as ul; print(ul.unquote_plus(sys.stdin.read()))'";
+-          urlencode = "python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.stdin.read()))'";
+-        };
+-      };
+-    };
+-  };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/desktop-tools.nix modules/shell/desktop-tools.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/desktop-tools.nix	1970-01-01 07:00:00.000000000 +0700
++++ modules/shell/desktop-tools.nix	2026-08-14 07:03:41.497872060 +0700
+@@ -0,0 +1,103 @@
++{
++  __findFile,
++  inputs,
++  lib,
++  ...
++}:
++{
++  # Aerospace
++  den.aspects.shell._.aerospace = {
++    homeManager = {
++      xdg.configFile."aerospace" = {
++        source = ../../dots/config/aerospace;
++        recursive = true;
++      };
++    };
++
++    darwin =
++      { pkgs, ... }:
++      {
++        environment.systemPackages = with pkgs; [ aerospace ];
++      };
++  };
++  # Espanso
++  den.aspects.shell._.espanso = {
++    nixos =
++      { pkgs, ... }:
++      {
++        services.espanso = {
++          enable = true;
++          package = pkgs.espanso-wayland;
++        };
++      };
++
++    homeManager =
++      { config, ... }:
++      let
++        espansoSecrets = lib.filterAttrs (name: _: lib.hasPrefix "espanso/" name) config.sops.secrets;
++      in
++      {
++        # Keep espanso runtime under the NixOS module on Wayland so the
++        # capability wrapper is applied correctly. Espanso match files remain
++        # user-scoped and can safely be wired from decrypted sops secrets.
++        xdg.configFile = lib.mapAttrs' (
++          name: secret:
++          let
++            fileName = lib.removePrefix "espanso/" name;
++            targetName =
++              if lib.hasSuffix ".yml" fileName || lib.hasSuffix ".yaml" fileName then
++                fileName
++              else
++                "${fileName}.yml";
++          in
++          lib.nameValuePair "espanso/match/${targetName}" {
++            source = config.lib.file.mkOutOfStoreSymlink secret.path;
++          }
++        ) espansoSecrets;
++      };
++  };
++  # Msnap
++  den.aspects.shell._.msnap = {
++    nixos =
++      { pkgs, ... }:
++      {
++        nixpkgs.overlays = [ inputs.msnap.overlays.default ];
++        environment.systemPackages = [ pkgs.msnap ];
++      };
++  };
++  # OCR
++  den.aspects.shell._.ocr = {
++    nixos =
++      { pkgs, lib, ... }:
++      {
++        environment.systemPackages = [
++          (pkgs.writeShellScriptBin "shot-ocr" (
++            let
++              grim = lib.getExe pkgs.grim;
++              slurp = lib.getExe pkgs.slurp;
++              tesseract = lib.getExe pkgs.tesseract;
++              wlCopy = lib.getExe' pkgs.wl-clipboard "wl-copy";
++            in
++            ''
++              set -euo pipefail
++
++              region="$(${slurp})"
++              [ -n "$region" ] || exit 1
++
++              ${grim} -g "$region" - \
++                | ${tesseract} stdin stdout -l eng+ind --psm 6 \
++                | ${wlCopy} --trim-newline
++            ''
++          ))
++        ];
++      };
++  };
++  # Rift
++  den.aspects.shell._.rift = {
++    homeManager =
++      { pkgs, ... }:
++      lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
++        xdg.configFile."rift/config.toml".source = ../../dots/config/rift/config.toml;
++      };
++  };
++}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/editors.nix modules/shell/editors.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/editors.nix	1970-01-01 07:00:00.000000000 +0700
++++ modules/shell/editors.nix	2026-08-14 07:03:41.497872060 +0700
+@@ -0,0 +1,58 @@
++{ lib, ... }:
++{
++  # Helix
++  den.aspects.shell._.helix = {
++    homeManager = {
++      xdg.configFile."helix" = {
++        source = ../../dots/config/helix;
++        recursive = true;
++      };
++    };
++
++    nixos =
++      { pkgs, ... }:
++      {
++        environment.systemPackages = with pkgs; [ helix ];
++      };
++    darwin =
++      { pkgs, ... }:
++      {
++        environment.systemPackages = with pkgs; [ helix ];
++      };
++  };
++  # Nano
++  den.aspects.shell._.nano.homeManager =
++    { config, pkgs, ... }:
++    let
++      inherit (pkgs.stdenv.hostPlatform) isDarwin isLinux;
++      nanorc = builtins.replaceStrings [ "@XDG_DATA_HOME@" ] [ config.xdg.dataHome ] (
++        builtins.readFile ../../dots/config/nano/nanorc
++      );
++    in
++    lib.mkIf (isDarwin || isLinux) {
++      home.packages = [ pkgs.nano ];
++
++      xdg.configFile."nano/nanorc".text = nanorc;
++    };
++  # Neovim
++  den.aspects.shell._.neovim.homeManager =
++    { pkgs, ... }:
++    {
++      xdg.configFile."nvim" = {
++        source = ../../dots/config/nvim;
++        recursive = true;
++      };
++
++      programs = {
++        fish.interactiveShellInit = lib.mkAfter ''
++          abbr --add nv nvim
++        '';
++        neovim = {
++          enable = true;
++          plugins = with pkgs.vimPlugins; [
++            nvim-treesitter.withAllGrammars
++          ];
++        };
++      };
++    };
++}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/env.nix modules/shell/env.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/env.nix	2026-08-14 06:17:32.857735098 +0700
++++ modules/shell/env.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,121 +0,0 @@
+-{
+-  den.aspects.shell._.env.homeManager =
+-    { config, lib, ... }:
+-    let
+-      runtimeSecretNames = {
+-        CONTEXT7_MCP_API_KEY = "llm/context7_apikey";
+-        OPENROUTER_API_KEY = "llm/openrouter_apikey";
+-        WAKATIME_API_KEY = "productivity/wakatime_apikey";
+-      };
+-
+-      configuredSopsSecrets = lib.attrByPath [ "sops" "secrets" ] { } config;
+-
+-      runtimeSecretPaths =
+-        lib.mapAttrs (_variable: secretName: configuredSopsSecrets.${secretName}.path)
+-          (
+-            lib.filterAttrs (
+-              _variable: secretName: builtins.hasAttr secretName configuredSopsSecrets
+-            ) runtimeSecretNames
+-          );
+-
+-      fishRuntimeSecretAssignments = lib.concatStringsSep "\n" (
+-        lib.mapAttrsToList (variable: path: ''
+-          if test -r ${lib.escapeShellArg path}
+-              set -gx ${variable} (command cat -- ${lib.escapeShellArg path})
+-          end
+-        '') runtimeSecretPaths
+-      );
+-
+-      fishRuntimeSecretInit = ''
+-        # BEGIN dotnix runtime secrets
+-        ${fishRuntimeSecretAssignments}
+-        if set -q GITHUB_TOKEN_FILE; and test -r "$GITHUB_TOKEN_FILE"
+-            set -gx GITHUB_TOKEN (command cat -- "$GITHUB_TOKEN_FILE")
+-        end
+-        # END dotnix runtime secrets
+-      '';
+-
+-      zshRuntimeSecretAssignments = lib.concatStringsSep "\n" (
+-        lib.mapAttrsToList (variable: path: ''
+-          if [[ -r ${lib.escapeShellArg path} ]]; then
+-              export ${variable}="$(< ${lib.escapeShellArg path})"
+-          fi
+-        '') runtimeSecretPaths
+-      );
+-
+-      zshRuntimeSecretInit = ''
+-        # BEGIN dotnix runtime secrets
+-        ${zshRuntimeSecretAssignments}
+-        if [[ -n ''${GITHUB_TOKEN_FILE:-} && -r "$GITHUB_TOKEN_FILE" ]]; then
+-            export GITHUB_TOKEN="$(< "$GITHUB_TOKEN_FILE")"
+-        fi
+-        # END dotnix runtime secrets
+-      '';
+-
+-      userDirs = {
+-        DESKTOP = config.xdg.userDirs.desktop;
+-        DOCUMENTS = config.xdg.userDirs.documents;
+-        DOWNLOAD = config.xdg.userDirs.download;
+-        MUSIC = config.xdg.userDirs.music;
+-        PICTURES = config.xdg.userDirs.pictures;
+-        PUBLICSHARE = config.xdg.userDirs.publicShare;
+-        TEMPLATES = config.xdg.userDirs.templates;
+-        VIDEOS = config.xdg.userDirs.videos;
+-      };
+-
+-      userDirAssignments = lib.concatStringsSep "\n" (
+-        lib.mapAttrsToList (
+-          name: value:
+-          lib.optionalString (value != null) "set -gx XDG_${name}_DIR ${lib.escapeShellArg value}"
+-        ) userDirs
+-      );
+-
+-      userDirAssignmentsZsh = lib.concatStringsSep "\n" (
+-        lib.mapAttrsToList (
+-          name: value: lib.optionalString (value != null) "export XDG_${name}_DIR=${lib.escapeShellArg value}"
+-        ) userDirs
+-      );
+-
+-      userDirExports = lib.concatStringsSep "\n" (
+-        lib.mapAttrsToList (name: _: ''
+-          set -l xdg_${lib.toLower name}_dir (xdg-user-dir ${name})
+-          if test -n "$xdg_${lib.toLower name}_dir"
+-              set -gx XDG_${name}_DIR "$xdg_${lib.toLower name}_dir"
+-          end'') userDirs
+-      );
+-
+-      render =
+-        file: replacements:
+-        builtins.replaceStrings (builtins.attrNames replacements) (builtins.attrValues replacements) (
+-          builtins.readFile file
+-        );
+-    in
+-    {
+-      programs.fish.interactiveShellInit = lib.mkBefore fishRuntimeSecretInit;
+-      programs.zsh.initContent = lib.mkBefore zshRuntimeSecretInit;
+-
+-      xdg.configFile."fish/env.d/000-xdg.fish".text = render ../../dots/config/fish/env.d/000-xdg.fish {
+-        "@XDG_DATA_HOME@" = lib.escapeShellArg config.xdg.dataHome;
+-        "@XDG_CONFIG_HOME@" = lib.escapeShellArg config.xdg.configHome;
+-        "@XDG_STATE_HOME@" = lib.escapeShellArg config.xdg.stateHome;
+-        "@XDG_CACHE_HOME@" = lib.escapeShellArg config.xdg.cacheHome;
+-        "# @XDG_USER_DIR_ASSIGNMENTS@" = userDirAssignments;
+-        "# @XDG_USER_DIR_EXPORTS@" = userDirExports;
+-      };
+-
+-      xdg.configFile."zsh/env.d/000-xdg.sh".text = render ../../dots/config/zsh/env.d/000-xdg.sh {
+-        "@XDG_DATA_HOME@" = lib.escapeShellArg config.xdg.dataHome;
+-        "@XDG_CONFIG_HOME@" = lib.escapeShellArg config.xdg.configHome;
+-        "@XDG_STATE_HOME@" = lib.escapeShellArg config.xdg.stateHome;
+-        "@XDG_CACHE_HOME@" = lib.escapeShellArg config.xdg.cacheHome;
+-        "# @XDG_USER_DIR_ASSIGNMENTS@" = userDirAssignmentsZsh;
+-      };
+-    };
+-
+-  den.aspects.shell._.env.nixos = {
+-    environment.variables = {
+-      EDITOR = "nvim";
+-      VISUAL = "nvim";
+-    };
+-  };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/espanso.nix modules/shell/espanso.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/espanso.nix	2026-08-14 06:17:32.857782525 +0700
++++ modules/shell/espanso.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,38 +0,0 @@
+-{ __findFile, lib, ... }:
+-{
+-  den.aspects.shell._.espanso = {
+-    nixos =
+-      { pkgs, ... }:
+-      {
+-        services.espanso = {
+-          enable = true;
+-          package = pkgs.espanso-wayland;
+-        };
+-      };
+-
+-    homeManager =
+-      { config, ... }:
+-      let
+-        espansoSecrets = lib.filterAttrs (name: _: lib.hasPrefix "espanso/" name) config.sops.secrets;
+-      in
+-      {
+-        # Keep espanso runtime under the NixOS module on Wayland so the
+-        # capability wrapper is applied correctly. Espanso match files remain
+-        # user-scoped and can safely be wired from decrypted sops secrets.
+-        xdg.configFile = lib.mapAttrs' (
+-          name: secret:
+-          let
+-            fileName = lib.removePrefix "espanso/" name;
+-            targetName =
+-              if lib.hasSuffix ".yml" fileName || lib.hasSuffix ".yaml" fileName then
+-                fileName
+-              else
+-                "${fileName}.yml";
+-          in
+-          lib.nameValuePair "espanso/match/${targetName}" {
+-            source = config.lib.file.mkOutOfStoreSymlink secret.path;
+-          }
+-        ) espansoSecrets;
+-      };
+-  };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/fastfetch.nix modules/shell/fastfetch.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/fastfetch.nix	2026-08-14 06:17:32.857826421 +0700
++++ modules/shell/fastfetch.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,17 +0,0 @@
+-{
+-  den.aspects.shell._.fastfetch = {
+-    homeManager = {
+-      xdg.configFile."fastfetch/config.jsonc".source = ../../dots/config/fastfetch/config.jsonc;
+-    };
+-    nixos =
+-      { pkgs, ... }:
+-      {
+-        environment.systemPackages = with pkgs; [ fastfetch ];
+-      };
+-    darwin =
+-      { pkgs, ... }:
+-      {
+-        environment.systemPackages = with pkgs; [ fastfetch ];
+-      };
+-  };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/file-navigation.nix modules/shell/file-navigation.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/file-navigation.nix	1970-01-01 07:00:00.000000000 +0700
++++ modules/shell/file-navigation.nix	2026-08-14 07:03:41.497872060 +0700
+@@ -0,0 +1,55 @@
++{
++  # Lla
++  den.aspects.shell._.lla.homeManager =
++    { pkgs, ... }:
++    {
++      home.packages = [ pkgs.lla ];
++      xdg.configFile."lla/config.toml".source = ../../dots/config/lla/config.toml;
++    };
++  # Pet
++  den.aspects.shell._.pet.homeManager =
++    { pkgs, ... }:
++    {
++      home.packages = [ pkgs.pet ];
++      xdg.configFile."pet" = {
++        source = ../../dots/config/pet;
++        recursive = true;
++      };
++    };
++  # Superfile
++  den.aspects.shell._.superfile.homeManager =
++    { pkgs, ... }:
++    {
++      home.packages = [ pkgs.superfile ];
++      xdg.configFile."superfile/config.toml".source = ../../dots/config/superfile/config.toml;
++    };
++  # Television
++  den.aspects.shell._.television.homeManager =
++    { pkgs, ... }:
++    {
++      home.packages = [ pkgs.television ];
++      xdg.configFile."television" = {
++        source = ../../dots/config/television;
++        recursive = true;
++      };
++    };
++  # Yazi
++  den.aspects.shell._.yazi = {
++    nixos =
++      { pkgs, ... }:
++      {
++        environment.systemPackages = with pkgs; [
++          yazi
++        ];
++      };
++
++    homeManager =
++      { pkgs, ... }:
++      {
++        xdg.configFile."yazi" = {
++          source = ../../dots/config/yazi;
++          recursive = true;
++        };
++      };
++  };
++}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/fish.nix modules/shell/fish.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/fish.nix	2026-08-14 06:17:32.857882576 +0700
++++ modules/shell/fish.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,158 +0,0 @@
+-{
+-  den.aspects.shell._.fish.homeManager =
+-    { pkgs, ... }:
+-    let
+-      inherit (pkgs.stdenv.hostPlatform) isDarwin isLinux;
+-      clipboardCommand =
+-        if isDarwin then
+-          "pbcopy"
+-        else if isLinux then
+-          "wl-copy"
+-        else
+-          "";
+-
+-      commonAliases =
+-        if isDarwin then
+-          ''
+-            function cpwd
+-                if not command -q ${clipboardCommand}
+-                    echo "cpwd: ${clipboardCommand} is not available" >&2
+-                    return 1
+-                end
+-                printf '%s' "$PWD" | ${clipboardCommand}
+-            end
+-
+-            # === DARWIN ===
+-            alias caff="caffeinate -ism"           # Run command without letting mac sleep
+-
+-            alias showdot='defaults write com.apple.finder AppleShowAllFiles TRUE'  # show dot files in Finder
+-            alias hidedot='defaults write com.apple.finder AppleShowAllFiles FALSE' # hide dot files in Finder
+-            alias spot-off="sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist"
+-            alias spot-on="sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist"
+-            alias fixmounts="sudo automount -vcu" # Re-mount all shared drives
+-          ''
+-        else if isLinux then
+-          ''
+-            function cpwd
+-                if not command -q ${clipboardCommand}
+-                    echo "cpwd: ${clipboardCommand} is not available" >&2
+-                    return 1
+-                end
+-                printf '%s' "$PWD" | ${clipboardCommand}
+-            end
+-
+-            # === LINUX ===
+-            alias ctl='systemctl'
+-            alias reboot="sudo systemctl reboot"
+-            alias sstop="sudo systemctl stop"
+-            alias sstatus="sudo systemctl status"
+-
+-            # Start and then view status of service
+-            function sstart
+-                sudo systemctl start $argv[1]
+-                sudo systemctl status $argv[1]
+-            end
+-
+-            # Restart and then view status of service
+-            function srestart
+-                sudo systemctl restart $argv[1]
+-                sudo systemctl status $argv[1]
+-            end
+-
+-            # Journalctl aliases
+-            alias logs='sudo journalctl -fu'
+-            alias logs-all='sudo journalctl -u'
+-          ''
+-        else
+-          "";
+-
+-      commonAliasesFish = builtins.replaceStrings [ "@common_aliases@" ] [ commonAliases ] (
+-        builtins.readFile ../../dots/config/fish/conf.d/common_aliases.fish
+-      );
+-    in
+-    {
+-      # home.packages = [ pkgs.fish ];
+-
+-      xdg.configFile."fish/fish_plugins".source = ../../dots/config/fish/fish_plugins;
+-      xdg.configFile."fish/conf.d/colors.fish".source = ../../dots/config/fish/conf.d/colors.fish;
+-      xdg.configFile."fish/conf.d/atuin.fish".source = ../../dots/config/fish/conf.d/atuin.fish;
+-      xdg.configFile."fish/conf.d/bat.fish".source = ../../dots/config/fish/conf.d/bat.fish;
+-      xdg.configFile."fish/conf.d/common_functions.fish".source =
+-        ../../dots/config/fish/conf.d/common_functions.fish;
+-      xdg.configFile."fish/conf.d/common_aliases.fish" = {
+-        text = commonAliasesFish;
+-      };
+-      xdg.configFile."fish/conf.d/chezmoi.fish".source = ../../dots/config/fish/conf.d/chezmoi.fish;
+-      xdg.configFile."fish/conf.d/abbreviations.fish".source =
+-        ../../dots/config/fish/conf.d/abbreviations.fish;
+-      xdg.configFile."fish/conf.d/jujutsu.fish".source = ../../dots/config/fish/conf.d/jujutsu.fish;
+-      xdg.configFile."fish/conf.d/yazi.fish".source = ../../dots/config/fish/conf.d/yazi.fish;
+-      xdg.configFile."fish/conf.d/pet.fish".source = ../../dots/config/fish/conf.d/pet.fish;
+-      xdg.configFile."fish/conf.d/sk-git.fish".source = ../../dots/config/fish/conf.d/sk-git.fish;
+-      xdg.configFile."fish/conf.d/skim.fish".source = ../../dots/config/fish/conf.d/skim.fish;
+-      xdg.configFile."fish/conf.d/zoxide.fish".source = ../../dots/config/fish/conf.d/zoxide.fish;
+-      xdg.configFile."fish/completions/just.fish".text = ''
+-        command just --completions fish | source
+-      '';
+-
+-      programs = {
+-        command-not-found.enable = false;
+-        nix-index-database.comma.enable = false;
+-
+-        fish = {
+-          enable = true;
+-          interactiveShellInit = ''
+-            set -g fish_greeting
+-            abbr --add cl clear
+-            fish_vi_key_bindings
+-
+-            # === sesh binding ===
+-            # Untuk default mode (emacs mode)
+-            bind \eu 'sesh-connect-picker'
+-
+-            # Untuk vi mode jika diaktifkan
+-            bind -M insert \eu 'sesh-connect-picker'
+-            bind -M default \eu 'sesh-connect-picker'
+-
+-          '';
+-          plugins = [
+-            {
+-              name = "fisher";
+-              src = pkgs.fetchFromGitHub {
+-                owner = "jorgebucaran";
+-                repo = "fisher";
+-                rev = "791da644d33d392216f6b1a9b5fc1e470db6d7f2";
+-                hash = "sha256-U1yd8m56YrHXrJFkU8xaOglulOGV0iBvwjU/bdf8tqA=";
+-              };
+-            }
+-          ];
+-          functions = {
+-            tmux = ''
+-              if test (count $argv) -eq 0
+-                  set -l dir (basename "$PWD")
+-                  set -l session (string replace -ra '[^A-Za-z0-9_.-]' '_' -- $dir)
+-                  test -n "$session"; or set session main
+-
+-                  if set -q TMUX
+-                      if command tmux has-session -t "$session" 2>/dev/null
+-                          command tmux switch-client -t "$session"
+-                      else
+-                          command tmux new-session -d -s "$session" -c "$PWD"
+-                          command tmux switch-client -t "$session"
+-                      end
+-                  else
+-                      command tmux new-session -A -s "$session" -c "$PWD"
+-                  end
+-                  return
+-              end
+-
+-              command tmux $argv
+-            '';
+-          };
+-          # interactiveShellInit = ''
+-          #   ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
+-          # '';
+-        };
+-      };
+-    };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/helix.nix modules/shell/helix.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/helix.nix	2026-08-14 06:17:32.858026816 +0700
++++ modules/shell/helix.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,21 +0,0 @@
+-{
+-  den.aspects.shell._.helix = {
+-    homeManager = {
+-      xdg.configFile."helix" = {
+-        source = ../../dots/config/helix;
+-        recursive = true;
+-      };
+-    };
+-
+-    nixos =
+-      { pkgs, ... }:
+-      {
+-        environment.systemPackages = with pkgs; [ helix ];
+-      };
+-    darwin =
+-      { pkgs, ... }:
+-      {
+-        environment.systemPackages = with pkgs; [ helix ];
+-      };
+-  };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/herdr.nix modules/shell/herdr.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/herdr.nix	2026-08-14 06:17:32.858128612 +0700
++++ modules/shell/herdr.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,46 +0,0 @@
+-{ __findFile, inputs, ... }: {
+-  den.aspects.shell._.herdr = {
+-    homeManager =
+-      { pkgs, ... }:
+-      let
+-        herdr = inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.herdr;
+-        herdrAutomaticRename = inputs.herdr-automatic-rename;
+-        herdrFishCompletion = pkgs.runCommand "herdr-fish-completion" { } ''
+-          ${herdr}/bin/herdr completion fish > $out
+-        '';
+-        herdrPluginBootstrap = pkgs.writeShellApplication {
+-          name = "herdr-plugin-bootstrap";
+-          runtimeInputs = [
+-            herdr
+-            pkgs.jq
+-          ];
+-          text = builtins.readFile ./herdr-plugin-bootstrap.sh;
+-        };
+-      in
+-      {
+-        xdg.configFile."herdr/config.toml".source = ../../dots/config/herdr/config.toml;
+-        xdg.configFile."fish/completions/herdr.fish".source = herdrFishCompletion;
+-        xdg.configFile."fish/conf.d/herdr.fish".text = ''
+-          if type -q herdr
+-              ${herdrPluginBootstrap}/bin/herdr-plugin-bootstrap ${herdrAutomaticRename}
+-              source ${herdrAutomaticRename}/shell/hook.fish
+-          end
+-        '';
+-        xdg.configFile."zsh/conf.d/third-party/herdr-automatic-rename-nix.sh".text = ''
+-          if (( $+commands[herdr] )); then
+-            ${herdrPluginBootstrap}/bin/herdr-plugin-bootstrap ${herdrAutomaticRename}
+-            source "${herdrAutomaticRename}/shell/hook.zsh"
+-          fi
+-        '';
+-      };
+-
+-    nixos =
+-      { pkgs, ... }:
+-      let
+-        herdr = inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.herdr;
+-      in
+-      {
+-        environment.systemPackages = [ herdr ];
+-      };
+-  };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/hunk.nix modules/shell/hunk.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/hunk.nix	2026-08-14 06:17:32.858226233 +0700
++++ modules/shell/hunk.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,21 +0,0 @@
+-{
+-  __findFile,
+-  inputs,
+-  ...
+-}:
+-{
+-  den.aspects.shell._.hunk = {
+-    homeManager = {
+-      imports = [
+-        inputs.hunk.homeManagerModules.default
+-      ];
+-
+-      programs.hunk = {
+-        enable = true;
+-        enableGitIntegration = false; # Optional: set hunk as default git pager
+-      };
+-
+-      xdg.configFile."hunk/config.toml".source = ../../dots/config/hunk/config.toml;
+-    };
+-  };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/lazygit.nix modules/shell/lazygit.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/lazygit.nix	2026-08-14 06:17:32.858347780 +0700
++++ modules/shell/lazygit.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,22 +0,0 @@
+-{ lib, ... }:
+-{
+-  den.aspects.shell._.lazygit.homeManager = {
+-    programs.fish.interactiveShellInit = lib.mkAfter ''
+-      abbr --add lzg lazygit
+-    '';
+-    programs.lazygit = {
+-      enable = true;
+-      enableFishIntegration = false;
+-      settings = {
+-        git = {
+-          diffRenderers = [
+-            {
+-              type = "extDiff";
+-              command = "difft --color=always";
+-            }
+-          ];
+-        };
+-      };
+-    };
+-  };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/lla.nix modules/shell/lla.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/lla.nix	2026-08-14 06:17:32.858398209 +0700
++++ modules/shell/lla.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,8 +0,0 @@
+-{
+-  den.aspects.shell._.lla.homeManager =
+-    { pkgs, ... }:
+-    {
+-      home.packages = [ pkgs.lla ];
+-      xdg.configFile."lla/config.toml".source = ../../dots/config/lla/config.toml;
+-    };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/llm-agents.nix modules/shell/llm-agents.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/llm-agents.nix	2026-08-14 06:17:32.858462893 +0700
++++ modules/shell/llm-agents.nix	2026-08-14 07:03:41.497872060 +0700
+@@ -237,6 +237,14 @@
+     };
+ in
+ {
++  # Shared agent instructions
++  den.aspects.shell._.ai = {
++    homeManager = {
++      home.file.".agents" = {
++        source = ../../dots/agents;
++      };
++    };
++  };
+   den.aspects.shell._.llm_agents =
+     { user, ... }:
+     {
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/msnap.nix modules/shell/msnap.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/msnap.nix	2026-08-14 06:17:32.858509120 +0700
++++ modules/shell/msnap.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,11 +0,0 @@
+-{ inputs, ... }:
+-{
+-  den.aspects.shell._.msnap = {
+-    nixos =
+-      { pkgs, ... }:
+-      {
+-        nixpkgs.overlays = [ inputs.msnap.overlays.default ];
+-        environment.systemPackages = [ pkgs.msnap ];
+-      };
+-  };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/my-scripts.nix modules/shell/my-scripts.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/my-scripts.nix	2026-08-14 06:17:32.858555222 +0700
++++ modules/shell/my-scripts.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,17 +0,0 @@
+-_: {
+-  den.aspects.shell._.my-scripts.homeManager =
+-    { pkgs, ... }:
+-    let
+-      testspeed = pkgs.writeShellApplication {
+-        name = "testspeed";
+-        runtimeInputs = [
+-          pkgs.gum
+-          pkgs.ookla-speedtest
+-        ];
+-        text = builtins.readFile ../../scripts/testspeed.sh;
+-      };
+-    in
+-    {
+-      home.packages = [ testspeed ];
+-    };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/nano.nix modules/shell/nano.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/nano.nix	2026-08-14 06:17:32.858625808 +0700
++++ modules/shell/nano.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,16 +0,0 @@
+-{ lib, ... }:
+-{
+-  den.aspects.shell._.nano.homeManager =
+-    { config, pkgs, ... }:
+-    let
+-      inherit (pkgs.stdenv.hostPlatform) isDarwin isLinux;
+-      nanorc = builtins.replaceStrings [ "@XDG_DATA_HOME@" ] [ config.xdg.dataHome ] (
+-        builtins.readFile ../../dots/config/nano/nanorc
+-      );
+-    in
+-    lib.mkIf (isDarwin || isLinux) {
+-      home.packages = [ pkgs.nano ];
+-
+-      xdg.configFile."nano/nanorc".text = nanorc;
+-    };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/neovim.nix modules/shell/neovim.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/neovim.nix	2026-08-14 06:17:32.858673389 +0700
++++ modules/shell/neovim.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,23 +0,0 @@
+-{ lib, ... }:
+-{
+-  den.aspects.shell._.neovim.homeManager =
+-    { pkgs, ... }:
+-    {
+-      xdg.configFile."nvim" = {
+-        source = ../../dots/config/nvim;
+-        recursive = true;
+-      };
+-
+-      programs = {
+-        fish.interactiveShellInit = lib.mkAfter ''
+-          abbr --add nv nvim
+-        '';
+-        neovim = {
+-          enable = true;
+-          plugins = with pkgs.vimPlugins; [
+-            nvim-treesitter.withAllGrammars
+-          ];
+-        };
+-      };
+-    };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/nh.nix modules/shell/nh.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/nh.nix	2026-08-14 06:17:32.858715920 +0700
++++ modules/shell/nh.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,23 +0,0 @@
+-{
+-  den.aspects.shell._.nh.homeManager =
+-    {
+-      config,
+-      pkgs,
+-      ...
+-    }:
+-    {
+-      home.packages = with pkgs; [
+-        # Workflow-specific companions for nh.
+-        nh
+-        nix-output-monitor
+-        nix-fast-build
+-        nvd
+-        nix-diff
+-      ];
+-
+-      programs.nh = {
+-        enable = true;
+-        osFlake = "${config.home.homeDirectory}/dotnix";
+-      };
+-    };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/nix-tools.nix modules/shell/nix-tools.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/nix-tools.nix	2026-08-14 06:17:32.858770463 +0700
++++ modules/shell/nix-tools.nix	2026-08-14 07:03:41.498872083 +0700
+@@ -20,4 +20,26 @@
+         ];
+       };
+   };
++  # Rebuild workflow
++  den.aspects.shell._.nh.homeManager =
++    {
++      config,
++      pkgs,
++      ...
++    }:
++    {
++      home.packages = with pkgs; [
++        # Workflow-specific companions for nh.
++        nh
++        nix-output-monitor
++        nix-fast-build
++        nvd
++        nix-diff
++      ];
++
++      programs.nh = {
++        enable = true;
++        osFlake = "${config.home.homeDirectory}/dotnix";
++      };
++    };
+ }
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/ocr.nix modules/shell/ocr.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/ocr.nix	2026-08-14 06:17:32.858814272 +0700
++++ modules/shell/ocr.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,28 +0,0 @@
+-{
+-  den.aspects.shell._.ocr = {
+-    nixos =
+-      { pkgs, lib, ... }:
+-      {
+-        environment.systemPackages = [
+-          (pkgs.writeShellScriptBin "shot-ocr" (
+-            let
+-              grim = lib.getExe pkgs.grim;
+-              slurp = lib.getExe pkgs.slurp;
+-              tesseract = lib.getExe pkgs.tesseract;
+-              wlCopy = lib.getExe' pkgs.wl-clipboard "wl-copy";
+-            in
+-            ''
+-              set -euo pipefail
+-
+-              region="$(${slurp})"
+-              [ -n "$region" ] || exit 1
+-
+-              ${grim} -g "$region" - \
+-                | ${tesseract} stdin stdout -l eng+ind --psm 6 \
+-                | ${wlCopy} --trim-newline
+-            ''
+-          ))
+-        ];
+-      };
+-  };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/opencommit.nix modules/shell/opencommit.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/opencommit.nix	2026-08-14 06:17:32.858864704 +0700
++++ modules/shell/opencommit.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,31 +0,0 @@
+-{
+-  den.aspects.shell._.opencommit = {
+-    nixos =
+-      { pkgs, ... }:
+-      {
+-        environment.systemPackages = with pkgs; [ opencommit ];
+-      };
+-    homeManager =
+-      { config, pkgs, ... }:
+-      let
+-        ocoConfig =
+-          builtins.replaceStrings
+-            [
+-              "@oco_api_key@"
+-              "@oco_api_url@"
+-            ]
+-            [
+-              config.sops.placeholder."llm/oco_api_key"
+-              config.sops.placeholder."llm/oco_api_url"
+-            ]
+-            (builtins.readFile ../../dots/opencommit.tmpl);
+-      in
+-      {
+-        sops.templates."opencommit-config" = {
+-          path = "${config.home.homeDirectory}/.opencommit";
+-          mode = "0600";
+-          content = ocoConfig;
+-        };
+-      };
+-  };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/packages.nix modules/shell/packages.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/packages.nix	1970-01-01 07:00:00.000000000 +0700
++++ modules/shell/packages.nix	2026-08-14 07:03:41.496872038 +0700
+@@ -0,0 +1,274 @@
++{ __findFile, inputs, ... }:
++{
++  # Package profiles
++  den.aspects.shell._.packages = {
++    nixos =
++      { pkgs, ... }:
++      {
++        environment.systemPackages = with pkgs; [
++          wlr-randr # Wayland output management
++
++          wl-clipboard # Wayland clipboard utilities
++          wl-clip-persist # Keep clipboard contents after app exit
++          cliphist # Clipboard history manager
++
++          wf-recorder # Wayland screen recorder
++
++          xdg-desktop-portal # Desktop portal backend dispatcher
++          xdg-desktop-portal-wlr # Portal backend for wlroots compositors
++          xdg-desktop-portal-gtk # GTK-based portal backend
++        ];
++      };
++
++    provides = {
++      dev = {
++        includes = [ <shell/packages> ];
++
++        homeManager =
++          { config, pkgs, ... }:
++          {
++            home.sessionPath = [ "${config.home.homeDirectory}/go/bin" ];
++
++            home.packages = with pkgs; [
++              # Base tooling
++              bat # Cat clone with syntax highlighting
++              bottom # modern system monitor based on rust, alternative to btop
++              uutils-coreutils-noprefix # Rust implementation of GNU coreutils
++              curl # Data transfer tool for URLs
++              jq # JSON processor
++              wget # File retrieval from web servers
++              unzip # Extract ZIP archives
++              zip # Create ZIP archives
++              p7zip # 7z compression utility
++              ffmpeg # Multimedia framework
++              gifski # High-quality GIF encoder
++              imagemagick # Image manipulation toolkit
++              mkpasswd # Make password hash
++              ouch # Command-line utility for easily compressing and decompressing files and directories
++              sesh
++              translate-shell # Command-line translator
++              gum
++
++              # Bootable USB
++              woeusb
++              ntfs3g
++
++              # Screenshot utility
++              grim
++              swappy
++              slurp
++              zbar # Barcode and QR code scanner
++
++              wf-recorder # for screen recording
++              wl-screenrec # Wayland screen recorder
++
++              # Disk Usage Analyzers
++              dua # Disk usage analyzer with TUI
++              gdu # Fast disk usage analyzer
++              dust # More intuitive du replacement
++
++              # Process & System Monitoring
++              procs # Modern process viewer (ps alternative)
++              gping # ping, but with graph
++
++              # File Searching
++              fd # User-friendly find alternative
++              ripgrep # Ultra-fast grep alternative
++              skim # fuzzy-finder alternative to fzf
++
++              # Keys
++              age
++              age-plugin-yubikey
++              yubikey-manager # optional but handy (ykman)
++              yubico-piv-tool # optional but handy (PIV debugging)
++              pcsclite
++              ssh-to-age
++
++              # Development Tools
++              hyperfine # Command-line benchmarking tool
++              just # Command runner (make alternative)
++              devenv # Reproducible development environments
++              devbox # Development environment manager
++              watchexec # Run commands when files change
++              entr # Run commands when files change
++              epy # Simple Python package manager
++              zlib # Compression library
++
++              # Typescript
++              nodejs # JavaScript runtime
++              bun # JavaScript runtime & toolkit
++              pnpm # Fast JavaScript package manager
++              biome # JavaScript and Typescript lsp
++
++              # Golang
++              go # Go programming language
++              gopls # Go lsp
++
++              #Rust
++              cargo # Rust package manager
++              rustc # Rust compiler
++
++              #Zig
++              zig # Zig programming language
++              zls # Zig lsp
++
++              # Haskell
++              stack # Haskell build tool
++              cabal-install # Haskell package manager
++              # ghc # Glasgow Haskell Compiler
++              hpack # Haskell package manager
++              # haskell-language-server # Haskell language server
++              ghciwatch # GHCi file watcher
++
++              # Lua
++              lua
++              stylua # Lua formatter
++              lua-language-server # Lua language server
++
++              # C C++
++              gcc # GNU Compiler Collection
++              gnumake # GNU Make
++              clang-tools # Clang tools
++
++              # Python
++              uv # Python package manager
++              ruff # Python linter & formatter
++              basedpyright # Python lsp
++              pipx
++              python315
++
++              # Editors
++              # neovim
++              # zed-editor
++
++              # Android Development
++              scrcpy # Android device mirroring
++              android-tools # Android platform tools
++
++              # Cosmetics
++              cmatrix
++            ];
++          };
++      };
++
++      personal = {
++        homeManager =
++          { pkgs, lib, ... }:
++          {
++            home.packages = [ inputs.momoi-say.packages.${pkgs.stdenv.hostPlatform.system}.momoisay ];
++
++            services = lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
++              jankyborders = {
++                enable = true;
++                settings = {
++                  style = "round";
++                  width = 9.0;
++                  hidpi = "on";
++                  active_color = "0xFFDD0303";
++                  inactive_color = "0x00414550";
++                };
++              };
++            };
++          };
++      };
++    };
++  };
++  # Configured utilities
++  den.aspects.shell._.utils.homeManager =
++    { pkgs, ... }:
++    {
++      services.ssh-agent = {
++        enable = true;
++      };
++
++      programs = {
++        fzf = {
++          enable = true;
++          enableFishIntegration = false;
++        };
++
++        eza = {
++          enable = true;
++          enableFishIntegration = true;
++        };
++
++        zoxide = {
++          enable = true;
++          enableFishIntegration = true;
++          enableNushellIntegration = true;
++        };
++
++        broot = {
++          enable = true;
++          enableFishIntegration = false;
++          enableNushellIntegration = true;
++        };
++
++        direnv = {
++          enable = true;
++          nix-direnv.enable = true;
++        };
++
++        carapace = {
++          enable = true;
++          enableFishIntegration = false;
++          enableNushellIntegration = true;
++        };
++
++        atuin = {
++          enable = true;
++          enableFishIntegration = true;
++          enableNushellIntegration = true;
++        };
++
++        pay-respects = {
++          enable = true;
++          enableFishIntegration = false;
++          enableNushellIntegration = true;
++        };
++
++        bat = {
++          enable = true;
++          config = {
++            theme = "Catppuccin Mocha";
++          };
++          extraPackages = with pkgs.bat-extras; [
++            batgrep
++            batman
++            batpipe
++            batwatch
++            batdiff
++            prettybat
++          ];
++        };
++
++        btop = {
++          enable = true;
++          package = pkgs.btop.override {
++            cudaSupport = true;
++          };
++          settings = {
++            color_theme = "Dracula";
++            theme_background = false;
++            vim_keys = true;
++          };
++        };
++      };
++    };
++  # Local scripts
++  den.aspects.shell._.my-scripts.homeManager =
++    { pkgs, ... }:
++    let
++      testspeed = pkgs.writeShellApplication {
++        name = "testspeed";
++        runtimeInputs = [
++          pkgs.gum
++          pkgs.ookla-speedtest
++        ];
++        text = builtins.readFile ../../scripts/testspeed.sh;
++      };
++    in
++    {
++      home.packages = [ testspeed ];
++    };
++}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/pet.nix modules/shell/pet.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/pet.nix	2026-08-14 06:17:32.858920686 +0700
++++ modules/shell/pet.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,11 +0,0 @@
+-{
+-  den.aspects.shell._.pet.homeManager =
+-    { pkgs, ... }:
+-    {
+-      home.packages = [ pkgs.pet ];
+-      xdg.configFile."pet" = {
+-        source = ../../dots/config/pet;
+-        recursive = true;
+-      };
+-    };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/prompt.nix modules/shell/prompt.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/prompt.nix	1970-01-01 07:00:00.000000000 +0700
++++ modules/shell/prompt.nix	2026-08-14 07:03:41.497872060 +0700
+@@ -0,0 +1,234 @@
++{
++  # Fastfetch
++  den.aspects.shell._.fastfetch = {
++    homeManager = {
++      xdg.configFile."fastfetch/config.jsonc".source = ../../dots/config/fastfetch/config.jsonc;
++    };
++    nixos =
++      { pkgs, ... }:
++      {
++        environment.systemPackages = with pkgs; [ fastfetch ];
++      };
++    darwin =
++      { pkgs, ... }:
++      {
++        environment.systemPackages = with pkgs; [ fastfetch ];
++      };
++  };
++  # Starship
++  den.aspects.shell._.starship.homeManager =
++    {
++      config,
++      lib,
++      pkgs,
++      ...
++    }:
++    let
++      tomlFormat = pkgs.formats.toml { };
++    in
++    {
++      programs.starship = {
++        enable = true;
++        enableFishIntegration = true;
++        settings = {
++          "$schema" = "https://starship.rs/config-schema.json";
++          add_newline = true;
++
++          # format = ''
++          #   $hostname\
++          #   $directory\
++          #   $git_branch\
++          #   $git_state\
++          #   $git_status\
++          #   $git_metrics\
++          #   $nodejs\
++          #   $bun\
++          #   $fill\
++          #   $cmd_duration $jobs $time\
++          #   $line_break\
++          #   $character'';
++
++          character = {
++            error_symbol = "[➜](bold red)";
++            success_symbol = "[➜](bold green)";
++          };
++
++          time = {
++            disabled = false;
++            format = "[$time]($style) ";
++            style = "bold gray";
++            time_format = "%T";
++            use_12hr = false;
++            utc_time_offset = "+7";
++          };
++
++          fill.symbol = " ";
++
++          jobs = {
++            format = "[$symbol]($style)";
++            number_threshold = 1;
++            style = "bold red";
++            symbol = "";
++          };
++
++          git_state = {
++            format = "\\([$state( $progress_current/$progress_total)]($style)\\) ";
++            style = "bright-black";
++          };
++
++          git_metrics.disabled = false;
++
++          cmd_duration = {
++            format = "[$duration]($style)";
++            style = "yellow";
++          };
++
++          custom.stunnel = {
++            command = "ps -o etime= -p $(ps aux | grep stunnel | grep -v grep | awk '{print $2}')";
++            format = "[TUNNEL OPEN for $output]($style)";
++            style = "red";
++            when = "ps aux | grep stunnel | grep -v grep";
++          };
++
++          package = {
++            disabled = true;
++            symbol = "󰏗 ";
++          };
++
++          aws.symbol = "  ";
++          buf.symbol = " ";
++          c.symbol = " ";
++          conda.symbol = " ";
++          crystal.symbol = " ";
++          dart.symbol = " ";
++          directory.read_only = " 󰌾";
++          docker_context.symbol = " ";
++          elixir.symbol = " ";
++          elm.symbol = " ";
++          fennel.symbol = " ";
++          fossil_branch.symbol = " ";
++          git_branch.symbol = " ";
++          golang.symbol = " ";
++          guix_shell.symbol = " ";
++          haskell.symbol = " ";
++          haxe.symbol = " ";
++          hg_branch.symbol = " ";
++
++          hostname = {
++            disabled = false;
++            format = "[$ssh_symbol](bold blue) on [$hostname](bold red) ";
++            ssh_only = true;
++            ssh_symbol = "🌏 ";
++          };
++
++          java.symbol = " ";
++          julia.symbol = " ";
++          kotlin.symbol = " ";
++          lua.symbol = " ";
++          memory_usage.symbol = "󰍛 ";
++          meson.symbol = "󰔷 ";
++          nim.symbol = "󰆥 ";
++          nix_shell.symbol = " ";
++          nodejs.symbol = " ";
++          bun.format = "via [🍔 $version](bold green) ";
++          ocaml.symbol = " ";
++
++          os.symbols = {
++            AlmaLinux = " ";
++            Alpaquita = " ";
++            Alpine = " ";
++            Amazon = " ";
++            Android = " ";
++            Arch = " ";
++            Artix = " ";
++            CentOS = " ";
++            Debian = " ";
++            DragonFly = " ";
++            Emscripten = " ";
++            EndeavourOS = " ";
++            Fedora = " ";
++            FreeBSD = " ";
++            Garuda = "󰛓 ";
++            Gentoo = " ";
++            HardenedBSD = "󰞌 ";
++            Illumos = "󰈸 ";
++            Kali = " ";
++            Linux = " ";
++            Mabox = " ";
++            Macos = " ";
++            Manjaro = " ";
++            Mariner = " ";
++            MidnightBSD = " ";
++            Mint = " ";
++            NetBSD = " ";
++            NixOS = " ";
++            OpenBSD = "󰈺 ";
++            OracleLinux = "󰌷 ";
++            Pop = " ";
++            Raspbian = " ";
++            RedHatEnterprise = " ";
++            Redhat = " ";
++            Redox = "󰀘 ";
++            RockyLinux = " ";
++            SUSE = " ";
++            Solus = "󰠳 ";
++            Ubuntu = " ";
++            Unknown = " ";
++            Void = " ";
++            Windows = "󰍲 ";
++            openSUSE = " ";
++          };
++
++          perl.symbol = " ";
++          php.symbol = " ";
++          pijul_channel.symbol = " ";
++          python.symbol = " ";
++          rlang.symbol = "󰟔 ";
++          ruby.symbol = " ";
++          rust.symbol = " ";
++          scala.symbol = " ";
++          swift.symbol = " ";
++          zig.symbol = " ";
++        };
++      };
++
++      home.file.${config.programs.starship.configPath}.source = lib.mkForce (
++        pkgs.runCommand "starship-config.toml"
++          {
++            baseConfig = tomlFormat.generate "starship-config-base.toml" config.programs.starship.settings;
++          }
++          ''
++            awk '
++              BEGIN {
++                in_root = 1
++                replaced = 0
++              }
++
++              /^\[/ {
++                in_root = 0
++              }
++
++              in_root && !replaced && /^format = / {
++                print "format = \"\"\""
++                print "$hostname\\\\"
++                print "$directory\\\\"
++                print "$git_branch\\\\"
++                print "$git_state\\\\"
++                print "$git_status\\\\"
++                print "$git_metrics\\\\"
++                print "$nodejs\\\\"
++                print "$bun\\\\"
++                print "$fill\\\\"
++                print "$cmd_duration $jobs $time\\\\"
++                print "$line_break\\\\"
++                print "$character\"\"\""
++                replaced = 1
++                next
++              }
++
++              { print }
++            ' "$baseConfig" > "$out"
++          ''
++      );
++    };
++}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/rift.nix modules/shell/rift.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/rift.nix	2026-08-14 06:17:32.858967255 +0700
++++ modules/shell/rift.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,10 +0,0 @@
+-{ lib, ... }:
+-{
+-  den.aspects.shell._.rift = {
+-    homeManager =
+-      { pkgs, ... }:
+-      lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+-        xdg.configFile."rift/config.toml".source = ../../dots/config/rift/config.toml;
+-      };
+-  };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/shells.nix modules/shell/shells.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/shells.nix	1970-01-01 07:00:00.000000000 +0700
++++ modules/shell/shells.nix	2026-08-14 07:03:41.496872038 +0700
+@@ -0,0 +1,341 @@
++{ __findFile, lib, ... }:
++{
++  # Bash
++  den.aspects.shell._.bash = {
++    homeManager = {
++      programs.bash = {
++        enable = true;
++        enableCompletion = true;
++        # TODO add your custom bashrc here
++        bashrcExtra = ''
++          export PATH="$PATH:$HOME/bin:$HOME/.local/bin:$HOME/go/bin"
++        '';
++
++        # set some aliases, feel free to add more or remove some
++        shellAliases = {
++          k = "kubectl";
++          urldecode = "python3 -c 'import sys, urllib.parse as ul; print(ul.unquote_plus(sys.stdin.read()))'";
++          urlencode = "python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.stdin.read()))'";
++        };
++      };
++    };
++  };
++  # Shared environment
++  den.aspects.shell._.env.homeManager =
++    { config, lib, ... }:
++    let
++      runtimeSecretNames = {
++        CONTEXT7_MCP_API_KEY = "llm/context7_apikey";
++        OPENROUTER_API_KEY = "llm/openrouter_apikey";
++        WAKATIME_API_KEY = "productivity/wakatime_apikey";
++      };
++
++      configuredSopsSecrets = lib.attrByPath [ "sops" "secrets" ] { } config;
++
++      runtimeSecretPaths =
++        lib.mapAttrs (_variable: secretName: configuredSopsSecrets.${secretName}.path)
++          (
++            lib.filterAttrs (
++              _variable: secretName: builtins.hasAttr secretName configuredSopsSecrets
++            ) runtimeSecretNames
++          );
++
++      fishRuntimeSecretAssignments = lib.concatStringsSep "\n" (
++        lib.mapAttrsToList (variable: path: ''
++          if test -r ${lib.escapeShellArg path}
++              set -gx ${variable} (command cat -- ${lib.escapeShellArg path})
++          end
++        '') runtimeSecretPaths
++      );
++
++      fishRuntimeSecretInit = ''
++        # BEGIN dotnix runtime secrets
++        ${fishRuntimeSecretAssignments}
++        if set -q GITHUB_TOKEN_FILE; and test -r "$GITHUB_TOKEN_FILE"
++            set -gx GITHUB_TOKEN (command cat -- "$GITHUB_TOKEN_FILE")
++        end
++        # END dotnix runtime secrets
++      '';
++
++      zshRuntimeSecretAssignments = lib.concatStringsSep "\n" (
++        lib.mapAttrsToList (variable: path: ''
++          if [[ -r ${lib.escapeShellArg path} ]]; then
++              export ${variable}="$(< ${lib.escapeShellArg path})"
++          fi
++        '') runtimeSecretPaths
++      );
++
++      zshRuntimeSecretInit = ''
++        # BEGIN dotnix runtime secrets
++        ${zshRuntimeSecretAssignments}
++        if [[ -n ''${GITHUB_TOKEN_FILE:-} && -r "$GITHUB_TOKEN_FILE" ]]; then
++            export GITHUB_TOKEN="$(< "$GITHUB_TOKEN_FILE")"
++        fi
++        # END dotnix runtime secrets
++      '';
++
++      userDirs = {
++        DESKTOP = config.xdg.userDirs.desktop;
++        DOCUMENTS = config.xdg.userDirs.documents;
++        DOWNLOAD = config.xdg.userDirs.download;
++        MUSIC = config.xdg.userDirs.music;
++        PICTURES = config.xdg.userDirs.pictures;
++        PUBLICSHARE = config.xdg.userDirs.publicShare;
++        TEMPLATES = config.xdg.userDirs.templates;
++        VIDEOS = config.xdg.userDirs.videos;
++      };
++
++      userDirAssignments = lib.concatStringsSep "\n" (
++        lib.mapAttrsToList (
++          name: value:
++          lib.optionalString (value != null) "set -gx XDG_${name}_DIR ${lib.escapeShellArg value}"
++        ) userDirs
++      );
++
++      userDirAssignmentsZsh = lib.concatStringsSep "\n" (
++        lib.mapAttrsToList (
++          name: value: lib.optionalString (value != null) "export XDG_${name}_DIR=${lib.escapeShellArg value}"
++        ) userDirs
++      );
++
++      userDirExports = lib.concatStringsSep "\n" (
++        lib.mapAttrsToList (name: _: ''
++          set -l xdg_${lib.toLower name}_dir (xdg-user-dir ${name})
++          if test -n "$xdg_${lib.toLower name}_dir"
++              set -gx XDG_${name}_DIR "$xdg_${lib.toLower name}_dir"
++          end'') userDirs
++      );
++
++      render =
++        file: replacements:
++        builtins.replaceStrings (builtins.attrNames replacements) (builtins.attrValues replacements) (
++          builtins.readFile file
++        );
++    in
++    {
++      programs.fish.interactiveShellInit = lib.mkBefore fishRuntimeSecretInit;
++      programs.zsh.initContent = lib.mkBefore zshRuntimeSecretInit;
++
++      xdg.configFile."fish/env.d/000-xdg.fish".text = render ../../dots/config/fish/env.d/000-xdg.fish {
++        "@XDG_DATA_HOME@" = lib.escapeShellArg config.xdg.dataHome;
++        "@XDG_CONFIG_HOME@" = lib.escapeShellArg config.xdg.configHome;
++        "@XDG_STATE_HOME@" = lib.escapeShellArg config.xdg.stateHome;
++        "@XDG_CACHE_HOME@" = lib.escapeShellArg config.xdg.cacheHome;
++        "# @XDG_USER_DIR_ASSIGNMENTS@" = userDirAssignments;
++        "# @XDG_USER_DIR_EXPORTS@" = userDirExports;
++      };
++
++      xdg.configFile."zsh/env.d/000-xdg.sh".text = render ../../dots/config/zsh/env.d/000-xdg.sh {
++        "@XDG_DATA_HOME@" = lib.escapeShellArg config.xdg.dataHome;
++        "@XDG_CONFIG_HOME@" = lib.escapeShellArg config.xdg.configHome;
++        "@XDG_STATE_HOME@" = lib.escapeShellArg config.xdg.stateHome;
++        "@XDG_CACHE_HOME@" = lib.escapeShellArg config.xdg.cacheHome;
++        "# @XDG_USER_DIR_ASSIGNMENTS@" = userDirAssignmentsZsh;
++      };
++    };
++
++  den.aspects.shell._.env.nixos = {
++    environment.variables = {
++      EDITOR = "nvim";
++      VISUAL = "nvim";
++    };
++  };
++  # Fish
++  den.aspects.shell._.fish.homeManager =
++    { pkgs, ... }:
++    let
++      inherit (pkgs.stdenv.hostPlatform) isDarwin isLinux;
++      clipboardCommand =
++        if isDarwin then
++          "pbcopy"
++        else if isLinux then
++          "wl-copy"
++        else
++          "";
++
++      commonAliases =
++        if isDarwin then
++          ''
++            function cpwd
++                if not command -q ${clipboardCommand}
++                    echo "cpwd: ${clipboardCommand} is not available" >&2
++                    return 1
++                end
++                printf '%s' "$PWD" | ${clipboardCommand}
++            end
++
++            # === DARWIN ===
++            alias caff="caffeinate -ism"           # Run command without letting mac sleep
++
++            alias showdot='defaults write com.apple.finder AppleShowAllFiles TRUE'  # show dot files in Finder
++            alias hidedot='defaults write com.apple.finder AppleShowAllFiles FALSE' # hide dot files in Finder
++            alias spot-off="sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist"
++            alias spot-on="sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist"
++            alias fixmounts="sudo automount -vcu" # Re-mount all shared drives
++          ''
++        else if isLinux then
++          ''
++            function cpwd
++                if not command -q ${clipboardCommand}
++                    echo "cpwd: ${clipboardCommand} is not available" >&2
++                    return 1
++                end
++                printf '%s' "$PWD" | ${clipboardCommand}
++            end
++
++            # === LINUX ===
++            alias ctl='systemctl'
++            alias reboot="sudo systemctl reboot"
++            alias sstop="sudo systemctl stop"
++            alias sstatus="sudo systemctl status"
++
++            # Start and then view status of service
++            function sstart
++                sudo systemctl start $argv[1]
++                sudo systemctl status $argv[1]
++            end
++
++            # Restart and then view status of service
++            function srestart
++                sudo systemctl restart $argv[1]
++                sudo systemctl status $argv[1]
++            end
++
++            # Journalctl aliases
++            alias logs='sudo journalctl -fu'
++            alias logs-all='sudo journalctl -u'
++          ''
++        else
++          "";
++
++      commonAliasesFish = builtins.replaceStrings [ "@common_aliases@" ] [ commonAliases ] (
++        builtins.readFile ../../dots/config/fish/conf.d/common_aliases.fish
++      );
++    in
++    {
++      # home.packages = [ pkgs.fish ];
++
++      xdg.configFile."fish/fish_plugins".source = ../../dots/config/fish/fish_plugins;
++      xdg.configFile."fish/conf.d/colors.fish".source = ../../dots/config/fish/conf.d/colors.fish;
++      xdg.configFile."fish/conf.d/atuin.fish".source = ../../dots/config/fish/conf.d/atuin.fish;
++      xdg.configFile."fish/conf.d/bat.fish".source = ../../dots/config/fish/conf.d/bat.fish;
++      xdg.configFile."fish/conf.d/common_functions.fish".source =
++        ../../dots/config/fish/conf.d/common_functions.fish;
++      xdg.configFile."fish/conf.d/common_aliases.fish" = {
++        text = commonAliasesFish;
++      };
++      xdg.configFile."fish/conf.d/chezmoi.fish".source = ../../dots/config/fish/conf.d/chezmoi.fish;
++      xdg.configFile."fish/conf.d/abbreviations.fish".source =
++        ../../dots/config/fish/conf.d/abbreviations.fish;
++      xdg.configFile."fish/conf.d/jujutsu.fish".source = ../../dots/config/fish/conf.d/jujutsu.fish;
++      xdg.configFile."fish/conf.d/yazi.fish".source = ../../dots/config/fish/conf.d/yazi.fish;
++      xdg.configFile."fish/conf.d/pet.fish".source = ../../dots/config/fish/conf.d/pet.fish;
++      xdg.configFile."fish/conf.d/sk-git.fish".source = ../../dots/config/fish/conf.d/sk-git.fish;
++      xdg.configFile."fish/conf.d/skim.fish".source = ../../dots/config/fish/conf.d/skim.fish;
++      xdg.configFile."fish/conf.d/zoxide.fish".source = ../../dots/config/fish/conf.d/zoxide.fish;
++      xdg.configFile."fish/completions/just.fish".text = ''
++        command just --completions fish | source
++      '';
++
++      programs = {
++        command-not-found.enable = false;
++        nix-index-database.comma.enable = false;
++
++        fish = {
++          enable = true;
++          interactiveShellInit = ''
++            set -g fish_greeting
++            abbr --add cl clear
++            fish_vi_key_bindings
++
++            # === sesh binding ===
++            # Untuk default mode (emacs mode)
++            bind \eu 'sesh-connect-picker'
++
++            # Untuk vi mode jika diaktifkan
++            bind -M insert \eu 'sesh-connect-picker'
++            bind -M default \eu 'sesh-connect-picker'
++
++          '';
++          plugins = [
++            {
++              name = "fisher";
++              src = pkgs.fetchFromGitHub {
++                owner = "jorgebucaran";
++                repo = "fisher";
++                rev = "791da644d33d392216f6b1a9b5fc1e470db6d7f2";
++                hash = "sha256-U1yd8m56YrHXrJFkU8xaOglulOGV0iBvwjU/bdf8tqA=";
++              };
++            }
++          ];
++          functions = {
++            tmux = ''
++              if test (count $argv) -eq 0
++                  set -l dir (basename "$PWD")
++                  set -l session (string replace -ra '[^A-Za-z0-9_.-]' '_' -- $dir)
++                  test -n "$session"; or set session main
++
++                  if set -q TMUX
++                      if command tmux has-session -t "$session" 2>/dev/null
++                          command tmux switch-client -t "$session"
++                      else
++                          command tmux new-session -d -s "$session" -c "$PWD"
++                          command tmux switch-client -t "$session"
++                      end
++                  else
++                      command tmux new-session -A -s "$session" -c "$PWD"
++                  end
++                  return
++              end
++
++              command tmux $argv
++            '';
++          };
++          # interactiveShellInit = ''
++          #   ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
++          # '';
++        };
++      };
++    };
++  # Zsh
++  den.aspects.shell._.zsh.homeManager =
++    { config, pkgs, ... }:
++    let
++      zshConfig = ../../dots/config/zsh;
++      sourceConfD = ''
++        setopt extendedglob null_glob
++        for file in "${config.xdg.configHome}/zsh/conf.d"/**/*.(zsh|sh)(N); do
++          [[ -r "$file" ]] && source "$file"
++        done
++      '';
++    in
++    {
++      programs.zsh = {
++        enable = true;
++        initContent = lib.mkOrder 1000 ''
++          export ZDOTDIR="${config.home.homeDirectory}"
++          for file in "${config.xdg.configHome}/zsh/env.d"/*.sh(N); do [[ -r "$file" ]] && source "$file"; done
++          if [[ -r "${pkgs.zsh-abbr}/share/zsh-abbr/zsh-abbr.zsh" ]]; then
++            source "${pkgs.zsh-abbr}/share/zsh-abbr/zsh-abbr.zsh"
++          elif [[ -r "${pkgs.zsh-abbr}/share/zsh-abbr/zsh-abbr.plugin.zsh" ]]; then
++            source "${pkgs.zsh-abbr}/share/zsh-abbr/zsh-abbr.plugin.zsh"
++          fi
++          ${sourceConfD}
++          if (( $+commands[abbr] )) && [[ -r "${config.xdg.configHome}/zsh-abbr/user-abbreviations" ]]; then
++            source "${config.xdg.configHome}/zsh-abbr/user-abbreviations"
++          fi
++        '';
++      };
++
++      home.packages = [ pkgs.zsh-abbr ];
++      xdg.configFile."zsh/conf.d/002-options.bash".source = zshConfig + "/conf.d/002-options.bash";
++      xdg.configFile."zsh/conf.d/002-options.zsh".source = zshConfig + "/conf.d/002-options.zsh";
++      xdg.configFile."zsh/conf.d/060-common-aliases.sh".source =
++        zshConfig + "/conf.d/060-common-aliases.sh";
++      xdg.configFile."zsh/conf.d/060-common-functions.sh".source =
++        zshConfig + "/conf.d/060-common-functions.sh";
++      xdg.configFile."zsh/conf.d/090-personal.sh".source = zshConfig + "/conf.d/090-personal.sh";
++      xdg.configFile."zsh/conf.d/third-party".source = zshConfig + "/conf.d/third-party";
++      xdg.configFile."zsh-abbr/user-abbreviations".source = ../../dots/config/zsh-abbr/user-abbreviations;
++    };
++}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/starship.nix modules/shell/starship.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/starship.nix	2026-08-14 06:17:32.859035444 +0700
++++ modules/shell/starship.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,217 +0,0 @@
+-{
+-  den.aspects.shell._.starship.homeManager =
+-    {
+-      config,
+-      lib,
+-      pkgs,
+-      ...
+-    }:
+-    let
+-      tomlFormat = pkgs.formats.toml { };
+-    in
+-    {
+-      programs.starship = {
+-        enable = true;
+-        enableFishIntegration = true;
+-        settings = {
+-          "$schema" = "https://starship.rs/config-schema.json";
+-          add_newline = true;
+-
+-          # format = ''
+-          #   $hostname\
+-          #   $directory\
+-          #   $git_branch\
+-          #   $git_state\
+-          #   $git_status\
+-          #   $git_metrics\
+-          #   $nodejs\
+-          #   $bun\
+-          #   $fill\
+-          #   $cmd_duration $jobs $time\
+-          #   $line_break\
+-          #   $character'';
+-
+-          character = {
+-            error_symbol = "[➜](bold red)";
+-            success_symbol = "[➜](bold green)";
+-          };
+-
+-          time = {
+-            disabled = false;
+-            format = "[$time]($style) ";
+-            style = "bold gray";
+-            time_format = "%T";
+-            use_12hr = false;
+-            utc_time_offset = "+7";
+-          };
+-
+-          fill.symbol = " ";
+-
+-          jobs = {
+-            format = "[$symbol]($style)";
+-            number_threshold = 1;
+-            style = "bold red";
+-            symbol = "";
+-          };
+-
+-          git_state = {
+-            format = "\\([$state( $progress_current/$progress_total)]($style)\\) ";
+-            style = "bright-black";
+-          };
+-
+-          git_metrics.disabled = false;
+-
+-          cmd_duration = {
+-            format = "[$duration]($style)";
+-            style = "yellow";
+-          };
+-
+-          custom.stunnel = {
+-            command = "ps -o etime= -p $(ps aux | grep stunnel | grep -v grep | awk '{print $2}')";
+-            format = "[TUNNEL OPEN for $output]($style)";
+-            style = "red";
+-            when = "ps aux | grep stunnel | grep -v grep";
+-          };
+-
+-          package = {
+-            disabled = true;
+-            symbol = "󰏗 ";
+-          };
+-
+-          aws.symbol = "  ";
+-          buf.symbol = " ";
+-          c.symbol = " ";
+-          conda.symbol = " ";
+-          crystal.symbol = " ";
+-          dart.symbol = " ";
+-          directory.read_only = " 󰌾";
+-          docker_context.symbol = " ";
+-          elixir.symbol = " ";
+-          elm.symbol = " ";
+-          fennel.symbol = " ";
+-          fossil_branch.symbol = " ";
+-          git_branch.symbol = " ";
+-          golang.symbol = " ";
+-          guix_shell.symbol = " ";
+-          haskell.symbol = " ";
+-          haxe.symbol = " ";
+-          hg_branch.symbol = " ";
+-
+-          hostname = {
+-            disabled = false;
+-            format = "[$ssh_symbol](bold blue) on [$hostname](bold red) ";
+-            ssh_only = true;
+-            ssh_symbol = "🌏 ";
+-          };
+-
+-          java.symbol = " ";
+-          julia.symbol = " ";
+-          kotlin.symbol = " ";
+-          lua.symbol = " ";
+-          memory_usage.symbol = "󰍛 ";
+-          meson.symbol = "󰔷 ";
+-          nim.symbol = "󰆥 ";
+-          nix_shell.symbol = " ";
+-          nodejs.symbol = " ";
+-          bun.format = "via [🍔 $version](bold green) ";
+-          ocaml.symbol = " ";
+-
+-          os.symbols = {
+-            AlmaLinux = " ";
+-            Alpaquita = " ";
+-            Alpine = " ";
+-            Amazon = " ";
+-            Android = " ";
+-            Arch = " ";
+-            Artix = " ";
+-            CentOS = " ";
+-            Debian = " ";
+-            DragonFly = " ";
+-            Emscripten = " ";
+-            EndeavourOS = " ";
+-            Fedora = " ";
+-            FreeBSD = " ";
+-            Garuda = "󰛓 ";
+-            Gentoo = " ";
+-            HardenedBSD = "󰞌 ";
+-            Illumos = "󰈸 ";
+-            Kali = " ";
+-            Linux = " ";
+-            Mabox = " ";
+-            Macos = " ";
+-            Manjaro = " ";
+-            Mariner = " ";
+-            MidnightBSD = " ";
+-            Mint = " ";
+-            NetBSD = " ";
+-            NixOS = " ";
+-            OpenBSD = "󰈺 ";
+-            OracleLinux = "󰌷 ";
+-            Pop = " ";
+-            Raspbian = " ";
+-            RedHatEnterprise = " ";
+-            Redhat = " ";
+-            Redox = "󰀘 ";
+-            RockyLinux = " ";
+-            SUSE = " ";
+-            Solus = "󰠳 ";
+-            Ubuntu = " ";
+-            Unknown = " ";
+-            Void = " ";
+-            Windows = "󰍲 ";
+-            openSUSE = " ";
+-          };
+-
+-          perl.symbol = " ";
+-          php.symbol = " ";
+-          pijul_channel.symbol = " ";
+-          python.symbol = " ";
+-          rlang.symbol = "󰟔 ";
+-          ruby.symbol = " ";
+-          rust.symbol = " ";
+-          scala.symbol = " ";
+-          swift.symbol = " ";
+-          zig.symbol = " ";
+-        };
+-      };
+-
+-      home.file.${config.programs.starship.configPath}.source = lib.mkForce (
+-        pkgs.runCommand "starship-config.toml"
+-          {
+-            baseConfig = tomlFormat.generate "starship-config-base.toml" config.programs.starship.settings;
+-          }
+-          ''
+-            awk '
+-              BEGIN {
+-                in_root = 1
+-                replaced = 0
+-              }
+-
+-              /^\[/ {
+-                in_root = 0
+-              }
+-
+-              in_root && !replaced && /^format = / {
+-                print "format = \"\"\""
+-                print "$hostname\\\\"
+-                print "$directory\\\\"
+-                print "$git_branch\\\\"
+-                print "$git_state\\\\"
+-                print "$git_status\\\\"
+-                print "$git_metrics\\\\"
+-                print "$nodejs\\\\"
+-                print "$bun\\\\"
+-                print "$fill\\\\"
+-                print "$cmd_duration $jobs $time\\\\"
+-                print "$line_break\\\\"
+-                print "$character\"\"\""
+-                replaced = 1
+-                next
+-              }
+-
+-              { print }
+-            ' "$baseConfig" > "$out"
+-          ''
+-      );
+-    };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/superfile.nix modules/shell/superfile.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/superfile.nix	2026-08-14 06:17:32.859094644 +0700
++++ modules/shell/superfile.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,8 +0,0 @@
+-{
+-  den.aspects.shell._.superfile.homeManager =
+-    { pkgs, ... }:
+-    {
+-      home.packages = [ pkgs.superfile ];
+-      xdg.configFile."superfile/config.toml".source = ../../dots/config/superfile/config.toml;
+-    };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/television.nix modules/shell/television.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/television.nix	2026-08-14 06:17:32.859147062 +0700
++++ modules/shell/television.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,11 +0,0 @@
+-{
+-  den.aspects.shell._.television.homeManager =
+-    { pkgs, ... }:
+-    {
+-      home.packages = [ pkgs.television ];
+-      xdg.configFile."television" = {
+-        source = ../../dots/config/television;
+-        recursive = true;
+-      };
+-    };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/terminal-workspaces.nix modules/shell/terminal-workspaces.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/terminal-workspaces.nix	1970-01-01 07:00:00.000000000 +0700
++++ modules/shell/terminal-workspaces.nix	2026-08-14 07:03:41.497872060 +0700
+@@ -0,0 +1,135 @@
++{
++  __findFile,
++  inputs,
++  lib,
++  ...
++}:
++{
++  # Herdr
++  den.aspects.shell._.herdr = {
++    homeManager =
++      { pkgs, ... }:
++      let
++        herdr = inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.herdr;
++        herdrAutomaticRename = inputs.herdr-automatic-rename;
++        herdrFishCompletion = pkgs.runCommand "herdr-fish-completion" { } ''
++          ${herdr}/bin/herdr completion fish > $out
++        '';
++        herdrPluginBootstrap = pkgs.writeShellApplication {
++          name = "herdr-plugin-bootstrap";
++          runtimeInputs = [
++            herdr
++            pkgs.jq
++          ];
++          text = builtins.readFile ./herdr-plugin-bootstrap.sh;
++        };
++      in
++      {
++        xdg.configFile."herdr/config.toml".source = ../../dots/config/herdr/config.toml;
++        xdg.configFile."fish/completions/herdr.fish".source = herdrFishCompletion;
++        xdg.configFile."fish/conf.d/herdr.fish".text = ''
++          if type -q herdr
++              ${herdrPluginBootstrap}/bin/herdr-plugin-bootstrap ${herdrAutomaticRename}
++              source ${herdrAutomaticRename}/shell/hook.fish
++          end
++        '';
++        xdg.configFile."zsh/conf.d/third-party/herdr-automatic-rename-nix.sh".text = ''
++          if (( $+commands[herdr] )); then
++            ${herdrPluginBootstrap}/bin/herdr-plugin-bootstrap ${herdrAutomaticRename}
++            source "${herdrAutomaticRename}/shell/hook.zsh"
++          fi
++        '';
++      };
++
++    nixos =
++      { pkgs, ... }:
++      let
++        herdr = inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.herdr;
++      in
++      {
++        environment.systemPackages = [ herdr ];
++      };
++  };
++  # tmux
++  den.aspects.shell._.tmux.homeManager =
++    { pkgs, ... }:
++    let
++      inherit (pkgs.stdenv.hostPlatform) isDarwin isLinux;
++
++      clipboardBindings =
++        if isDarwin then
++          ''
++            bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "pbcopy"
++            bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "pbcopy"
++          ''
++        else if isLinux then
++          ''
++            if-shell 'command -v wl-copy' {
++                  bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "wl-copy"
++                  bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "wl-copy"
++                } {
++                  if-shell 'command -v xclip' {
++                    bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xclip -selection clipboard -in"
++                    bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "xclip -selection clipboard -in"
++                  } {
++                    if-shell 'command -v xsel' {
++                      bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xsel --clipboard --input"
++                      bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "xsel --clipboard --input"
++                    }
++                  }
++                }
++          ''
++        else
++          "";
++
++      tmuxConfig = builtins.replaceStrings [ "@clipboard_bindings@" ] [ clipboardBindings ] (
++        builtins.readFile ../../dots/config/tmux/tmux.conf
++      );
++
++      seshConnectPickerScript = builtins.replaceStrings [ "#!/usr/bin/env bash\n\n" ] [ "" ] (
++        builtins.readFile ../../dots/config/tmux/sesh-connect-picker.sh
++      );
++
++      seshConnectPicker = pkgs.writeShellApplication {
++        name = "sesh-connect-picker";
++        runtimeInputs = with pkgs; [
++          gnused
++          gum
++          sesh
++        ];
++        text = seshConnectPickerScript;
++      };
++    in
++    {
++      home.packages = [
++        pkgs.tmux
++        seshConnectPicker
++      ];
++
++      programs = {
++        fish.interactiveShellInit = lib.mkAfter ''
++          abbr --add tx tmux
++          abbr --add ts --set-cursor 'tmux new -s "%"'
++          abbr --add tl "tmux list-sessions"
++          abbr --add tkss --set-cursor 'tmux kill-session -t "%"'
++          abbr --add tksv "tmux kill-server"
++        '';
++      };
++      xdg.configFile."tmux/tmux.conf".text = tmuxConfig;
++    };
++  # Zellij
++  den.aspects.shell._.zellij = {
++    homeManager = {
++      xdg.configFile."zellij" = {
++        source = ../../dots/config/zellij;
++        recursive = true;
++      };
++    };
++
++    nixos =
++      { pkgs, ... }:
++      {
++        environment.systemPackages = with pkgs; [ zellij ];
++      };
++  };
++}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/tmux.nix modules/shell/tmux.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/tmux.nix	2026-08-14 06:17:32.859201796 +0700
++++ modules/shell/tmux.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,69 +0,0 @@
+-{ lib, ... }:
+-{
+-  den.aspects.shell._.tmux.homeManager =
+-    { pkgs, ... }:
+-    let
+-      inherit (pkgs.stdenv.hostPlatform) isDarwin isLinux;
+-
+-      clipboardBindings =
+-        if isDarwin then
+-          ''
+-            bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "pbcopy"
+-            bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "pbcopy"
+-          ''
+-        else if isLinux then
+-          ''
+-            if-shell 'command -v wl-copy' {
+-                  bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "wl-copy"
+-                  bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "wl-copy"
+-                } {
+-                  if-shell 'command -v xclip' {
+-                    bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xclip -selection clipboard -in"
+-                    bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "xclip -selection clipboard -in"
+-                  } {
+-                    if-shell 'command -v xsel' {
+-                      bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xsel --clipboard --input"
+-                      bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "xsel --clipboard --input"
+-                    }
+-                  }
+-                }
+-          ''
+-        else
+-          "";
+-
+-      tmuxConfig = builtins.replaceStrings [ "@clipboard_bindings@" ] [ clipboardBindings ] (
+-        builtins.readFile ../../dots/config/tmux/tmux.conf
+-      );
+-
+-      seshConnectPickerScript = builtins.replaceStrings [ "#!/usr/bin/env bash\n\n" ] [ "" ] (
+-        builtins.readFile ../../dots/config/tmux/sesh-connect-picker.sh
+-      );
+-
+-      seshConnectPicker = pkgs.writeShellApplication {
+-        name = "sesh-connect-picker";
+-        runtimeInputs = with pkgs; [
+-          gnused
+-          gum
+-          sesh
+-        ];
+-        text = seshConnectPickerScript;
+-      };
+-    in
+-    {
+-      home.packages = [
+-        pkgs.tmux
+-        seshConnectPicker
+-      ];
+-
+-      programs = {
+-        fish.interactiveShellInit = lib.mkAfter ''
+-          abbr --add tx tmux
+-          abbr --add ts --set-cursor 'tmux new -s "%"'
+-          abbr --add tl "tmux list-sessions"
+-          abbr --add tkss --set-cursor 'tmux kill-session -t "%"'
+-          abbr --add tksv "tmux kill-server"
+-        '';
+-      };
+-      xdg.configFile."tmux/tmux.conf".text = tmuxConfig;
+-    };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/utils.nix modules/shell/utils.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/utils.nix	2026-08-14 06:17:32.859265471 +0700
++++ modules/shell/utils.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,83 +0,0 @@
+-{
+-  den.aspects.shell._.utils.homeManager =
+-    { pkgs, ... }:
+-    {
+-      services.ssh-agent = {
+-        enable = true;
+-      };
+-
+-      programs = {
+-        fzf = {
+-          enable = true;
+-          enableFishIntegration = false;
+-        };
+-
+-        eza = {
+-          enable = true;
+-          enableFishIntegration = true;
+-        };
+-
+-        zoxide = {
+-          enable = true;
+-          enableFishIntegration = true;
+-          enableNushellIntegration = true;
+-        };
+-
+-        broot = {
+-          enable = true;
+-          enableFishIntegration = false;
+-          enableNushellIntegration = true;
+-        };
+-
+-        direnv = {
+-          enable = true;
+-          nix-direnv.enable = true;
+-        };
+-
+-        carapace = {
+-          enable = true;
+-          enableFishIntegration = false;
+-          enableNushellIntegration = true;
+-        };
+-
+-        atuin = {
+-          enable = true;
+-          enableFishIntegration = true;
+-          enableNushellIntegration = true;
+-        };
+-
+-        pay-respects = {
+-          enable = true;
+-          enableFishIntegration = false;
+-          enableNushellIntegration = true;
+-        };
+-
+-        bat = {
+-          enable = true;
+-          config = {
+-            theme = "Catppuccin Mocha";
+-          };
+-          extraPackages = with pkgs.bat-extras; [
+-            batgrep
+-            batman
+-            batpipe
+-            batwatch
+-            batdiff
+-            prettybat
+-          ];
+-        };
+-
+-        btop = {
+-          enable = true;
+-          package = pkgs.btop.override {
+-            cudaSupport = true;
+-          };
+-          settings = {
+-            color_theme = "Dracula";
+-            theme_background = false;
+-            vim_keys = true;
+-          };
+-        };
+-      };
+-    };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/vcs.nix modules/shell/vcs.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/vcs.nix	2026-08-14 06:18:38.207694630 +0700
++++ modules/shell/vcs.nix	2026-08-14 07:03:41.497872060 +0700
+@@ -1,7 +1,89 @@
+ {
++  __findFile,
++  inputs,
++  lib,
++  ...
++}:
++{
++  # Version control
+   den.aspects.shell._.vcs.homeManager.imports = [
+     ../../lib/shell/vcs/profile.nix
+     ../../lib/shell/vcs/git.nix
+     ../../lib/shell/vcs/jujutsu.nix
+   ];
++  # Hunk
++  den.aspects.shell._.hunk = {
++    homeManager = {
++      imports = [
++        inputs.hunk.homeManagerModules.default
++      ];
++
++      programs.hunk = {
++        enable = true;
++        enableGitIntegration = false; # Optional: set hunk as default git pager
++      };
++
++      xdg.configFile."hunk/config.toml".source = ../../dots/config/hunk/config.toml;
++    };
++  };
++  # Lazygit
++  den.aspects.shell._.lazygit.homeManager = {
++    programs.fish.interactiveShellInit = lib.mkAfter ''
++      abbr --add lzg lazygit
++    '';
++    programs.lazygit = {
++      enable = true;
++      enableFishIntegration = false;
++      settings = {
++        git = {
++          diffRenderers = [
++            {
++              type = "extDiff";
++              command = "difft --color=always";
++            }
++          ];
++        };
++      };
++    };
++  };
++  # OpenCommit
++  den.aspects.shell._.opencommit = {
++    nixos =
++      { pkgs, ... }:
++      {
++        environment.systemPackages = with pkgs; [ opencommit ];
++      };
++    homeManager =
++      { config, pkgs, ... }:
++      let
++        ocoConfig =
++          builtins.replaceStrings
++            [
++              "@oco_api_key@"
++              "@oco_api_url@"
++            ]
++            [
++              config.sops.placeholder."llm/oco_api_key"
++              config.sops.placeholder."llm/oco_api_url"
++            ]
++            (builtins.readFile ../../dots/opencommit.tmpl);
++      in
++      {
++        sops.templates."opencommit-config" = {
++          path = "${config.home.homeDirectory}/.opencommit";
++          mode = "0600";
++          content = ocoConfig;
++        };
++      };
++  };
++  # Worktrunk
++  den.aspects.shell._.worktrunk = {
++    homeManager =
++      { pkgs, ... }:
++      {
++        home.packages = [
++          inputs.worktrunk.packages.${pkgs.stdenv.hostPlatform.system}.default
++        ];
++      };
++  };
+ }
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/worktrunk.nix modules/shell/worktrunk.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/worktrunk.nix	2026-08-14 06:17:32.859327880 +0700
++++ modules/shell/worktrunk.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,12 +0,0 @@
+-{ __findFile, inputs, ... }:
+-{
+-  den.aspects.shell._.worktrunk = {
+-    homeManager =
+-      { pkgs, ... }:
+-      {
+-        home.packages = [
+-          inputs.worktrunk.packages.${pkgs.stdenv.hostPlatform.system}.default
+-        ];
+-      };
+-  };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/yazi.nix modules/shell/yazi.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/yazi.nix	2026-08-14 06:17:32.859408277 +0700
++++ modules/shell/yazi.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,20 +0,0 @@
+-{
+-  den.aspects.shell._.yazi = {
+-    nixos =
+-      { pkgs, ... }:
+-      {
+-        environment.systemPackages = with pkgs; [
+-          yazi
+-        ];
+-      };
+-
+-    homeManager =
+-      { pkgs, ... }:
+-      {
+-        xdg.configFile."yazi" = {
+-          source = ../../dots/config/yazi;
+-          recursive = true;
+-        };
+-      };
+-  };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/zellij.nix modules/shell/zellij.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/zellij.nix	2026-08-14 06:17:32.859512820 +0700
++++ modules/shell/zellij.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,16 +0,0 @@
+-{
+-  den.aspects.shell._.zellij = {
+-    homeManager = {
+-      xdg.configFile."zellij" = {
+-        source = ../../dots/config/zellij;
+-        recursive = true;
+-      };
+-    };
+-
+-    nixos =
+-      { pkgs, ... }:
+-      {
+-        environment.systemPackages = with pkgs; [ zellij ];
+-      };
+-  };
+-}
+diff -ruN .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/zsh.nix modules/shell/zsh.nix
+--- .superpowers/sdd/2026-08-14-module-category-grouping/snapshots/task-2-before-shell/zsh.nix	2026-08-14 06:17:32.859612663 +0700
++++ modules/shell/zsh.nix	1970-01-01 07:00:00.000000000 +0700
+@@ -1,47 +0,0 @@
+-{
+-  __findFile,
+-  lib,
+-  ...
+-}:
+-{
+-  den.aspects.shell._.zsh.homeManager =
+-    { config, pkgs, ... }:
+-    let
+-      zshConfig = ../../dots/config/zsh;
+-      sourceConfD = ''
+-        setopt extendedglob null_glob
+-        for file in "${config.xdg.configHome}/zsh/conf.d"/**/*.(zsh|sh)(N); do
+-          [[ -r "$file" ]] && source "$file"
+-        done
+-      '';
+-    in
+-    {
+-      programs.zsh = {
+-        enable = true;
+-        initContent = lib.mkOrder 1000 ''
+-          export ZDOTDIR="${config.home.homeDirectory}"
+-          for file in "${config.xdg.configHome}/zsh/env.d"/*.sh(N); do [[ -r "$file" ]] && source "$file"; done
+-          if [[ -r "${pkgs.zsh-abbr}/share/zsh-abbr/zsh-abbr.zsh" ]]; then
+-            source "${pkgs.zsh-abbr}/share/zsh-abbr/zsh-abbr.zsh"
+-          elif [[ -r "${pkgs.zsh-abbr}/share/zsh-abbr/zsh-abbr.plugin.zsh" ]]; then
+-            source "${pkgs.zsh-abbr}/share/zsh-abbr/zsh-abbr.plugin.zsh"
+-          fi
+-          ${sourceConfD}
+-          if (( $+commands[abbr] )) && [[ -r "${config.xdg.configHome}/zsh-abbr/user-abbreviations" ]]; then
+-            source "${config.xdg.configHome}/zsh-abbr/user-abbreviations"
+-          fi
+-        '';
+-      };
+-
+-      home.packages = [ pkgs.zsh-abbr ];
+-      xdg.configFile."zsh/conf.d/002-options.bash".source = zshConfig + "/conf.d/002-options.bash";
+-      xdg.configFile."zsh/conf.d/002-options.zsh".source = zshConfig + "/conf.d/002-options.zsh";
+-      xdg.configFile."zsh/conf.d/060-common-aliases.sh".source =
+-        zshConfig + "/conf.d/060-common-aliases.sh";
+-      xdg.configFile."zsh/conf.d/060-common-functions.sh".source =
+-        zshConfig + "/conf.d/060-common-functions.sh";
+-      xdg.configFile."zsh/conf.d/090-personal.sh".source = zshConfig + "/conf.d/090-personal.sh";
+-      xdg.configFile."zsh/conf.d/third-party".source = zshConfig + "/conf.d/third-party";
+-      xdg.configFile."zsh-abbr/user-abbreviations".source = ../../dots/config/zsh-abbr/user-abbreviations;
+-    };
+-}

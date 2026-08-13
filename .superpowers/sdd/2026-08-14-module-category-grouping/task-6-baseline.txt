@@ -1,0 +1,36 @@
+Task 6 audit baseline identity
+
+JJ revision selector: @
+Commit ID: 2a5ea09602f6ed94c05d72cecac3fccf606dea5d
+Change ID: rmwyzvkqzqnozzrkopyzoonpzqsstlqw
+Description: (no description set)
+Author/committer date: 2026-08-14
+
+The revision was inspected without snapshotting the working copy:
+
+    jj --ignore-working-copy show -r @ --summary
+
+The unchanged-scope manifests were captured with these commands (one hash
+query per path, with the revision fixed to @):
+
+    jj --ignore-working-copy file list -r @ | sort
+    jj --ignore-working-copy file show -r @ -- PATH | sha256sum
+
+Manifest files:
+
+    task-6-unchanged-scope-baseline.manifest
+      170 paths under dots/, secrets/, scripts/, modules/desktop,
+      modules/disko, modules/hosts, modules/secrets, modules/users, nix/, lib/
+    task-6-modules-outside-baseline.manifest
+      18 paths under modules/ outside apps/, services/, shell/, system/
+
+The migration-domain assignment snapshots are the immutable files under:
+
+    snapshots/task-2-before-shell/
+    snapshots/task-3-before-apps/
+    snapshots/task-4-before-system/
+    snapshots/task-5-before-services/
+
+The audit script does not invoke Git and does not need to snapshot the working
+copy. It compares those snapshots and manifests against the current working
+tree.

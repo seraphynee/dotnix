@@ -237,14 +237,6 @@ let
     };
 in
 {
-  # Shared agent instructions
-  den.aspects.shell._.ai = {
-    homeManager = {
-      home.file.".agents" = {
-        source = ../../dots/agents;
-      };
-    };
-  };
   den.aspects.shell._.llm_agents =
     { user, ... }:
     {

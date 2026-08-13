@@ -1,0 +1,11 @@
+# Task 1 review package
+
+## Source changes
+
+None. Task 1 is a read-only baseline task.
+
+## Controller verification
+
+The implementer report contains a transcription error in command 5: it omits the final `>` from the regex. Re-running the exact command from the brief produces the required include checksum `c6b670417254854b118ff6a3f1afcd88994c0c350ad806a2948a1f33ea2caea0`.
+
+The declared-aspect checksum is `724b9ab5d5da0deed8616fa5ffc9b4690feac39957433cfe3e860ecc69bf900a` and the module count is 81.
