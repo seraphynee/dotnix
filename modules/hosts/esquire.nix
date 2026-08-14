@@ -20,7 +20,7 @@ let
           "sr_mod"
         ];
 
-        disko.devices.disk.btrfs.device = lib.mkForce constants.disk.pcMain;
+        disko.devices.disk.btrfs.device = lib.mkForce constants.hosts.esquire.systemDisk;
       };
 
     includes = [
@@ -62,11 +62,11 @@ let
 in
 {
   den.hosts.x86_64-linux.esquire.users = {
-    ${constants.user_two} = { };
+    ${constants.users.seraphyne} = { };
   };
 
   den.hosts.x86_64-linux."esquire-installer".users = {
-    ${constants.user_two} = { };
+    ${constants.users.seraphyne} = { };
   };
 
   den.aspects.esquire = mkEsquireAspect <system/bootloader/lanzaboote>;

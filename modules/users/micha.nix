@@ -4,9 +4,9 @@
   ...
 }:
 {
-  # den.homes.x86_64-linux.${constants.user_three} = { };
+  # den.homes.x86_64-linux.${constants.users.micha} = { };
 
-  den.aspects.${constants.user_three} = {
+  den.aspects.${constants.users.micha} = {
     includes = [
       <den/host-aspects>
       # Automatically set default shell
@@ -36,12 +36,12 @@
         ...
       }:
       {
-        users.users.${constants.user_three} = {
+        users.users.${constants.users.micha} = {
           extraGroups = [
             "uinput"
           ];
 
-          hashedPasswordFile = config.sops.secrets."passwords/${constants.user_three}".path;
+          hashedPasswordFile = config.sops.secrets."passwords/${constants.users.micha}".path;
           openssh.authorizedKeys.keys = [
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDRu2lSAzPbNC4T1ztmHLNPw81tqyoVTCBg1+uv3PGG5"
           ];

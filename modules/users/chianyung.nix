@@ -4,10 +4,10 @@
   ...
 }:
 {
-  # den.homes.x86_64-linux.${constants.user_one} = { };
-  # den.homes.aarch64-darwin.${constants.user_one} = { };
+  # den.homes.x86_64-linux.${constants.users.chianyung} = { };
+  # den.homes.aarch64-darwin.${constants.users.chianyung} = { };
 
-  den.aspects.${constants.user_one} = {
+  den.aspects.${constants.users.chianyung} = {
     includes = [
       <den/host-aspects>
       <den/primary-user>
@@ -32,7 +32,7 @@
         nix.settings.trusted-users = [
           "root"
           "@wheel"
-          constants.user_one
+          constants.users.chianyung
         ];
       };
 
@@ -44,14 +44,14 @@
         ...
       }:
       {
-        users.users.${constants.user_one} = {
+        users.users.${constants.users.chianyung} = {
           extraGroups = [
             "uinput"
           ];
 
-          hashedPasswordFile = config.sops.secrets."passwords/${constants.user_one}".path;
+          hashedPasswordFile = config.sops.secrets."passwords/${constants.users.chianyung}".path;
           openssh.authorizedKeys.keyFiles = [
-            config.sops.secrets."keys/ssh/workstation/users/${constants.user_one}".path
+            config.sops.secrets."keys/ssh/workstation/users/${constants.users.chianyung}".path
           ];
         };
       };

@@ -4,7 +4,7 @@
   ...
 }:
 {
-  den.hosts.aarch64-darwin.mbp.users.${constants.user_one} = { };
+  den.hosts.aarch64-darwin.mbp.users.${constants.users.chianyung} = { };
 
   den.aspects.mbp = {
     includes = [

@@ -4,9 +4,9 @@
   ...
 }:
 {
-  den.homes.x86_64-linux.${constants.user_vps} = { };
+  den.homes.x86_64-linux.${constants.users.admin} = { };
 
-  den.aspects.${constants.user_vps} = {
+  den.aspects.${constants.users.admin} = {
     includes = [
       <den/host-aspects>
       <den/primary-user>
@@ -20,7 +20,7 @@
         ...
       }:
       {
-        users.users.${constants.user_vps} = {
+        users.users.${constants.users.admin} = {
 
           hashedPasswordFile = config.sops.secrets."passwords/admin".path;
           openssh.authorizedKeys.keys = [

@@ -183,7 +183,7 @@ in
         nixos = mkNixosSops {
           defaultSopsFile = hostSopsFile.vps;
           secrets = {
-            "passwords/${constants.user_vps}" = {
+            "passwords/${constants.users.admin}" = {
               neededForUsers = true;
             };
           };
@@ -210,21 +210,21 @@ in
           secrets = {
             "keys/ssh/github/auth/ghspy-pub" = {
               name = "ghspy-auth.pub";
-              path = "/home/${constants.user_two}/.ssh_keys/ghspy-auth.pub";
-              owner = "${constants.user_two}";
+              path = "/home/${constants.users.seraphyne}/.ssh_keys/ghspy-auth.pub";
+              owner = "${constants.users.seraphyne}";
               mode = "0600";
             };
             "keys/ssh/github/auth/ghcny-pub" = {
               name = "ghcny-auth.pub";
-              path = "/home/${constants.user_two}/.ssh_keys/ghcny-auth.pub";
-              owner = "${constants.user_two}";
+              path = "/home/${constants.users.seraphyne}/.ssh_keys/ghcny-auth.pub";
+              owner = "${constants.users.seraphyne}";
               mode = "0600";
             };
-            "passwords/${constants.user_two}" = {
+            "passwords/${constants.users.seraphyne}" = {
               sopsFile = sharedSopsFile;
               neededForUsers = true;
             };
-            "keys/ssh/workstation/users/${constants.user_two}" = {
+            "keys/ssh/workstation/users/${constants.users.seraphyne}" = {
               sopsFile = sharedSopsFile;
             };
           };
@@ -253,22 +253,22 @@ in
           secrets = {
             "keys/ssh/github/auth/ghspy-pub" = {
               name = "ghspy-auth.pub";
-              path = "/home/${constants.user_two}/.ssh_keys/ghspy-auth.pub";
-              owner = "${constants.user_two}";
+              path = "/home/${constants.users.seraphyne}/.ssh_keys/ghspy-auth.pub";
+              owner = "${constants.users.seraphyne}";
               mode = "0600";
             };
-            "passwords/${constants.user_two}" = {
+            "passwords/${constants.users.seraphyne}" = {
               sopsFile = sharedSopsFile;
               neededForUsers = true;
             };
-            "passwords/${constants.user_three}" = {
+            "passwords/${constants.users.micha}" = {
               sopsFile = sharedSopsFile;
               neededForUsers = true;
             };
-            "keys/ssh/workstation/users/${constants.user_two}" = {
+            "keys/ssh/workstation/users/${constants.users.seraphyne}" = {
               sopsFile = sharedSopsFile;
             };
-            "keys/ssh/workstation/users/${constants.user_three}" = {
+            "keys/ssh/workstation/users/${constants.users.micha}" = {
               sopsFile = sharedSopsFile;
             };
           };
@@ -289,7 +289,7 @@ in
         nixos = mkNixosSops {
           defaultSopsFile = hostSopsFile.mbp;
           secrets = {
-            "keys/ssh/workstation/users/${constants.user_one}" = {
+            "keys/ssh/workstation/users/${constants.users.chianyung}" = {
               sopsFile = sharedSopsFile;
             };
           };
@@ -298,7 +298,8 @@ in
         darwin =
           args@{ config, pkgs, ... }:
           let
-            userHome = config.users.users.${constants.user_one}.home or "/Users/${constants.user_one}";
+            userHome =
+              config.users.users.${constants.users.chianyung}.home or "/Users/${constants.users.chianyung}";
           in
           mkDarwinSops {
             defaultSopsFile = hostSopsFile.mbp;
@@ -312,11 +313,11 @@ in
                 name = "ghspy-pub";
                 sopsFile = sharedSopsFile;
                 path = "${userHome}/.ssh_keys/ghspy.pub";
-                owner = "${constants.user_one}";
+                owner = "${constants.users.chianyung}";
                 mode = "0600";
               };
 
-              "passwords/${constants.user_one}" = {
+              "passwords/${constants.users.chianyung}" = {
                 sopsFile = sharedSopsFile;
                 neededForUsers = true;
               };

@@ -4,9 +4,9 @@
   ...
 }:
 {
-  den.homes.x86_64-linux.${constants.user_two} = { };
+  den.homes.x86_64-linux.${constants.users.seraphyne} = { };
 
-  den.aspects.${constants.user_two} = {
+  den.aspects.${constants.users.seraphyne} = {
     includes = [
       <den/host-aspects>
       <den/primary-user>
@@ -72,7 +72,7 @@
         ...
       }:
       {
-        users.users.${constants.user_two} = {
+        users.users.${constants.users.seraphyne} = {
           extraGroups = [
             "input"
             "uinput"

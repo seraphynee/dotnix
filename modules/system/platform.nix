@@ -53,7 +53,7 @@
 
         wsl = {
           enable = true;
-          defaultUser = "${constants.user_one}";
+          defaultUser = "${constants.users.chianyung}";
           docker-desktop.enable = true;
         };
       };
