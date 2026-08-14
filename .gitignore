@@ -29,3 +29,6 @@ devenv.local.yaml
 
 # pre-commit
 .pre-commit-config.yaml
+
+# Local Superpowers execution state
+/.superpowers/sdd/
