@@ -20,7 +20,7 @@
                 default = [ ];
               };
             }
-            ../lib/shell/vcs/profile.nix
+            ../../lib/shell/vcs/profile.nix
             {
               dotnix.vcs = profile;
             }
@@ -32,9 +32,9 @@
         inputs.home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [
-            ../lib/shell/vcs/profile.nix
-            ../lib/shell/vcs/git.nix
-            ../lib/shell/vcs/jujutsu.nix
+            ../../lib/shell/vcs/profile.nix
+            ../../lib/shell/vcs/git.nix
+            ../../lib/shell/vcs/jujutsu.nix
             {
               home = {
                 username = "vcs-test";
