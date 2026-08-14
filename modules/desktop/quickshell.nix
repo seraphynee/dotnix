@@ -16,7 +16,6 @@
           {
             environment.systemPackages = with pkgs; [
               inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
-              # ... maybe other stuff
             ];
           };
         homeManager =
@@ -26,7 +25,6 @@
               inputs.noctalia.homeModules.default
             ];
 
-            # configure options
             programs.noctalia-shell = {
               enable = true;
               # Start Noctalia from Mango only to avoid duplicate/racy startup.
@@ -71,18 +69,14 @@
                 };
                 version = 2;
               };
-              # this may also be a string or a path to a JSON file.
-
               pluginSettings = {
                 catwalk = {
                   minimumThreshold = 25;
                   hideBackground = true;
                 };
-                # this may also be a string or a path to a JSON file.
               };
 
               settings = {
-                # configure noctalia here
                 settingsVersion = 57;
                 sessionMenu = {
                   enableCountdown = true;
@@ -215,8 +209,6 @@
                   darkMode = true;
                 };
                 general = {
-                  # avatarImage = "/home/drfoobar/.face";
-                  # radiusRatio = 0.2;
                   showSessionButtonsOnLockScreen = false;
                 };
                 location = {
@@ -230,7 +222,6 @@
                   enabled = true;
                 };
               };
-              # this may also be a string or a path to a JSON file.
             };
           };
       };

@@ -102,8 +102,6 @@
         PAGER = "less";
         GIT_EDITOR = "nvim";
         GTK_THEME = "Adwaita:dark";
-        # AUDIO_PLAYER = "mpv";
-        # VIDEO_PLAYER = "mpv";
       };
 
       dconf.settings = {

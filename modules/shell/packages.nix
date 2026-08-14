@@ -115,9 +115,7 @@
               # Haskell
               stack # Haskell build tool
               cabal-install # Haskell package manager
-              # ghc # Glasgow Haskell Compiler
               hpack # Haskell package manager
-              # haskell-language-server # Haskell language server
               ghciwatch # GHCi file watcher
 
               # Lua
@@ -138,9 +136,6 @@
               python315
 
               # Editors
-              # neovim
-              # zed-editor
-
               # Android Development
               scrcpy # Android device mirroring
               android-tools # Android platform tools

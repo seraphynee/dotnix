@@ -39,7 +39,6 @@ let
         hardware.cpu.intel.updateMicrocode = true;
         hardware.enableRedistributableFirmware = true;
 
-        # services.fwupd.enable = true;
         services.hardware.bolt.enable = true;
 
         services.pipewire.wireplumber = {

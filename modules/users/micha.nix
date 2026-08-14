@@ -4,12 +4,9 @@
   ...
 }:
 {
-  # den.homes.x86_64-linux.${constants.users.micha} = { };
-
   den.aspects.${constants.users.micha} = {
     includes = [
       <den/host-aspects>
-      # Automatically set default shell
       (<den/user-shell> "zsh")
 
       <shell/packages/dev>

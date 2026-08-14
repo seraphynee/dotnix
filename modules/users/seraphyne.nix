@@ -11,7 +11,6 @@
       <den/host-aspects>
       <den/primary-user>
 
-      # Automatically set default shell
       (<den/user-shell> "fish")
 
       <shell/packages/dev>

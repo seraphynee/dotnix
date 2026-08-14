@@ -8,9 +8,6 @@
 
   den.aspects.mbp = {
     includes = [
-      # <shell/homebrew>
-      # <shell/aerospace>
-
       <system/settings>
       <secrets/sops/mbp>
     ];

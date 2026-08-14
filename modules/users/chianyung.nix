@@ -4,9 +4,6 @@
   ...
 }:
 {
-  # den.homes.x86_64-linux.${constants.users.chianyung} = { };
-  # den.homes.aarch64-darwin.${constants.users.chianyung} = { };
-
   den.aspects.${constants.users.chianyung} = {
     includes = [
       <den/host-aspects>

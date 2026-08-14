@@ -31,9 +31,6 @@
               CursorSize = 24;
             };
 
-            # General = {
-            #   InputMethod = ""; # Disables the virtual keyboard especially because it's showing in x11 display server
-            # };
           };
         };
       };

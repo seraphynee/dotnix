@@ -5,7 +5,6 @@
       { pkgs, ... }:
       {
         environment.systemPackages = with pkgs; [
-          # legcord
           equibop
         ];
       };

@@ -6,12 +6,10 @@
       programs.bash = {
         enable = true;
         enableCompletion = true;
-        # TODO add your custom bashrc here
         bashrcExtra = ''
           export PATH="$PATH:$HOME/bin:$HOME/.local/bin:$HOME/go/bin"
         '';
 
-        # set some aliases, feel free to add more or remove some
         shellAliases = {
           k = "kubectl";
           urldecode = "python3 -c 'import sys, urllib.parse as ul; print(ul.unquote_plus(sys.stdin.read()))'";
@@ -213,8 +211,6 @@
       );
     in
     {
-      # home.packages = [ pkgs.fish ];
-
       xdg.configFile."fish/fish_plugins".source = ../../dots/config/fish/fish_plugins;
       xdg.configFile."fish/conf.d/colors.fish".source = ../../dots/config/fish/conf.d/colors.fish;
       xdg.configFile."fish/conf.d/atuin.fish".source = ../../dots/config/fish/conf.d/atuin.fish;
@@ -291,9 +287,6 @@
               command tmux $argv
             '';
           };
-          # interactiveShellInit = ''
-          #   ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
-          # '';
         };
       };
     };

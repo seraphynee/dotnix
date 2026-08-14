@@ -195,7 +195,6 @@ in
         homeManager = mkHomeManagerSops {
           withSshInclude = true;
           secrets = {
-            # sopsFile defined in <secrets/sops> aspect in line 29
             "ssh/config" = { };
             "keys/ssh/github/signing/ghspy-pub" = {
               sopsFile = hostSopsFile.esquire;
@@ -237,14 +236,10 @@ in
         homeManager = mkHomeManagerSops {
           withSshInclude = true;
           secrets = {
-            # sopsFile defined in <secrets/sops> aspect in line 29
             "ssh/config" = { };
             "keys/ssh/github/signing/ghspy-pub" = {
               sopsFile = hostSopsFile.acerus;
             };
-            # "keys/pat/ghspy-pat" = {
-            #   sopsFile = hostSopsFile.acerus;
-            # };
           };
         };
 
