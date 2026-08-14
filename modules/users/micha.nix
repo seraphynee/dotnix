@@ -4,7 +4,7 @@
   ...
 }:
 {
-  den.aspects.${constants.users.micha} = {
+  den.aspects.${constants.user.micha.username} = {
     includes = [
       <den/host-aspects>
       (<den/user-shell> "zsh")
@@ -33,12 +33,12 @@
         ...
       }:
       {
-        users.users.${constants.users.micha} = {
+        users.users.${constants.user.micha.username} = {
           extraGroups = [
             "uinput"
           ];
 
-          hashedPasswordFile = config.sops.secrets."passwords/${constants.users.micha}".path;
+          hashedPasswordFile = config.sops.secrets."passwords/${constants.user.micha.username}".path;
           openssh.authorizedKeys.keys = [
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDRu2lSAzPbNC4T1ztmHLNPw81tqyoVTCBg1+uv3PGG5"
           ];

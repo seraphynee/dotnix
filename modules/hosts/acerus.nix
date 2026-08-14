@@ -97,11 +97,11 @@ let
 in
 {
   den.hosts.x86_64-linux.acerus.users = {
-    ${constants.users.seraphyne} = { };
+    ${constants.user.seraphynee.username} = { };
   };
 
   den.hosts.x86_64-linux."acerus-installer".users = {
-    ${constants.users.seraphyne} = { };
+    ${constants.user.seraphynee.username} = { };
   };
 
   den.aspects.acerus = mkAcerusAspect <system/bootloader/lanzaboote>;

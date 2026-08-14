@@ -1,6 +1,7 @@
 {
   inputs,
   lib,
+  constants,
   ...
 }:
 {
@@ -68,10 +69,10 @@
 
       seraphyne = mkVcsHome {
         identity = {
-          name = "seraphynee";
-          email = "seraphyne31@gmail.com";
+          name = constants.user.seraphynee.git_user;
+          email = constants.user.seraphynee.email;
         };
-        github.username = "seraphynee";
+        github.username = constants.user.seraphynee.git_user;
         git.enable = true;
         jujutsu = {
           enable = true;
@@ -81,10 +82,10 @@
 
       chianyung = mkVcsHome {
         identity = {
-          name = "chianyungcode";
-          email = "cnytechcode@gmail.com";
+          name = constants.user.chianyung.git_user;
+          email = constants.user.chianyung.email;
         };
-        github.username = "chianyungcode";
+        github.username = constants.user.chianyung.git_user;
         git.enable = true;
       };
 
@@ -102,6 +103,30 @@
     in
     {
       checks.vcs-identity =
+        assert
+          constants.user.chianyung == {
+            username = "chianyung";
+            git_user = "chianyungcode";
+            email = "cnytechcode@gmail.com";
+          };
+        assert
+          constants.user.seraphynee == {
+            username = "seraphynee";
+            git_user = "seraphynee";
+            email = "seraphyne31@gmail.com";
+          };
+        assert
+          constants.user.micha == {
+            username = "micha";
+            git_user = null;
+            email = null;
+          };
+        assert
+          constants.user.admin == {
+            username = "admin";
+            git_user = null;
+            email = null;
+          };
         assert valid.config.dotnix.vcs.identity.name == "alpha";
         assert valid.config.dotnix.vcs.identity.email == "alpha@example.test";
         assert assertionsPass valid;

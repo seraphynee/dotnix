@@ -13,7 +13,7 @@
   den.aspects.system._.virt.nixos =
     { pkgs, ... }:
     {
-      users.users.${constants.users.seraphyne}.extraGroups = [
+      users.users.${constants.user.seraphynee.username}.extraGroups = [
         "libvirtd"
         "kvm"
       ];

@@ -62,11 +62,11 @@ let
 in
 {
   den.hosts.x86_64-linux.esquire.users = {
-    ${constants.users.seraphyne} = { };
+    ${constants.user.seraphynee.username} = { };
   };
 
   den.hosts.x86_64-linux."esquire-installer".users = {
-    ${constants.users.seraphyne} = { };
+    ${constants.user.seraphynee.username} = { };
   };
 
   den.aspects.esquire = mkEsquireAspect <system/bootloader/lanzaboote>;

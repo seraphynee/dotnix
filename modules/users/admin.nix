@@ -4,9 +4,9 @@
   ...
 }:
 {
-  den.homes.x86_64-linux.${constants.users.admin} = { };
+  den.homes.x86_64-linux.${constants.user.admin.username} = { };
 
-  den.aspects.${constants.users.admin} = {
+  den.aspects.${constants.user.admin.username} = {
     includes = [
       <den/host-aspects>
       <den/primary-user>
@@ -20,9 +20,9 @@
         ...
       }:
       {
-        users.users.${constants.users.admin} = {
+        users.users.${constants.user.admin.username} = {
 
-          hashedPasswordFile = config.sops.secrets."passwords/admin".path;
+          hashedPasswordFile = config.sops.secrets."passwords/${constants.user.admin.username}".path;
           openssh.authorizedKeys.keys = [
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEbgd1yxIEILCc2/92f8NEnE1FwJ6XqFJVR2CQ3aj92y"
           ];

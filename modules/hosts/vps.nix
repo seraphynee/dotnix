@@ -1,7 +1,7 @@
 { __findFile, constants, ... }:
 {
   den.hosts.x86_64-linux.vps.users = {
-    ${constants.users.admin} = { };
+    ${constants.user.admin.username} = { };
   };
 
   den.aspects.vps = {

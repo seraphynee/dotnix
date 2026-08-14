@@ -4,9 +4,9 @@
   ...
 }:
 {
-  den.homes.x86_64-linux.${constants.users.seraphyne} = { };
+  den.homes.x86_64-linux.${constants.user.seraphynee.username} = { };
 
-  den.aspects.${constants.users.seraphyne} = {
+  den.aspects.${constants.user.seraphynee.username} = {
     includes = [
       <den/host-aspects>
       <den/primary-user>
@@ -50,11 +50,11 @@
 
     homeManager.dotnix.vcs = {
       identity = {
-        name = "seraphynee";
-        email = "seraphyne31@gmail.com";
+        name = constants.user.seraphynee.git_user;
+        email = constants.user.seraphynee.email;
       };
       github = {
-        username = "seraphynee";
+        username = constants.user.seraphynee.git_user;
         patSecret = "keys/pat/ghspy-pat";
       };
       signing.keySecret = "keys/ssh/github/signing/ghspy-pub";
@@ -71,13 +71,13 @@
         ...
       }:
       {
-        users.users.${constants.users.seraphyne} = {
+        users.users.${constants.user.seraphynee.username} = {
           extraGroups = [
             "input"
             "uinput"
           ];
 
-          hashedPasswordFile = config.sops.secrets."passwords/seraphyne".path;
+          hashedPasswordFile = config.sops.secrets."passwords/${constants.user.seraphynee.username}".path;
           openssh.authorizedKeys.keys = [
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICspqdai1ehCDaPlUvuhCfS8/mTGNc87NkwMlta0Jzg/"
           ];

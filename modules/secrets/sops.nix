@@ -183,7 +183,7 @@ in
         nixos = mkNixosSops {
           defaultSopsFile = hostSopsFile.vps;
           secrets = {
-            "passwords/${constants.users.admin}" = {
+            "passwords/${constants.user.admin.username}" = {
               neededForUsers = true;
             };
           };
@@ -209,21 +209,21 @@ in
           secrets = {
             "keys/ssh/github/auth/ghspy-pub" = {
               name = "ghspy-auth.pub";
-              path = "/home/${constants.users.seraphyne}/.ssh_keys/ghspy-auth.pub";
-              owner = "${constants.users.seraphyne}";
+              path = "/home/${constants.user.seraphynee.username}/.ssh_keys/ghspy-auth.pub";
+              owner = "${constants.user.seraphynee.username}";
               mode = "0600";
             };
             "keys/ssh/github/auth/ghcny-pub" = {
               name = "ghcny-auth.pub";
-              path = "/home/${constants.users.seraphyne}/.ssh_keys/ghcny-auth.pub";
-              owner = "${constants.users.seraphyne}";
+              path = "/home/${constants.user.seraphynee.username}/.ssh_keys/ghcny-auth.pub";
+              owner = "${constants.user.seraphynee.username}";
               mode = "0600";
             };
-            "passwords/${constants.users.seraphyne}" = {
+            "passwords/${constants.user.seraphynee.username}" = {
               sopsFile = sharedSopsFile;
               neededForUsers = true;
             };
-            "keys/ssh/workstation/users/${constants.users.seraphyne}" = {
+            "keys/ssh/workstation/users/${constants.user.seraphynee.username}" = {
               sopsFile = sharedSopsFile;
             };
           };
@@ -248,22 +248,22 @@ in
           secrets = {
             "keys/ssh/github/auth/ghspy-pub" = {
               name = "ghspy-auth.pub";
-              path = "/home/${constants.users.seraphyne}/.ssh_keys/ghspy-auth.pub";
-              owner = "${constants.users.seraphyne}";
+              path = "/home/${constants.user.seraphynee.username}/.ssh_keys/ghspy-auth.pub";
+              owner = "${constants.user.seraphynee.username}";
               mode = "0600";
             };
-            "passwords/${constants.users.seraphyne}" = {
+            "passwords/${constants.user.seraphynee.username}" = {
               sopsFile = sharedSopsFile;
               neededForUsers = true;
             };
-            "passwords/${constants.users.micha}" = {
+            "passwords/${constants.user.micha.username}" = {
               sopsFile = sharedSopsFile;
               neededForUsers = true;
             };
-            "keys/ssh/workstation/users/${constants.users.seraphyne}" = {
+            "keys/ssh/workstation/users/${constants.user.seraphynee.username}" = {
               sopsFile = sharedSopsFile;
             };
-            "keys/ssh/workstation/users/${constants.users.micha}" = {
+            "keys/ssh/workstation/users/${constants.user.micha.username}" = {
               sopsFile = sharedSopsFile;
             };
           };
@@ -284,7 +284,7 @@ in
         nixos = mkNixosSops {
           defaultSopsFile = hostSopsFile.mbp;
           secrets = {
-            "keys/ssh/workstation/users/${constants.users.chianyung}" = {
+            "keys/ssh/workstation/users/${constants.user.chianyung.username}" = {
               sopsFile = sharedSopsFile;
             };
           };
@@ -294,7 +294,8 @@ in
           args@{ config, pkgs, ... }:
           let
             userHome =
-              config.users.users.${constants.users.chianyung}.home or "/Users/${constants.users.chianyung}";
+              config.users.users.${constants.user.chianyung.username}.home
+                or "/Users/${constants.user.chianyung.username}";
           in
           mkDarwinSops {
             defaultSopsFile = hostSopsFile.mbp;
@@ -308,11 +309,11 @@ in
                 name = "ghspy-pub";
                 sopsFile = sharedSopsFile;
                 path = "${userHome}/.ssh_keys/ghspy.pub";
-                owner = "${constants.users.chianyung}";
+                owner = "${constants.user.chianyung.username}";
                 mode = "0600";
               };
 
-              "passwords/${constants.users.chianyung}" = {
+              "passwords/${constants.user.chianyung.username}" = {
                 sopsFile = sharedSopsFile;
                 neededForUsers = true;
               };
