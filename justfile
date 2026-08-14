@@ -2,10 +2,10 @@ default:
     @just --list
 
 # Quality
-fmt-lint:
+fmt-fix:
     nix fmt
 
-treefmt-check:
+fmt-check:
     nix fmt -- --ci
 
 check:
@@ -15,15 +15,15 @@ secrets-scan:
     nix run nixpkgs#gitleaks -- detect --source . --verbose
 
 ci-check:
-    just treefmt-check
+    just fmt-check
     just check
 
 # Daily workflow
-up:
-    nix flake update
-
-upp target:
+up target:
     nix flake update {{ target }}
+
+upp:
+    nix flake update
 
 write-flake:
     nix run .#write-flake
