@@ -48,35 +48,92 @@ fi
 
 lock_dir=${HERDR_PLUGIN_BOOTSTRAP_LOCK_DIR:-${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}/herdr-plugin-bootstrap-${UID:-$(id -u)}.lock}
 
+cleanup_lock_candidates() {
+  local candidate
+  for candidate in "$lock_dir.$$".*; do
+    [[ -d $candidate ]] || continue
+    rm -f "$candidate/pid"
+    rmdir "$candidate" 2>/dev/null || true
+  done
+}
+
 acquire_lock() {
-  if mkdir "$lock_dir" 2>/dev/null; then
-    printf '%s\n' "$$" > "$lock_dir/pid"
-    return 0
+  local quarantine owner_pid
+
+  if [[ ! -e $lock_dir && ! -L $lock_dir ]]; then
+    lock_candidate="$lock_dir.$$.$RANDOM"
+    if mkdir "$lock_candidate" 2>/dev/null \
+      && printf '%s\n' "$$" > "$lock_candidate/pid" \
+      && ln -s "$lock_candidate" "$lock_dir" 2>/dev/null; then
+      return 0
+    fi
+    rm -f "$lock_candidate/pid"
+    rmdir "$lock_candidate" 2>/dev/null || true
   fi
 
   owner_pid=
-  [[ -r $lock_dir/pid ]] && owner_pid=$(<"$lock_dir/pid")
-  if [[ $owner_pid =~ ^[0-9]+$ ]] && kill -0 "$owner_pid" 2>/dev/null; then
-    return 1
+  if [[ -L $lock_dir ]]; then
+    [[ -r $lock_dir/pid ]] && owner_pid=$(<"$lock_dir/pid")
+    if [[ $owner_pid =~ ^[0-9]+$ ]] && kill -0 "$owner_pid" 2>/dev/null; then
+      return 1
+    fi
+
+    quarantine="$lock_dir.recovery.$$.$RANDOM"
+    mv "$lock_dir" "$quarantine" 2>/dev/null || return 1
+    owner_pid=
+    [[ -r $quarantine/pid ]] && owner_pid=$(<"$quarantine/pid")
+    if [[ $owner_pid =~ ^[0-9]+$ ]] && kill -0 "$owner_pid" 2>/dev/null; then
+      mv "$quarantine" "$lock_dir" 2>/dev/null || true
+      return 1
+    fi
+    rm -f "$quarantine"
+    acquire_lock
+    return $?
   fi
 
-  rm -f "$lock_dir/pid"
-  rmdir "$lock_dir" 2>/dev/null || return 1
-  mkdir "$lock_dir" 2>/dev/null || return 1
-  printf '%s\n' "$$" > "$lock_dir/pid"
+  if [[ -d $lock_dir ]]; then
+    [[ -r $lock_dir/pid ]] && owner_pid=$(<"$lock_dir/pid")
+    if [[ $owner_pid =~ ^[0-9]+$ ]] && kill -0 "$owner_pid" 2>/dev/null; then
+      return 1
+    fi
+    [[ $owner_pid =~ ^[0-9]+$ ]] || return 1
+
+    quarantine="$lock_dir.recovery.$$.$RANDOM"
+    mv "$lock_dir" "$quarantine" 2>/dev/null || return 1
+    owner_pid=
+    [[ -r $quarantine/pid ]] && owner_pid=$(<"$quarantine/pid")
+    if [[ $owner_pid =~ ^[0-9]+$ ]] && kill -0 "$owner_pid" 2>/dev/null; then
+      mv "$quarantine" "$lock_dir" 2>/dev/null || true
+      return 1
+    fi
+    rm -f "$quarantine/pid"
+    rmdir "$quarantine" 2>/dev/null || return 1
+    acquire_lock
+    return $?
+  fi
+
+  return 1
 }
 
 release_lock() {
-  local owner_pid=
+  local owner_pid release_link
+  owner_pid=
   [[ -r $lock_dir/pid ]] && owner_pid=$(<"$lock_dir/pid")
-  if [[ $owner_pid == "$$" ]]; then
-    rm -f "$lock_dir/pid"
-    rmdir "$lock_dir" 2>/dev/null || true
+  if [[ $owner_pid == "$$" && -L $lock_dir ]]; then
+    release_link="$lock_dir.release.$$.$RANDOM"
+    if mv "$lock_dir" "$release_link" 2>/dev/null; then
+      rm -f "$release_link"
+    fi
   fi
+  cleanup_lock_candidates
 }
 
 acquire_lock || exit 0
 trap release_lock EXIT HUP INT TERM
+
+owner_pid=
+[[ -r $lock_dir/pid ]] && owner_pid=$(<"$lock_dir/pid")
+[[ $owner_pid == "$$" ]] || exit 0
 
 if ! plugin_json=$(herdr plugin list --json 2>/dev/null); then
   printf 'herdr: could not inspect plugins; will retry in the next shell\n' >&2

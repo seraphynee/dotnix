@@ -146,6 +146,42 @@ if grep -q '^install:' "$tmpdir/invocations"; then
   exit 1
 fi
 
+for mismatch_fixture in plugin_id source_kind source_owner source_repo; do
+  case $mismatch_fixture in
+    plugin_id)
+      jq -n --arg rev "$plugin_rev" \
+        '{result: {plugins: [{plugin_id: "other.plugin", source: {
+          kind: "github", owner: "jhochenbaum", repo: "herdr-hunk-diff",
+          resolved_commit: $rev
+        }}]}}' > "$tmpdir/plugins.json"
+      ;;
+    source_kind)
+      jq -n --arg plugin_id "$plugin_id" --arg rev "$plugin_rev" \
+        '{result: {plugins: [{plugin_id: $plugin_id, source: {
+          kind: "local", owner: "jhochenbaum", repo: "herdr-hunk-diff",
+          resolved_commit: $rev
+        }}]}}' > "$tmpdir/plugins.json"
+      ;;
+    source_owner)
+      jq -n --arg plugin_id "$plugin_id" --arg rev "$plugin_rev" \
+        '{result: {plugins: [{plugin_id: $plugin_id, source: {
+          kind: "github", owner: "other-owner", repo: "herdr-hunk-diff",
+          resolved_commit: $rev
+        }}]}}' > "$tmpdir/plugins.json"
+      ;;
+    source_repo)
+      jq -n --arg plugin_id "$plugin_id" --arg rev "$plugin_rev" \
+        '{result: {plugins: [{plugin_id: $plugin_id, source: {
+          kind: "github", owner: "jhochenbaum", repo: "other-repo",
+          resolved_commit: $rev
+        }}]}}' > "$tmpdir/plugins.json"
+      ;;
+  esac
+  : > "$tmpdir/invocations"
+  bash "$script" "${bootstrap_args[@]}"
+  test "$(grep -Fc "install:$plugin_source:--ref:$plugin_rev:--yes" "$tmpdir/invocations")" -eq 1
+done
+
 jq -n --arg plugin_id "$plugin_id" \
   '{result: {plugins: [{plugin_id: $plugin_id, source: {
     kind: "github", owner: "jhochenbaum", repo: "herdr-hunk-diff",
@@ -181,7 +217,17 @@ test "$(grep -c '^install:' "$tmpdir/invocations")" -eq 1
 : > "$HERDR_TEST_INSTALL_RELEASE"
 wait "$first_pid"
 wait "$second_pid"
+test "$(grep -c '^install:' "$tmpdir/invocations")" -eq 1
 unset HERDR_TEST_BLOCK_INSTALL
+
+mkdir -p "$HERDR_PLUGIN_BOOTSTRAP_LOCK_DIR"
+: > "$tmpdir/invocations"
+bash "$script" --github "$plugin_id" "$plugin_source" "$plugin_rev"
+if grep -q '^install:' "$tmpdir/invocations"; then
+  printf 'unknown lock was reclaimed while ownership was unpublished\n' >&2
+  exit 1
+fi
+rmdir "$HERDR_PLUGIN_BOOTSTRAP_LOCK_DIR"
 
 mkdir -p "$HERDR_PLUGIN_BOOTSTRAP_LOCK_DIR"
 printf '99999999\n' > "$HERDR_PLUGIN_BOOTSTRAP_LOCK_DIR/pid"
