@@ -52,6 +52,10 @@
       url = "github:qu8n/herdr-automatic-rename";
       flake = false;
     };
+    herdr-hunk-diff = {
+      url = "github:jhochenbaum/herdr-hunk-diff";
+      flake = false;
+    };
     hjem = {
       url = "github:feel-co/hjem";
       inputs.nixpkgs.follows = "nixpkgs";

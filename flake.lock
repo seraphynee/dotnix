@@ -461,14 +461,15 @@
       "inputs": {
         "nixpkgs": [
           "nixpkgs"
-        ]
+        ],
+        "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1783468284,
-        "narHash": "sha256-no8aODMs+tYEnEShJPHKap2imToiA++joPFL+o/ZAmg=",
+        "lastModified": 1786827924,
+        "narHash": "sha256-EnGzBoa/Al6AyRnAqIMPa3l7pqo4wd1db6C/oIEV3q4=",
         "owner": "ogulcancelik",
         "repo": "herdr",
-        "rev": "77f0339c3cd387c4ca3f4f240ff8b88065d66a22",
+        "rev": "2b4b3849ca7760d6fcff10cd560553bb8081a8e2",
         "type": "github"
       },
       "original": {
@@ -490,6 +491,22 @@
       "original": {
         "owner": "qu8n",
         "repo": "herdr-automatic-rename",
+        "type": "github"
+      }
+    },
+    "herdr-hunk-diff": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786595614,
+        "narHash": "sha256-P54w2JoIY1OI3Yvhn2g8aAmFeFdxbg49C27lZpU6+pI=",
+        "owner": "jhochenbaum",
+        "repo": "herdr-hunk-diff",
+        "rev": "6810ab31b34ec28eb302603846bc4339e7063655",
+        "type": "github"
+      },
+      "original": {
+        "owner": "jhochenbaum",
+        "repo": "herdr-hunk-diff",
         "type": "github"
       }
     },
@@ -666,7 +683,7 @@
           "nixpkgs"
         ],
         "pre-commit": "pre-commit",
-        "rust-overlay": "rust-overlay"
+        "rust-overlay": "rust-overlay_2"
       },
       "locked": {
         "lastModified": 1781649287,
@@ -730,7 +747,7 @@
       "inputs": {
         "flake-utils": "flake-utils_2",
         "nixpkgs": "nixpkgs_3",
-        "rust-overlay": "rust-overlay_2"
+        "rust-overlay": "rust-overlay_3"
       },
       "locked": {
         "lastModified": 1752996008,
@@ -1133,6 +1150,7 @@
         "helium": "helium",
         "herdr": "herdr",
         "herdr-automatic-rename": "herdr-automatic-rename",
+        "herdr-hunk-diff": "herdr-hunk-diff",
         "hjem": "hjem",
         "home-manager": "home-manager",
         "homebrew-cask": "homebrew-cask",
@@ -1166,6 +1184,27 @@
     "rust-overlay": {
       "inputs": {
         "nixpkgs": [
+          "herdr",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1783577481,
+        "narHash": "sha256-EWMxOWrJ031f8f/lrcEmhTRs4npw1/5N3Hcjin846c8=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "4cdea398dc491b082dccdce0fad1ed0b75fa3394",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "rust-overlay_2": {
+      "inputs": {
+        "nixpkgs": [
           "lanzaboote",
           "nixpkgs"
         ]
@@ -1184,7 +1223,7 @@
         "type": "github"
       }
     },
-    "rust-overlay_2": {
+    "rust-overlay_3": {
       "inputs": {
         "nixpkgs": "nixpkgs_4"
       },
@@ -1202,7 +1241,7 @@
         "type": "github"
       }
     },
-    "rust-overlay_3": {
+    "rust-overlay_4": {
       "inputs": {
         "nixpkgs": [
           "worktrunk",
@@ -1460,7 +1499,7 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "rust-overlay": "rust-overlay_3"
+        "rust-overlay": "rust-overlay_4"
       },
       "locked": {
         "lastModified": 1778832669,

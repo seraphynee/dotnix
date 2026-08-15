@@ -167,6 +167,11 @@
       flake = false;
     };
 
+    herdr-hunk-diff = {
+      url = "github:jhochenbaum/herdr-hunk-diff";
+      flake = false;
+    };
+
     hunk = {
       url = "github:modem-dev/hunk";
       inputs.nixpkgs.follows = "nixpkgs";
