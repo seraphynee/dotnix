@@ -18,7 +18,7 @@ return {
         "gopls", -- Go
         "html", -- HTML
         "jsonls", -- JSON
-        "lua_ls", -- Lua
+        -- "lua_ls", -- Lua
         "markdown_oxide", -- Markdown
         "prismals", -- Prisma
         "ruff", -- Python
@@ -67,6 +67,9 @@ return {
           },
         },
         nil_ls = {
+          enabled = false,
+        },
+        harper_ls = {
           enabled = false,
         },
         nixd = {
