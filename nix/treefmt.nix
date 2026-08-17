@@ -43,10 +43,26 @@ in
             deadnix.enable = true;
           };
 
-          settings.formatter.deadnix.options = [
-            "-L"
-            "."
-          ];
+          settings = {
+            formatter = {
+              stylua = {
+                options = [
+                  "--search-parent-directories"
+                  "--respect-ignores"
+                ];
+
+                includes = [
+                  "*.lua"
+                  "*.luau"
+                ];
+              };
+              deadnix.options = [
+                "-L"
+                "."
+              ];
+            };
+          };
+
         };
       }
     else
