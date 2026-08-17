@@ -3,12 +3,7 @@ return {
   -- https://github.com/dmtrKovalenko/fff
   {
     "dmtrKovalenko/fff",
-    build = function()
-      -- downloads a prebuilt binary or falls back to cargo build
-      require("fff.download").download_or_build_binary()
-    end,
-    -- for nixos:
-    -- build = "nix run .#release",
+    build = "nix run .#release",
     opts = {
       grep = {
         modes = { "regex", "plain", "fuzzy" },
