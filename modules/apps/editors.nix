@@ -39,7 +39,7 @@
     homeManager =
       { config, pkgs, ... }:
       let
-        staticSettings = builtins.readFile ../../dots/config/zed/settings.jsoncc;
+        staticSettings = builtins.readFile ../../dots/config/zed/settings.jsonc;
         hasWakatimeSecret = config.sops.secrets ? "productivity/wakatime_apikey";
         settings =
           if hasWakatimeSecret then
