@@ -9,6 +9,7 @@
       <den/host-aspects>
       <den/primary-user>
 
+      <shell/formatters>
       <shell/vcs>
       <shell/nix-tools>
     ];

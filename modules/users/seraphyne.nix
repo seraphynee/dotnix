@@ -24,6 +24,7 @@
       <shell/espanso>
       <shell/fastfetch>
       <shell/fish>
+      <shell/formatters>
       <shell/vcs>
       <shell/helix>
       <shell/herdr>
