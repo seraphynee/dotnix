@@ -39,7 +39,7 @@
     homeManager =
       { config, pkgs, ... }:
       let
-        staticSettings = builtins.readFile ../../dots/config/zed/settings.json;
+        staticSettings = builtins.readFile ../../dots/config/zed/settings.jsoncc;
         hasWakatimeSecret = config.sops.secrets ? "productivity/wakatime_apikey";
         settings =
           if hasWakatimeSecret then
@@ -70,7 +70,7 @@
         };
 
         sops.templates."zed-settings.json" = {
-          path = "${config.xdg.configHome}/zed/settings.json";
+          path = "${config.xdg.configHome}/zed/settings.jsonc";
           mode = "0600";
           content = settings;
         };
