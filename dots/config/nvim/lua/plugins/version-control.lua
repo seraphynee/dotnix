@@ -1,7 +1,4 @@
 return {
-	--
-	--
-	--
 	{
 		"mrdwarf7/lazyjui.nvim",
 		dependencies = {

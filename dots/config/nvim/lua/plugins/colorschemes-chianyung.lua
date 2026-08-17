@@ -6,6 +6,13 @@ return {
 	-- { "killitar/obscure.nvim" },
 
 	{
+		"wtfox/luna.nvim",
+		lazy = false,
+		priority = 1000,
+		opts = {},
+	},
+
+	{
 		"ember-theme/nvim",
 		name = "ember",
 		priority = 1000,
