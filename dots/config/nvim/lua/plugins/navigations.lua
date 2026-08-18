@@ -16,18 +16,18 @@ return {
     lazy = false, -- the plugin lazy-initialises itself
     keys = {
       {
-        "ff",
+        "<leader><space>",
         function()
           require("fff").find_files()
         end,
-        desc = "FFFind files",
+        desc = "Find files (fff)",
       },
       {
-        "fg",
+        "<leader>/",
         function()
           require("fff").live_grep()
         end,
-        desc = "LiFFFe grep",
+        desc = "Live grep (fff)",
       },
       {
         "fz",
