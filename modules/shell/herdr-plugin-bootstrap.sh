@@ -1,23 +1,16 @@
 set -u
 
 usage() {
-  printf 'usage: herdr-plugin-bootstrap [--link PLUGIN_ROOT] [--github PLUGIN_ID OWNER/REPO REVISION] ...\n' >&2
+  printf 'usage: herdr-plugin-bootstrap --github PLUGIN_ID OWNER/REPO [...]\n' >&2
 }
 
-link_roots=()
 github_ids=()
 github_sources=()
-github_revisions=()
 
 while (( $# > 0 )); do
   case $1 in
-    --link)
-      (( $# >= 2 )) || { usage; exit 2; }
-      link_roots+=("$2")
-      shift 2
-      ;;
     --github)
-      (( $# >= 4 )) || { usage; exit 2; }
+      (( $# >= 3 )) || { usage; exit 2; }
       plugin_source=$3
       plugin_owner=${plugin_source%%/*}
       plugin_repo=${plugin_source#*/}
@@ -27,8 +20,7 @@ while (( $# > 0 )); do
       fi
       github_ids+=("$2")
       github_sources+=("$plugin_source")
-      github_revisions+=("$4")
-      shift 4
+      shift 3
       ;;
     *)
       usage
@@ -37,7 +29,7 @@ while (( $# > 0 )); do
   esac
 done
 
-if (( ${#link_roots[@]} == 0 && ${#github_ids[@]} == 0 )); then
+if (( ${#github_ids[@]} == 0 )); then
   usage
   exit 2
 fi
@@ -140,24 +132,9 @@ if ! plugin_json=$(herdr plugin list --json 2>/dev/null); then
   exit 0
 fi
 
-for plugin_root in "${link_roots[@]}"; do
-  manifest_path="$plugin_root/herdr-plugin.toml"
-
-  if jq -e --arg manifest_path "$manifest_path" \
-    '.result.plugins // [] | any(.manifest_path == $manifest_path)' \
-    >/dev/null <<<"$plugin_json"; then
-    continue
-  fi
-
-  if ! herdr plugin link "$plugin_root" >/dev/null 2>&1; then
-    printf 'herdr: could not link %s; will retry in the next shell\n' "$plugin_root" >&2
-  fi
-done
-
 for index in "${!github_ids[@]}"; do
   plugin_id=${github_ids[$index]}
   plugin_source=${github_sources[$index]}
-  plugin_revision=${github_revisions[$index]}
   plugin_owner=${plugin_source%%/*}
   plugin_repo=${plugin_source#*/}
 
@@ -165,21 +142,18 @@ for index in "${!github_ids[@]}"; do
     --arg plugin_id "$plugin_id" \
     --arg plugin_owner "$plugin_owner" \
     --arg plugin_repo "$plugin_repo" \
-    --arg plugin_revision "$plugin_revision" \
     '.result.plugins // [] | any(
       .plugin_id == $plugin_id
       and .source.kind == "github"
       and .source.owner == $plugin_owner
       and .source.repo == $plugin_repo
-      and .source.resolved_commit == $plugin_revision
     )' >/dev/null <<<"$plugin_json"; then
     continue
   fi
 
-  if ! herdr plugin install "$plugin_source" \
-    --ref "$plugin_revision" --yes >/dev/null 2>&1; then
-    printf 'herdr: could not install %s at %s; will retry in the next shell\n' \
-      "$plugin_source" "$plugin_revision" >&2
+  if ! herdr plugin install "$plugin_source" --yes >/dev/null 2>&1; then
+    printf 'herdr: could not install %s; will retry in the next shell\n' \
+      "$plugin_source" >&2
   fi
 done
 

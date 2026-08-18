@@ -11,8 +11,6 @@
       { pkgs, ... }:
       let
         herdr = inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.herdr;
-        herdrAutomaticRename = inputs.herdr-automatic-rename;
-        herdrHunkDiffRev = inputs.herdr-hunk-diff.rev;
         herdrFishCompletion = pkgs.runCommand "herdr-fish-completion" { } ''
           ${herdr}/bin/herdr completion fish > $out
         '';
@@ -36,21 +34,26 @@
         xdg.configFile."fish/conf.d/herdr.fish".text = ''
           if type -q herdr
               ${herdrPluginBootstrap}/bin/herdr-plugin-bootstrap \
-                --link ${herdrAutomaticRename} \
+                --github herdr-automatic-rename \
+                  qu8n/herdr-automatic-rename \
                 --github jhochenbaum.hunkdiff \
-                  jhochenbaum/herdr-hunk-diff \
-                  ${herdrHunkDiffRev}
-              source ${herdrAutomaticRename}/shell/hook.fish
+                  jhochenbaum/herdr-hunk-diff
+              for hook in $HOME/.config/herdr/plugins/github/herdr-automatic-rename-*/shell/hook.fish
+                  test -r "$hook"; and source "$hook"; and break
+              end
           end
         '';
-        xdg.configFile."zsh/conf.d/third-party/herdr-automatic-rename-nix.sh".text = ''
+        xdg.configFile."zsh/conf.d/third-party/herdr-automatic-rename.sh".text = ''
           if (( $+commands[herdr] )); then
             ${herdrPluginBootstrap}/bin/herdr-plugin-bootstrap \
-              --link ${herdrAutomaticRename} \
+              --github herdr-automatic-rename \
+                qu8n/herdr-automatic-rename \
               --github jhochenbaum.hunkdiff \
-                jhochenbaum/herdr-hunk-diff \
-                ${herdrHunkDiffRev}
-            source "${herdrAutomaticRename}/shell/hook.zsh"
+                jhochenbaum/herdr-hunk-diff
+            for hook in $HOME/.config/herdr/plugins/github/herdr-automatic-rename-*/shell/hook.zsh(N); do
+              source "$hook"
+              break
+            done
           fi
         '';
       };
