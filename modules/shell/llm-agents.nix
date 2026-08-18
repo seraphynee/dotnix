@@ -203,7 +203,28 @@ let
   # Packages listed here are installed automatically on first use if missing.
   mkPiConfig = builtins.toJSON {
     theme = "dark";
-    packages = [ "npm:pi-mcp-adapter" ];
+    defaultThinkingLevel = "high";
+    defaultProvider = "openai-codex";
+    defaultModel = "gpt-5.6-luna";
+    enabledModels = [
+      "openai-codex/gpt-5.6-luna"
+      "openai-codex/gpt-5.6-sol"
+      "openai-codex/gpt-5.6-terra"
+    ];
+
+    packages = [
+      "npm:pi-caveman"
+      "npm:pi-context-view"
+      "npm:pi-mcp-adapter"
+      "npm:pi-skill-gate"
+      "npm:pi-subagents"
+      "npm:pi-web-access"
+      "npm:@ff-labs/pi-fff"
+      "npm:@dietrichgebert/ponytail"
+      "npm:@narumitw/pi-btw"
+      "npm:@narumitw/pi-goal"
+      "npm:@juicesharp/rpiv-todo"
+    ];
   };
 
   # Cursor Agent CLI (~/.cursor/cli-config.json).
