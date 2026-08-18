@@ -1,8 +1,8 @@
 ---
 pre-commit:
   commands:
-    fmt-lint:
-      run: just fmt-fix
+    fmt-check:
+      run: just fmt-check
       stage_fixed: true
 pre-push:
   commands:
