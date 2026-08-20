@@ -22,6 +22,9 @@
         email = null;
       };
     };
-    hosts.esquire.systemDisk = "/dev/disk/by-id/nvme-eui.002538ba11b6cb55";
+    hosts = {
+      acerus.systemDisk = "/dev/disk/by-id/nvme-eui.e8238fa6bf530001001b448b47e55428";
+      esquire.systemDisk = "/dev/disk/by-id/nvme-eui.002538ba11b6cb55";
+    };
   };
 }

@@ -1,3 +1,6 @@
+set unstable
+set lists
+
 default:
     @just --list
 
@@ -45,20 +48,10 @@ rbb host:
     sudo nixos-rebuild boot --flake .#{{ host }}
 
 # Remote/bootstrap
-anywhere host target:
-    nix run github:nix-community/nixos-anywhere -- --flake {{ host }} --host-target {{ target }}
+# Validate a physical NixOS target without changing it
+bootstrap-preflight host target *args:
+    nix run .#bootstrap -- --host {{ quote(host) }} --target {{ quote(target) }} --preflight {{ quote(args) }}
 
-disko-mount-only host flake='.':
-    sudo nix --extra-experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount --flake '{{ flake }}#{{ host }}'
-
-disko-install host disk target flake='.':
-    sudo nix --extra-experimental-features "nix-command flakes" run 'github:nix-community/disko/latest#disko-install' -- --flake '{{ flake }}#{{ host }}' --disk {{ disk }} {{ target }}
-
-disko-install-remount host flake='.' rw_store_size='20G':
-    sudo nix --extra-experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount --flake '{{ flake }}#{{ host }}'
-    sudo mount -o remount,size={{ rw_store_size }},noatime /nix/.rw-store
-    sudo nixos-install --flake '{{ flake }}#{{ host }}'
-
-install-after-key host flake='.' rw_store_size='20G':
-    sudo mount -o remount,size={{ rw_store_size }},noatime /nix/.rw-store
-    sudo nixos-install --flake '{{ flake }}#{{ host }}'
+# Install a physical NixOS target over SSH after preflight and typed confirmation
+bootstrap host target *args:
+    nix run .#bootstrap -- --host {{ quote(host) }} --target {{ quote(target) }} {{ quote(args) }}

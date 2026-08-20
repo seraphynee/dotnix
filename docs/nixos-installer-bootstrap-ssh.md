@@ -1,34 +1,52 @@
-# Remote NixOS Installation with Bootstrap SSH Key
+# Bootstrap a Physical NixOS Machine over SSH
 
-This document describes the remote installation flow used by `scripts/nixos-installer.sh`.
+This runbook describes the physical-machine workflow implemented by
+`scripts/nixos-installer.sh`, exposed by the `bootstrap` and
+`bootstrap-preflight` Just recipes. It is deliberately separate from the VPS
+profile and its provisioning workflow; do not use these disk-erasing steps for
+`vps`.
 
-The intended flow is:
+## Safety Model
 
-1. Set a temporary `root` password on the target machine running the NixOS live installer.
-2. Start SSH on the target machine.
-3. Run the installer script from the source machine.
-4. Let the script copy the SSH public key to the target machine.
-5. Continue the installation using SSH key authentication.
+The workflow is designed for a NixOS live installer running on the target and a
+source machine containing this checkout. It evaluates the selected installer
+configuration, decrypts every effective SOPS file to `/dev/null`, and inspects
+the configured whole disk over SSH before it can erase anything.
 
-## Prerequisites
+The disk must be the exact stable `/dev/disk/by-id/...` path declared by the
+host. Kernel names such as `/dev/nvme0n1` can change when hardware enumeration
+changes, so they are not accepted by the installer. The current physical host
+identities are:
 
-- The target machine is already booted into a NixOS live installer or live USB environment.
-- The source machine can reach the target machine over the network.
-- You know the target machine IP address.
-- You know which host name to install from this flake, for example `esquire-installer`.
-- You have the `sops-nix` age key file on the source machine.
-- You have an SSH key pair on the source machine in this location:
-  - private key: `~/.ssh_keys/<ssh_key_name>`
-  - public key: `~/.ssh_keys/<ssh_key_name>.pub`
-- `gum` is installed on the source machine.
-- Either `nixos-anywhere` or `nix` is installed on the source machine.
-- The target disk and host configuration have already been reviewed before installation.
+| Physical host | Installer profile | Stable whole-disk identity |
+| --- | --- | --- |
+| `acerus` | `acerus-installer` | `/dev/disk/by-id/nvme-eui.e8238fa6bf530001001b448b47e55428` |
+| `esquire` | `esquire-installer` | `/dev/disk/by-id/nvme-eui.002538ba11b6cb55` |
 
-## What Need To Do
+Passing `--host acerus` or `--host esquire` selects the matching
+`<host>-installer` configuration. Passing the explicit installer name is also
+accepted, but the confirmation still names the physical host. The installer
+profile uses systemd-boot; the daily profile uses Lanzaboote.
 
-### Target Machine
+`bootstrap-preflight` is a read-only readiness check. It evaluates NixOS,
+Disko, and SOPS, authenticates to SSH, resolves the stable symlink, and checks
+that the target resolves to exactly one whole disk. It never invokes `gum`,
+`ssh-copy-id`, or `nixos-anywhere`.
 
-Run these commands on the target machine from the live installer shell:
+An installation always performs those same preflight checks before staging
+secrets or invoking `nixos-anywhere`. It then requires the exact typed
+confirmation shown in the summary. A wrong answer, EOF, or a failed preflight
+stops without an installation. Treat the target disk as disposable: Disko and
+`nixos-anywhere` will replace its partition table and contents.
+
+## Live Installer Preparation
+
+Boot the target into a NixOS live installer. All three modes require SSH to be
+running. Password mode and `bootstrap-key` additionally require a temporary
+root password; existing `key` mode requires the source private key to already
+be authorized for the target account and does not require setting a password.
+For password or `bootstrap-key`, set the temporary password, then start SSH
+and record the address:
 
 ```bash
 passwd
@@ -37,118 +55,273 @@ systemctl status sshd
 ip addr
 ```
 
-What this does:
+The password is used only by password authentication and by the
+`bootstrap-key` mode while the public key is installed. In existing `key`
+mode, keep the authorized key and its private-key file available instead. Keep
+the live installer's root SSH access available until preflight has completed.
 
-- `passwd` sets the temporary `root` password used for the initial SSH bootstrap.
-- `systemctl start sshd` starts the SSH server.
-- `systemctl status sshd` verifies that the SSH server is running.
-- `ip addr` shows the target machine IP address.
+## Source Machine Inputs
 
-Important notes:
+Run the workflow from the repository checkout. The source machine needs the
+flake-native `nix` command, `just`, `jq`, `sops`, `gum`, and the packaged
+`nixos-anywhere` input. The age identity defaults to
+`$HOME/.local/share/ages/keys.txt`; pass `--age-identity PATH` when it is
+stored elsewhere. The file is read locally and is never printed.
 
-- Set the password for `root`, not for the `nixos` user.
-- The script connects to `root@<target-ip>` by default.
-- The target machine must allow SSH login for `root` with password at least for the initial bootstrap step.
+For key-based modes, keep the private key and its public companion together,
+for example:
 
-### Source Machine
-
-Run these commands on the source machine:
-
-```bash
-ls -l ~/.ssh_keys
-test -f ~/.ssh_keys/<ssh_key_name>
-test -f ~/.ssh_keys/<ssh_key_name>.pub
-test -f ~/.local/share/ages//keys.txt
-./scripts/nixos-installer.sh
+```text
+~/.ssh_keys/id_ed25519
+~/.ssh_keys/id_ed25519.pub
 ```
 
-What to enter in the installer prompt:
-
-- `IP target host`: the IP address shown on the target machine
-- `Path keyfile`: the local age key file, for example `~/.local/share/ages/keys.txt`
-- `Flake host`: the bootstrap host defined in this repository, for example `esquire-installer`
-- `SSH mode`: choose `Bootstrap SSH key`
-- `SSH key name`: only the key name, for example `id_ed25519`
-
-What the script does in `Bootstrap SSH key` mode:
-
-1. It reads the SSH private key from `~/.ssh_keys/<ssh_key_name>`.
-2. It reads the SSH public key from `~/.ssh_keys/<ssh_key_name>.pub`.
-3. It connects to `root@<target-ip>` using password authentication.
-4. It copies the public key to the target machine `~/.ssh/authorized_keys`.
-5. It runs `nixos-anywhere` using SSH key authentication only.
-
-## Example
-
-Example target machine session:
+Before selecting a disk, collect the live installer's physical-disk inventory:
 
 ```bash
-passwd
-systemctl start sshd
-ip addr
+lsblk -d -o PATH,SIZE,MODEL,SERIAL
+ls -l /dev/disk/by-id/
 ```
 
-Example source machine session:
+Use the whole-disk symlink, not a partition (`...-part1`) and not a mapper
+device. Prefer an EUI or WWN identity under `/dev/disk/by-id/`, then compare
+its resolved device, size, model, and serial with `lsblk` during preflight.
+
+## Read-Only Preflight
+
+Use a standalone preflight before an installation, especially after booting a
+new live installer or changing the target address. The command below checks
+Acerus without changing the target:
 
 ```bash
-test -f ~/.ssh_keys/id_ed25519
-test -f ~/.ssh_keys/id_ed25519.pub
-test -f ~/.local/share/ages//keys.txt
-./scripts/nixos-installer.sh
+just bootstrap-preflight acerus root@192.0.2.10 \
+  --age-identity "$HOME/.local/share/ages/keys.txt" \
+  --ssh-auth password
 ```
 
-Then enter:
-
-- target IP: `192.168.100.13`
-- key file: `~/.local/share/ages//keys.txt`
-- flake host: `esquire-installer`
-- SSH mode: `Bootstrap SSH key`
-- SSH key name: `id_ed25519`
-
-## Result
-
-If everything succeeds:
-
-- the SSH public key is added to the target machine for `root`
-- `nixos-anywhere` installs the selected flake host
-- the installation uses SSH key authentication after the bootstrap step
-
-After the first successful boot, switch from the installer profile to the daily `esquire` profile:
+Esquire uses the same workflow and its own installer profile and disk identity:
 
 ```bash
+just bootstrap-preflight esquire root@192.0.2.11 \
+  --age-identity "$HOME/.local/share/ages/keys.txt" \
+  --ssh-auth password
+```
+
+The summary must show the expected installer configuration, target, stable
+configured disk, resolved whole-disk path, size, model, serial, and
+`Preflight : READY`. A standalone preflight stops there. It is not an
+authorization to erase the disk; the install recipe repeats preflight and
+requires a separate confirmation.
+
+## Password Authentication
+
+Password mode is the default and is useful when the live installer has a
+temporary root password but no authorized key yet:
+
+```bash
+just bootstrap-preflight acerus root@192.0.2.10 \
+  --ssh-auth password
+```
+
+After the preflight is reviewed, use the same options with `bootstrap`. The
+script disables public-key authentication for its inspection and passes the
+same password-only SSH policy to `nixos-anywhere`.
+
+## Existing SSH-Key Authentication
+
+Use this mode when the target already accepts the source private key. It never
+uses a password or copies a key:
+
+```bash
+just bootstrap-preflight esquire root@192.0.2.11 \
+  --ssh-auth key --ssh-key "$HOME/.ssh_keys/id_ed25519"
+
+just bootstrap esquire root@192.0.2.11 \
+  --ssh-auth key --ssh-key "$HOME/.ssh_keys/id_ed25519" \
+  --age-identity "$HOME/.local/share/ages/keys.txt" \
+  --build-on auto
+```
+
+The private key is required locally and is used with public-key-only SSH.
+
+## Bootstrap a New SSH Key
+
+Use `bootstrap-key` when the live installer permits the temporary root
+password but does not yet contain the desired public key:
+
+```bash
+just bootstrap-preflight acerus root@192.0.2.10 \
+  --ssh-auth bootstrap-key --ssh-key "$HOME/.ssh_keys/id_ed25519"
+```
+
+The standalone preflight only checks the disk using password authentication.
+For an installation, the script first runs that password inspection, then
+uses `ssh-copy-id` with the public key, switches to public-key-only SSH, and
+inspects the disk again before confirmation. The private key is then passed to
+`nixos-anywhere`; the temporary password is not used after key installation.
+
+## Confirm and Install
+
+Run the installation only after a successful preflight and a reviewed target
+inventory. For example:
+
+```bash
+just bootstrap acerus root@192.0.2.10 \
+  --ssh-auth bootstrap-key --ssh-key "$HOME/.ssh_keys/id_ed25519" \
+  --age-identity "$HOME/.local/share/ages/keys.txt" \
+  --build-on auto
+```
+
+The equivalent Esquire installation uses `esquire` and its target address:
+
+```bash
+just bootstrap esquire root@192.0.2.11 \
+  --ssh-auth key --ssh-key "$HOME/.ssh_keys/id_ed25519" \
+  --age-identity "$HOME/.local/share/ages/keys.txt" \
+  --build-on auto
+```
+
+The prompt is intentionally exact. For Acerus, type:
+
+```text
+ERASE acerus /dev/disk/by-id/nvme-eui.e8238fa6bf530001001b448b47e55428
+```
+
+For Esquire, type:
+
+```text
+ERASE esquire /dev/disk/by-id/nvme-eui.002538ba11b6cb55
+```
+
+The host and disk must match the summary character-for-character. The
+`--build-on` value (`auto`, `local`, or `remote`) is forwarded to
+`nixos-anywhere`.
+
+Before installation, the age identity is staged with mode `0600` at both
+paths expected by the NixOS configuration:
+
+```text
+/var/lib/sops-nix/keys.txt
+/persist/var/lib/sops-nix/keys.txt
+```
+
+The paths are supplied as extra files to the installer and the temporary
+staging directory is removed on success, failure, or interruption. Do not put
+secret contents in shell arguments or this runbook.
+
+## Add a New Physical Host
+
+Keep a new physical host separate from a VPS host. Before adding configuration,
+boot its live installer and record the inventory:
+
+1. Run `lsblk -d -o PATH,SIZE,MODEL,SERIAL` and retain the output for review.
+2. Inspect `/dev/disk/by-id/` for symlinks to the intended whole disk. Prefer
+   an EUI/WWN identity and never select a partition or `/dev/nvme0n1` merely
+   because it is the current kernel name.
+3. Add `constants.hosts.<name>.systemDisk` in `nix/constants.nix` with the
+   exact `/dev/disk/by-id/...` path, and add a host-level
+   `lib.mkForce constants.hosts.<name>.systemDisk` override in
+   `modules/hosts/<name>.nix`.
+4. Generate a nixos-facter report separately on the new machine, review it,
+   and store it at `modules/hosts/<name>/facter.json`, for example:
+
+   ```bash
+   nixos-facter -o modules/hosts/<name>/facter.json
+   ```
+
+   This is the path used by `<lib/define-hardware>` (`modules/lib.nix`). If
+   this host should consume the report, include `<lib/define-hardware>` in its
+   host aspect deliberately; do not assume a missing report is acceptable.
+5. Define both `<name>` and `<name>-installer` host profiles before running
+   preflight. The daily profile should use Lanzaboote; the installer profile
+   should use systemd-boot until the first daily transition is complete.
+
+Review the generated facter report and the Disko path as separate changes. A
+facter report describes hardware; it does not choose the install disk.
+
+## First Boot Checks
+
+After `nixos-anywhere` returns, boot the installed installer profile and verify
+the machine has the expected host name, network, encrypted root, and persisted
+state before changing profiles. Confirm that the SOPS key and secrets are
+available through the staged paths and that `/persist` is mounted. Keep the
+LUKS passphrase available while validating the new system.
+
+## Switch Acerus or Esquire to the Daily Profile
+
+The installer's `acerus-installer` and `esquire-installer` profiles use
+systemd-boot. Once the first boot is healthy, switch to the matching daily
+profile from the checkout:
+
+```bash
+# On an Acerus installed with acerus-installer:
+nh os switch . -H acerus
+
+# On an Esquire installed with esquire-installer:
 nh os switch . -H esquire
 ```
 
-The `esquire` host uses Lanzaboote and enables TPM-aware initrd settings for LUKS (`tpm2-device=auto`).
+The daily profiles use Lanzaboote. `/etc/secureboot` is persisted by the
+impermanence configuration, so the generated Secure Boot material survives
+the root rollback. Firmware must be in Secure Boot Setup Mode before the daily
+activation: use the firmware UI to disable Secure Boot and clear or reset
+platform keys as required by that machine. This is a firmware operation, not a
+Disko operation.
 
-Then enroll a TPM2 key for the LUKS container and reboot:
+Lanzaboote is configured here to generate keys automatically, prepare
+automatic enrollment, and allow an automatic reboot. The reboot can occur
+during the switch; return to the machine and complete the checks below before
+enrolling the TPM.
+
+## Secure Boot Enrollment
+
+After the daily profile has booted, check the boot state and enrollment:
 
 ```bash
-sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=7 /dev/disk/by-partlabel/root
-reboot
+sudo sbctl status
 ```
 
-Notes:
+The status must show the expected Secure Boot state and a valid Lanzaboote
+setup. Do not enroll a TPM token until `sbctl status` passes. If enrollment
+cannot complete, return firmware to Setup Mode and inspect the firmware's
+platform/key-exchange databases before retrying the daily switch. Keep
+`/etc/secureboot` backed by `/persist` and do not delete it during recovery.
 
-- Keep your existing LUKS passphrase as a recovery method.
-- If PCR 7 changes (for example after Secure Boot key changes), re-enroll the TPM2 token.
+## TPM2 Enrollment
 
-## Troubleshooting
+Once Secure Boot is enrolled and `sbctl status` passes, enroll the LUKS root
+volume against TPM PCR 7. Disko names the `root` partition under the `btrfs`
+disk, so its generated partition label is `disk-btrfs-root`:
 
-If the script cannot connect:
+```bash
+sudo systemd-cryptenroll \
+  --tpm2-device=auto \
+  --tpm2-pcrs=7 \
+  /dev/disk/by-partlabel/disk-btrfs-root
+```
 
-- verify that `sshd` is running on the target machine
-- verify that the target IP address is correct
-- verify that the `root` password was set successfully
-- verify that the source machine can reach the target machine over the network
+The LUKS passphrase remains a recovery method and should be tested before
+removing any other recovery material. PCR 7 binds the TPM unlock policy to the
+Secure Boot state. An intentional Secure Boot key change, boot-policy change,
+firmware reset, or other PCR 7/key-policy change requires re-enrollment with
+`systemd-cryptenroll`; retain the passphrase until the new token is confirmed.
 
-If the script fails before copying the key:
+## Failure Recovery
 
-- verify that `~/.ssh_keys/<ssh_key_name>` exists
-- verify that `~/.ssh_keys/<ssh_key_name>.pub` exists
-- verify that the age key file path is correct
-
-If the installation fails after the key bootstrap step:
-
-- verify that the selected flake host is correct
-- verify that the disk configuration for the target host is correct
+- If preflight fails, correct the host mapping, SOPS identity, SSH access, or
+  stable disk configuration and rerun it. No destructive helper is run before
+  preflight succeeds.
+- If SSH password bootstrap fails, check `sshd`, the temporary root password,
+  root login policy, and the target address in the live installer.
+- If `bootstrap-key` fails during `ssh-copy-id`, the public key was not
+  accepted; fix password access and rerun. The installer does not proceed to
+  `nixos-anywhere` in that case.
+- If installation is interrupted, the staged age-key directory is cleaned up;
+  verify the target's state from the live installer before retrying.
+- If the daily Lanzaboote transition cannot enroll keys, leave firmware in
+  Setup Mode, preserve `/etc/secureboot` and `/persist`, and boot the installer
+  or a known-good entry while investigating. Do not erase the target again
+  merely to repair Secure Boot.
+- If TPM PCR 7 unlock stops working after an intentional Secure Boot or
+  firmware change, unlock with the LUKS passphrase, verify `sbctl status`, and
+  re-enroll the TPM token. The passphrase is the recovery path.

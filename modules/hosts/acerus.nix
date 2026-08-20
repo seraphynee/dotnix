@@ -41,6 +41,8 @@ let
 
         services.hardware.bolt.enable = true;
 
+        disko.devices.disk.btrfs.device = lib.mkForce constants.hosts.acerus.systemDisk;
+
         services.pipewire.wireplumber = {
           enable = true;
           extraConfig."51-acerus-internal-speakers" = {
