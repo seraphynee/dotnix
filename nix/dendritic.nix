@@ -27,6 +27,11 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgs-lib.follows = "nixpkgs";
 
+    nixos-anywhere = {
+      url = "github:nix-community/nixos-anywhere";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     den.url = "github:vic/den";
     flake-file.url = "github:vic/flake-file";
     flake-aspects.url = "github:vic/flake-aspects";

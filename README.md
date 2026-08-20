@@ -18,7 +18,7 @@ In short, this repo is needed so infrastructure changes are intentional, auditab
 
 - **Single flake, multiple hosts**: manages multiple host targets from one codebase (Linux and Darwin).
 - **Declarative system provisioning**: uses Disko-driven layouts, including Btrfs/LUKS-based host setups.
-- **Bootstrap-ready install flow**: includes installer-oriented recipes such as `disko-install` and `disko-install-remount` in `justfile`.
+- **Bootstrap-ready install flow**: includes the read-only `bootstrap-preflight` and confirmed `bootstrap` recipes for physical NixOS machines.
 - **Modular architecture**: split into reusable modules for hosts, users, system settings, shell tooling, and services.
 - **Secrets management with SOPS**: encrypted per-host and shared secrets are tracked safely in-repo.
 - **Daily workflow automation**: quality and maintenance commands are centralized (`fmt`, `check`, updates, hooks).
@@ -78,3 +78,26 @@ Devenv and Direnv provide the primary repository environment. Run `direnv
 allow` after cloning. The flake-native `nix develop` shell remains available
 as a separate fallback; the two entry points are intentionally retained rather
 than consolidated by the repository-curation refactor.
+
+## Physical Bootstrap Workflow
+
+The physical-machine SSH workflow is documented in
+[`docs/nixos-installer-bootstrap-ssh.md`](docs/nixos-installer-bootstrap-ssh.md).
+Run a read-only check first, then run the install recipe only after reviewing
+the stable `/dev/disk/by-id/` target and its `ERASE` confirmation:
+
+```bash
+just bootstrap-preflight acerus root@TARGET \
+  --age-identity "$HOME/.local/share/ages/keys.txt"
+just bootstrap acerus root@TARGET \
+  --age-identity "$HOME/.local/share/ages/keys.txt"
+```
+
+The recipes support password, existing-key, and bootstrap-key SSH modes. They
+are for physical `acerus`, `esquire`, and similarly declared hosts; the
+installer profile is selected automatically (`acerus-installer` or
+`esquire-installer`). After the first healthy boot, the operator manually
+switches to the daily profile and completes the Secure Boot transition.
+
+The `vps` host remains a separate server profile and is not a target for this
+disk-inspection or disk-erasing workflow.
