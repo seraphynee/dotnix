@@ -40,6 +40,8 @@ fi
 
 lock_dir=${HERDR_PLUGIN_BOOTSTRAP_LOCK_DIR:-${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}/herdr-plugin-bootstrap-${UID:-$(id -u)}.lock}
 
+# Invoked through the EXIT trap handler, which ShellCheck cannot trace.
+# shellcheck disable=SC2329
 cleanup_lock_candidates() {
   local candidate
   for candidate in "$lock_dir.$$".*; do
@@ -107,6 +109,8 @@ acquire_lock() {
   return 1
 }
 
+# Invoked indirectly by trap; see ShellCheck SC2329's documented exception.
+# shellcheck disable=SC2329
 release_lock() {
   local owner_pid release_link
   owner_pid=
