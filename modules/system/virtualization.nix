@@ -11,49 +11,65 @@
   };
 
   den.aspects.system._.virt.nixos =
-    {
-      lib,
-      options,
-      pkgs,
-      ...
-    }:
+    { lib, options, ... }:
     lib.mkMerge [
       {
-        users.users.${constants.user.seraphynee.username}.extraGroups = [
-          "libvirtd"
-          "kvm"
-        ];
+        users.users.${constants.user.seraphynee.username}.extraGroups = [ "incus-admin" ];
 
-        boot.kernelModules = [ "kvm-intel" ];
-
-        environment.systemPackages = with pkgs; [
-          qemu_kvm
-          quickemu
-          quickgui
-          virt-manager
-          virt-viewer
-          spice
-          spice-gtk
-          spice-protocol
-          virtio-win
-          win-spice
-        ];
-
-        virtualisation = {
-          libvirtd = {
-            enable = true;
-            qemu = {
-              package = pkgs.qemu_kvm;
-              runAsRoot = true;
-              swtpm.enable = true;
-            };
+        networking = {
+          nftables.enable = true;
+          firewall.interfaces.incusbr0 = {
+            allowedTCPPorts = [ 53 ];
+            allowedUDPPorts = [
+              53
+              67
+            ];
           };
-          spiceUSBRedirection.enable = true;
         };
-        services.spice-vdagentd.enable = true;
+
+        virtualisation.incus = {
+          enable = true;
+          preseed = {
+            networks = [
+              {
+                name = "incusbr0";
+                type = "bridge";
+                config = {
+                  "ipv4.address" = "auto";
+                  "ipv4.nat" = "true";
+                  "ipv6.address" = "none";
+                };
+              }
+            ];
+            profiles = [
+              {
+                name = "default";
+                devices = {
+                  eth0 = {
+                    name = "eth0";
+                    network = "incusbr0";
+                    type = "nic";
+                  };
+                  root = {
+                    path = "/";
+                    pool = "default";
+                    type = "disk";
+                  };
+                };
+              }
+            ];
+            storage_pools = [
+              {
+                name = "default";
+                driver = "dir";
+                config.source = "/var/lib/incus/storage-pools/default";
+              }
+            ];
+          };
+        };
       }
       (lib.optionalAttrs (options.environment ? persistence) {
-        environment.persistence."/persist".directories = [ "/var/lib/libvirt" ];
+        environment.persistence."/persist".directories = [ "/var/lib/incus" ];
       })
     ];
 }
