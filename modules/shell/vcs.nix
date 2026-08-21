@@ -79,11 +79,36 @@
   # Worktrunk
   den.aspects.shell._.worktrunk = {
     homeManager =
-      { pkgs, ... }:
       {
-        home.packages = [
-          inputs.worktrunk.packages.${pkgs.stdenv.hostPlatform.system}.default
-        ];
+        pkgs,
+        lib,
+        ...
+      }:
+      let
+        worktrunk = inputs.worktrunk.packages.${pkgs.stdenv.hostPlatform.system}.default;
+        worktrunkFishCompletion = pkgs.runCommand "worktrunk-fish-completion" { } ''
+          ${worktrunk}/bin/wt config shell completions fish > $out
+        '';
+        worktrunkFishIntegration = pkgs.runCommand "worktrunk-fish-integration" { } ''
+          ${worktrunk}/bin/wt config shell init fish > $out
+        '';
+        worktrunkZshIntegration = pkgs.runCommand "worktrunk-zsh-integration" { } ''
+          ${worktrunk}/bin/wt config shell init zsh > $out
+        '';
+        worktrunkBashIntegration = pkgs.runCommand "worktrunk-bash-integration" { } ''
+          ${worktrunk}/bin/wt config shell init bash > $out
+        '';
+      in
+      {
+        home.packages = [ worktrunk ];
+        xdg.configFile."fish/completions/wt.fish".source = worktrunkFishCompletion;
+        xdg.configFile."fish/functions/wt.fish".source = worktrunkFishIntegration;
+        # Sourced by the existing conf.d glob in modules/shell/shells.nix;
+        # includes its own lazy completion via compdef.
+        xdg.configFile."zsh/conf.d/080-worktrunk.zsh".source = worktrunkZshIntegration;
+        programs.bash.bashrcExtra = lib.mkAfter ''
+          source ${worktrunkBashIntegration}
+        '';
       };
   };
 }
