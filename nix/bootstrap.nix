@@ -4,7 +4,7 @@
     { inputs', pkgs, ... }:
     # Keep stale generated flakes evaluable until flake-file regenerates the
     # declared input; do not force a missing input attribute here.
-    lib.optionalAttrs
+    lib.mkIf
       (
         builtins.hasAttr "nixos-anywhere" inputs'
         && builtins.hasAttr "packages" inputs'.nixos-anywhere
