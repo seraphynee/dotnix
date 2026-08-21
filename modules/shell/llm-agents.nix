@@ -123,7 +123,7 @@ let
     builtins.toJSON {
       "$schema" = "https://opencode.ai/config.json";
       theme = "opencode";
-      plugin = [ "superpowers@git+https://github.com/obra/superpowers.git" ];
+      # plugin = [ "superpowers@git+https://github.com/obra/superpowers.git" ];
       mcp = mkMcpServers config;
       provider = {
         openrouter = {
