@@ -11,39 +11,49 @@
   };
 
   den.aspects.system._.virt.nixos =
-    { pkgs, ... }:
     {
-      users.users.${constants.user.seraphynee.username}.extraGroups = [
-        "libvirtd"
-        "kvm"
-      ];
+      lib,
+      options,
+      pkgs,
+      ...
+    }:
+    lib.mkMerge [
+      {
+        users.users.${constants.user.seraphynee.username}.extraGroups = [
+          "libvirtd"
+          "kvm"
+        ];
 
-      boot.kernelModules = [ "kvm-intel" ];
+        boot.kernelModules = [ "kvm-intel" ];
 
-      environment.systemPackages = with pkgs; [
-        qemu_kvm
-        quickemu
-        quickgui
-        virt-manager
-        virt-viewer
-        spice
-        spice-gtk
-        spice-protocol
-        virtio-win
-        win-spice
-      ];
+        environment.systemPackages = with pkgs; [
+          qemu_kvm
+          quickemu
+          quickgui
+          virt-manager
+          virt-viewer
+          spice
+          spice-gtk
+          spice-protocol
+          virtio-win
+          win-spice
+        ];
 
-      virtualisation = {
-        libvirtd = {
-          enable = true;
-          qemu = {
-            package = pkgs.qemu_kvm;
-            runAsRoot = true;
-            swtpm.enable = true;
+        virtualisation = {
+          libvirtd = {
+            enable = true;
+            qemu = {
+              package = pkgs.qemu_kvm;
+              runAsRoot = true;
+              swtpm.enable = true;
+            };
           };
+          spiceUSBRedirection.enable = true;
         };
-        spiceUSBRedirection.enable = true;
-      };
-      services.spice-vdagentd.enable = true;
-    };
+        services.spice-vdagentd.enable = true;
+      }
+      (lib.optionalAttrs (options.environment ? persistence) {
+        environment.persistence."/persist".directories = [ "/var/lib/libvirt" ];
+      })
+    ];
 }
