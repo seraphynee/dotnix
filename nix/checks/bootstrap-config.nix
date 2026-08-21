@@ -27,21 +27,21 @@
           touch "$out"
         '';
 
-      checks.acerus-virtualization-enabled =
-        assert acerusConfig.virtualisation.libvirtd.enable;
-        assert acerusInstallerConfig.virtualisation.libvirtd.enable;
-        assert lib.elem "libvirtd" (groupsFor acerusConfig);
-        assert lib.elem "kvm" (groupsFor acerusConfig);
-        assert lib.elem "libvirtd" (groupsFor acerusInstallerConfig);
-        assert lib.elem "kvm" (groupsFor acerusInstallerConfig);
-        pkgs.runCommand "acerus-virtualization-enabled" { } ''
+      checks.acerus-incus-enabled =
+        assert acerusConfig.virtualisation.incus.enable;
+        assert acerusInstallerConfig.virtualisation.incus.enable;
+        assert acerusConfig.networking.nftables.enable;
+        assert acerusInstallerConfig.networking.nftables.enable;
+        assert lib.elem "incus-admin" (groupsFor acerusConfig);
+        assert lib.elem "incus-admin" (groupsFor acerusInstallerConfig);
+        pkgs.runCommand "acerus-incus-enabled" { } ''
           touch "$out"
         '';
 
-      checks.acerus-libvirt-persistence =
-        assert lib.elem "/var/lib/libvirt" (persistentDirectoriesFor acerusConfig);
-        assert lib.elem "/var/lib/libvirt" (persistentDirectoriesFor acerusInstallerConfig);
-        pkgs.runCommand "acerus-libvirt-persistence" { } ''
+      checks.acerus-incus-persistence =
+        assert lib.elem "/var/lib/incus" (persistentDirectoriesFor acerusConfig);
+        assert lib.elem "/var/lib/incus" (persistentDirectoriesFor acerusInstallerConfig);
+        pkgs.runCommand "acerus-incus-persistence" { } ''
           touch "$out"
         '';
     };
