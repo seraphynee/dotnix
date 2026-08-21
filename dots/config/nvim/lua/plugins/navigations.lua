@@ -9,7 +9,7 @@ return {
         modes = { "regex", "plain", "fuzzy" },
       },
       debug = {
-        enabled = true,
+        enabled = false,
         show_scores = true,
       },
     },
