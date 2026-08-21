@@ -158,8 +158,11 @@ in
           key = "keys/api/wakatime";
           mode = "0600";
         };
-        "llm/ticktick" = {
+        "llm/ticktick_apikey" = {
           key = "keys/api/ticktick";
+        };
+        "llm/linear_apikey" = {
+          key = "keys/api/linear";
         };
         "llm/tavily_apikey" = {
           key = "keys/api/tavily";

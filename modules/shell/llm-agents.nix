@@ -1,12 +1,6 @@
 { __findFile, inputs, ... }:
 let
   mkMcpServers = config: {
-    Ref = {
-      type = "remote";
-      url = "https://api.ref.tools/mcp?apiKey=${config.sops.placeholder."llm/ref_apikey"}";
-      enabled = false;
-    };
-
     context7 = {
       type = "remote";
       url = "https://mcp.context7.com/mcp";
@@ -30,22 +24,11 @@ let
       enabled = false;
     };
 
-    gitmcp = {
-      type = "remote";
-      url = "https://gitmcp.io/chianyungcode/dotfiles";
-      headers = { };
-      enabled = false;
-    };
-
-    grep = {
-      type = "remote";
-      url = "https://mcp.grep.app";
-      enabled = false;
-    };
-
     linear = {
-      type = "remote";
       url = "https://mcp.linear.app/mcp";
+      headers = {
+        Authorization = "Bearer ${config.sops.placeholder."llm/linear_apikey"}";
+      };
       enabled = true;
     };
 
@@ -56,8 +39,10 @@ let
     };
 
     ticktick = {
-      type = "remote";
       url = "https://mcp.ticktick.com";
+      headers = {
+        Authorization = "Bearer ${config.sops.placeholder."llm/ticktick_apikey"}";
+      };
       enabled = true;
     };
   };
@@ -204,9 +189,10 @@ let
   mkPiConfig = builtins.toJSON {
     theme = "dark";
     defaultThinkingLevel = "high";
-    defaultProvider = "openai-codex";
-    defaultModel = "gpt-5.6-luna";
+    defaultProvider = "openrouter";
+    defaultModel = "stealth/ox-alpha";
     enabledModels = [
+      "openrouter/stealth/ox-alpha"
       "openai-codex/gpt-5.6-luna"
       "openai-codex/gpt-5.6-sol"
       "openai-codex/gpt-5.6-terra"
@@ -272,6 +258,25 @@ let
     };
   };
 
+  # Pi coding agent MCP ($PI_CODING_AGENT_DIR/mcp.json → ~/.config/pi/mcp.json).
+  # Same { mcpServers.<name> = { url, headers? } } shape as Cursor; the enabled
+  # flag becomes { disabled = true; }.
+  mkPiMcpConfig =
+    config:
+    let
+      servers = mkMcpServers config;
+      toPiServer =
+        _name: server:
+        {
+          inherit (server) url;
+        }
+        // (if server ? headers && server.headers != { } then { inherit (server) headers; } else { })
+        // (if server.enabled or true then { } else { disabled = true; });
+    in
+    builtins.toJSON {
+      mcpServers = builtins.mapAttrs toPiServer servers;
+    };
+
   # Cursor Agent CLI MCP (~/.cursor/mcp.json).
   # Cursor uses { mcpServers.<name> = { url, headers? } } — no enabled flag;
   # disable unused servers with `agent mcp disable <name>`.
@@ -317,6 +322,7 @@ in
           piConfig = mkPiConfig;
           cursorCliConfig = mkCursorCliConfig;
           cursorMcpConfig = mkCursorMcpConfig config;
+          piMcpConfig = mkPiMcpConfig config;
           octFishCommand = "env OPENCODE_CONFIG_DIR=$HOME/.config/opencode-thinking opencode";
           octZshCommand = "OPENCODE_CONFIG_DIR=$HOME/.config/opencode-thinking opencode";
         in
@@ -349,6 +355,12 @@ in
             path = "${config.home.homeDirectory}/.cursor/mcp.json";
             mode = "0600";
             content = cursorMcpConfig;
+          };
+
+          sops.templates."pi-mcp.json" = {
+            path = "${config.home.homeDirectory}/.config/pi/mcp.json";
+            mode = "0600";
+            content = piMcpConfig;
           };
 
           home.file.".cursor/cli-config.json".text = cursorCliConfig;
