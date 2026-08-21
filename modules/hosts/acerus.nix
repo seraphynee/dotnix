@@ -75,6 +75,7 @@ let
       <system/bluetooth>
       <system/fonts>
       <system/networking>
+      <system/virt>
       <system/xdg>
       <system/settings>
 
