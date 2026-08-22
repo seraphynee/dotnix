@@ -303,7 +303,6 @@ in
           abbr --add gk "\\gitk --all --branches &\!"
           abbr --add gke "\\gitk --all \$(git log --walk-reflogs --pretty=%h) &\!"
           abbr --add gl "git pull"
-          abbr --add glab "op plugin run -- glab"
           abbr --add glg "git log --stat"
           abbr --add glgg "git log --graph"
           abbr --add glgga "git log --graph --decorate --branches --remotes --tags"

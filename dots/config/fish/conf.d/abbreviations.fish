@@ -364,7 +364,6 @@ abbr --add git-svn-dcommit-push "git svn dcommit && git push github \$(git_main_
 abbr --add gk "\gitk --all --branches &\!"
 abbr --add gke "\gitk --all \$(git log --walk-reflogs --pretty=%h) &\!"
 abbr --add gl "git pull"
-abbr --add glab "op plugin run -- glab"
 abbr --add glg "git log --stat"
 abbr --add glgg "git log --graph"
 abbr --add glgga "git log --graph --decorate --branches --remotes --tags"
@@ -524,9 +523,11 @@ abbr --add zlk --set-cursor 'zellij kill-session "%"'
 abbr --add zlka "zellij kill-all-sessions --yes"
 abbr --add zlls "zellij list-sessions"
 
-# 1password
-abbr --add vercel "op plugin run -- vercel"
-abbr --add gh "op plugin run -- gh"
+# 1Password CLI plugins
+alias aws 'op plugin run -- aws'
+alias gh 'op plugin run -- gh'
+alias glab 'op plugin run -- glab'
+alias vercel 'op plugin run -- vercel'
 
 # abbr "urldecode"="python -c \"import sys, urllib as ul; print ul.unquote_plus(sys.argv[1])\""
 abbr --add which-command whence
