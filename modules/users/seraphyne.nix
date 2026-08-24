@@ -49,6 +49,11 @@
       <shell/zellij>
     ];
 
+    homeManager.dotnix.repositories = {
+      enable = true;
+      entries = import ../../data/repositories/seraphynee.nix;
+    };
+
     homeManager.dotnix.vcs = {
       identity = {
         name = constants.user.seraphynee.git_user;
