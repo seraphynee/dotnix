@@ -161,6 +161,9 @@ in
         "llm/ticktick_apikey" = {
           key = "keys/api/ticktick";
         };
+        "llm/exa_apikey" = {
+          key = "keys/api/exa";
+        };
         "llm/linear_apikey" = {
           key = "keys/api/linear";
         };
