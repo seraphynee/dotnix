@@ -5,7 +5,7 @@ let
       type = "remote";
       url = "https://mcp.context7.com/mcp";
       headers = {
-        CONTEXT7_API_KEY = config.sops.placeholder."llm/context7_apikey";
+        Authorization = "Bearer ${config.sops.placeholder."llm/context7_apikey"}";
       };
       enabled = true;
     };
@@ -20,11 +20,21 @@ let
     exa = {
       type = "remote";
       url = "https://mcp.exa.ai/mcp";
+      headers = {
+        Authorization = "Bearer ${config.sops.placeholder."llm/exa_apikey"}";
+      };
+      enabled = true;
+    };
+
+    capacities = {
+      type = "remote";
+      url = "https://api.capacities.io/mcp";
       headers = { };
-      enabled = false;
+      enabled = true;
     };
 
     linear = {
+      type = "remote";
       url = "https://mcp.linear.app/mcp";
       headers = {
         Authorization = "Bearer ${config.sops.placeholder."llm/linear_apikey"}";
@@ -34,11 +44,15 @@ let
 
     tavily = {
       type = "remote";
-      url = "https://mcp.tavily.com/mcp/?tavilyApiKey=${config.sops.placeholder."llm/tavily_apikey"}";
+      url = "https://mcp.tavily.com/mcp";
+      headers = {
+        Authorization = "Bearer ${config.sops.placeholder."llm/tavily_apikey"}";
+      };
       enabled = false;
     };
 
     ticktick = {
+      type = "remote";
       url = "https://mcp.ticktick.com";
       headers = {
         Authorization = "Bearer ${config.sops.placeholder."llm/ticktick_apikey"}";
@@ -51,12 +65,23 @@ let
     name: server:
     let
       enabled = server.enabled or true;
+      httpHeaders =
+        if server ? headers && server.headers != { } then
+          let
+            headerEntries = builtins.attrValues (builtins.mapAttrs (k: v: ''"${k}" = "${v}"'') server.headers);
+          in
+          ''
+            http_headers = { ${builtins.concatStringsSep ", " headerEntries} }
+          ''
+        else
+          "";
     in
     ''
       [mcp_servers.${name}]
       url = "${server.url}"
       enabled = ${if enabled then "true" else "false"}
-    '';
+    ''
+    + httpHeaders;
 
   mkCodexConfig =
     {
