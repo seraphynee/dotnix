@@ -500,6 +500,38 @@
         "type": "github"
       }
     },
+    "herdr-automatic-rename": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786079575,
+        "narHash": "sha256-m785djdAMWXGA9NNjy7t7WDQCfXUL5ttsrpoGpxxTHI=",
+        "owner": "qu8n",
+        "repo": "herdr-automatic-rename",
+        "rev": "31406e377d3c0b5b29ad3e4ff031bdcffe08d12d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "qu8n",
+        "repo": "herdr-automatic-rename",
+        "type": "github"
+      }
+    },
+    "herdr-hunk-diff": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1787108069,
+        "narHash": "sha256-Skp2qVjrPxedJnB5UxwTmjj2/x2oDmtXE0ChvUOWBRw=",
+        "owner": "jhochenbaum",
+        "repo": "herdr-hunk-diff",
+        "rev": "81b85cea5484099acea93f2e9a08c2677eef461b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "jhochenbaum",
+        "repo": "herdr-hunk-diff",
+        "type": "github"
+      }
+    },
     "hjem": {
       "inputs": {
         "nix-darwin": "nix-darwin",
@@ -1226,6 +1258,8 @@
         "flake-parts": "flake-parts",
         "helium": "helium",
         "herdr": "herdr",
+        "herdr-automatic-rename": "herdr-automatic-rename",
+        "herdr-hunk-diff": "herdr-hunk-diff",
         "hjem": "hjem",
         "home-manager": "home-manager",
         "homebrew-cask": "homebrew-cask",
