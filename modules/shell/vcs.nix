@@ -10,6 +10,7 @@
     ../../lib/shell/vcs/profile.nix
     ../../lib/shell/vcs/git.nix
     ../../lib/shell/vcs/jujutsu.nix
+    ../../lib/shell/vcs/repositories.nix
   ];
   # Hunk
   den.aspects.shell._.hunk = {
