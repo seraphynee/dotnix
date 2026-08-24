@@ -65,7 +65,7 @@
           {
             programs.mango = {
               enable = true;
-              package = inputs.mango.packages.${pkgs.system}.default;
+              package = inputs.mango.packages.${pkgs.stdenv.hostPlatform.system}.default;
             };
 
             environment.systemPackages = with pkgs; [

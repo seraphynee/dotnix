@@ -41,7 +41,8 @@ write_stub() {
   local name=$1
   shift
   {
-    printf '%s\n' '#!/usr/bin/env bash' 'set -euo pipefail'
+    printf '#!%s\n' "$(command -v bash)"
+    printf '%s\n' 'set -euo pipefail'
     printf '%s\n' "$@"
   } >"$stub_dir/$name"
   chmod +x "$stub_dir/$name"
