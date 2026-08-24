@@ -208,6 +208,10 @@ let
         autoload = true;
       }
       {
+        source = "npm:pi-markdown-preview";
+        autoload = true;
+      }
+      {
         source = "npm:pi-mcp-adapter";
         autoload = true;
       }
@@ -229,7 +233,7 @@ let
       }
       {
         source = "npm:@dietrichgebert/ponytail";
-        autoload = true;
+        autoload = false;
       }
       {
         source = "npm:@narumitw/pi-btw";
@@ -238,6 +242,10 @@ let
       {
         source = "npm:@narumitw/pi-goal";
         autoload = false;
+      }
+      {
+        source = "npm:@pi9/ask";
+        autoload = true;
       }
       {
         source = "npm:@juicesharp/rpiv-todo";

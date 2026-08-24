@@ -1,4 +1,4 @@
-{ ... }:
+_:
 let
   luksName = "crypted";
   swapSizeMiB = 8192;
