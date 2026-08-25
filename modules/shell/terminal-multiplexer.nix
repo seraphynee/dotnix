@@ -99,12 +99,8 @@
         else
           "";
 
-      tmuxConfig = builtins.replaceStrings [ "@clipboard_bindings@" ] [ clipboardBindings ] (
-        builtins.readFile ../../dots/config/tmux/tmux.conf
-      );
-
       seshConnectPickerScript = builtins.replaceStrings [ "#!/usr/bin/env bash\n\n" ] [ "" ] (
-        builtins.readFile ../../dots/config/tmux/sesh-connect-picker.sh
+        builtins.readFile ../../dots/config/tmux/scripts/sesh-connect-picker.sh
       );
 
       seshConnectPicker = pkgs.writeShellApplication {
@@ -118,6 +114,21 @@
       };
     in
     {
+      xdg.configFile."tmux/tmux.conf".source = ../../dots/config/tmux/tmux.conf;
+      xdg.configFile."tmux/settings.conf".source = ../../dots/config/tmux/settings.conf;
+      xdg.configFile."tmux/keybind.conf".source = ../../dots/config/tmux/keybind.conf;
+      xdg.configFile."tmux/clipboard.conf".text = clipboardBindings;
+      xdg.configFile."tmux/panes.conf".source = ../../dots/config/tmux/panes.conf;
+      xdg.configFile."tmux/plugins.conf".source = ../../dots/config/tmux/plugins.conf;
+      xdg.configFile."tmux/status-bar/style-1.conf".source =
+        ../../dots/config/tmux/status-bar/style-1.conf;
+      xdg.configFile."tmux/status-bar/style-2.conf".source =
+        ../../dots/config/tmux/status-bar/style-2.conf;
+      xdg.configFile."tmux/status-bar/style-3.conf".source =
+        ../../dots/config/tmux/status-bar/style-3.conf;
+      xdg.configFile."tmux/status-bar/style-4.conf".source =
+        ../../dots/config/tmux/status-bar/style-4.conf;
+
       home.packages = [
         pkgs.tmux
         seshConnectPicker
@@ -132,7 +143,6 @@
           abbr --add tksv "tmux kill-server"
         '';
       };
-      xdg.configFile."tmux/tmux.conf".text = tmuxConfig;
     };
   # Zellij
   den.aspects.shell._.zellij = {
