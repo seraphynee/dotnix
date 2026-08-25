@@ -39,19 +39,10 @@ let
   systemPackagesOrEmpty =
     pkgs: extraPackages: if pkgs == null then [ ] else (commonSopsPackages pkgs) ++ extraPackages;
 
-  mkSshInclude = config: {
-    programs.ssh.extraConfig = ''
-      # This file will be generated with sops and if sops fails to generate
-      # it this directive will be skipped.
-      Include ${config.sops.secrets."ssh/config".path}
-    '';
-  };
-
   mkHomeManagerSops =
     {
       defaultSopsFile ? null,
       secrets ? { },
-      withSshInclude ? false,
       extraConfig ? { },
     }:
     { config, ... }:
@@ -81,7 +72,7 @@ let
       // optionalAttrs (defaultSopsFile != null) {
         inherit defaultSopsFile;
       };
-    } (recursiveUpdate (optionalAttrs withSshInclude (mkSshInclude config)) extraConfig);
+    } extraConfig;
 
   mkNixosSops =
     {
@@ -199,9 +190,7 @@ in
         includes = [ <secrets/sops> ];
 
         homeManager = mkHomeManagerSops {
-          withSshInclude = true;
           secrets = {
-            "ssh/config" = { };
             "keys/ssh/github/signing/ghspy-pub" = {
               sopsFile = hostSopsFile.esquire;
             };
@@ -240,9 +229,7 @@ in
         includes = [ <secrets/sops> ];
 
         homeManager = mkHomeManagerSops {
-          withSshInclude = true;
           secrets = {
-            "ssh/config" = { };
             "keys/ssh/github/signing/ghspy-pub" = {
               sopsFile = hostSopsFile.acerus;
             };

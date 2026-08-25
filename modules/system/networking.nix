@@ -13,12 +13,7 @@
 
   den.aspects.system._.ssh = {
     nixos = { };
-    homeManager = {
-      programs.ssh = {
-        enableDefaultConfig = false;
-        settings."*" = { };
-      };
-    };
+    homeManager = import ../../lib/shell/ssh-bookmarks.nix;
   };
 
   den.aspects.system._.sshd = {
