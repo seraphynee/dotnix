@@ -521,7 +521,6 @@ abbr "spot-off"="sudo launchctl unload -w /System/Library/LaunchDaemons/com.appl
 abbr "spot-on"="sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist"
 abbr "untar"="tar -zxvf"
 abbr "urldecode"="python -c \"import sys, urllib as ul; print ul.unquote_plus(sys.argv[1])\""
-abbr "which-command"="whence"
 
 # --- pet / pueue helpers ---
 abbr "pexec"="pet exec -t"

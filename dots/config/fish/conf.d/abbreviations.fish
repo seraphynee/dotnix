@@ -522,9 +522,6 @@ alias gh 'op plugin run -- gh'
 alias glab 'op plugin run -- glab'
 alias vercel 'op plugin run -- vercel'
 
-# abbr "urldecode"="python -c \"import sys, urllib as ul; print ul.unquote_plus(sys.argv[1])\""
-abbr --add which-command whence
-
 # chezmoi
 abbr --add ch chezmoi
 abbr --add chp --set-cursor 'chezmoi apply -P $XDG_CONFIG_HOME/%'
