@@ -45,7 +45,6 @@
       programs.starship = {
         enable = true;
         enableFishIntegration = true;
-        extraPackages = [ pkgs.jj-starship ];
         configPath = starshipConfigPath;
         settings = {
           add_newline = true;
