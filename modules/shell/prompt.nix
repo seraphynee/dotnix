@@ -37,6 +37,9 @@
         );
     in
     {
+      # extraPackages only adds jj-starship to Starship's wrapper PATH.
+      home.packages = [ pkgs.jj-starship ];
+
       home.sessionVariables.STARSHIP_CONFIG = starshipConfigPath;
 
       programs.starship = {
