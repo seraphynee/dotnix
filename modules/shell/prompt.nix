@@ -18,15 +18,18 @@
   # Starship
   den.aspects.shell._.starship.homeManager =
     {
+      config,
       lib,
+      pkgs,
       ...
     }:
     {
       programs.starship = {
         enable = true;
         enableFishIntegration = true;
+        extraPackages = [ pkgs.jj-starship ];
+        configPath = "${config.xdg.configHome}/starship/starship.toml";
         settings = {
-          "$schema" = "https://starship.rs/config-schema.json";
           add_newline = true;
 
           format = lib.concatStrings [
@@ -66,6 +69,13 @@
             symbol = "";
           };
 
+          git_branch = {
+            disabled = true;
+            symbol = " ";
+          };
+
+          git_status.disabled = true;
+
           git_state = {
             format = "\\([$state( $progress_current/$progress_total)]($style)\\) ";
             style = "bright-black";
@@ -78,11 +88,10 @@
             style = "yellow";
           };
 
-          custom.stunnel = {
-            command = "ps -o etime= -p $(ps aux | grep stunnel | grep -v grep | awk '{print $2}')";
-            format = "[TUNNEL OPEN for $output]($style)";
-            style = "red";
-            when = "ps aux | grep stunnel | grep -v grep";
+          custom.jj = {
+            format = "$output ";
+            shell = [ "jj-starship" ];
+            when = "jj-starship detect";
           };
 
           package = {
@@ -102,7 +111,6 @@
           elm.symbol = " ";
           fennel.symbol = " ";
           fossil_branch.symbol = " ";
-          git_branch.symbol = " ";
           golang.symbol = " ";
           guix_shell.symbol = " ";
           haskell.symbol = " ";
@@ -113,7 +121,7 @@
             disabled = false;
             format = "[$ssh_symbol](bold blue) on [$hostname](bold red) ";
             ssh_only = true;
-            ssh_symbol = "🌏 ";
+            ssh_symbol = "󰣀 ";
           };
 
           java.symbol = " ";
