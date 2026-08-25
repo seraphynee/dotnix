@@ -503,13 +503,6 @@ abbr --add gwtrm "git worktree remove"
 abbr -a hd --set-cursor 'hunk diff "@%"'
 abbr -a hs --set-cursor "hunk show '@%'"
 
-# tmux
-abbr --add tx tmux
-abbr --add ts --set-cursor 'tmux new -s "%"'
-abbr --add tl "tmux list-sessions"
-abbr --add tkss --set-cursor 'tmux kill-session -t "%"'
-abbr --add tksv "tmux kill-server"
-
 # tmuxifier
 abbr --add txi tmuxifier
 abbr --add txis --set-cursor 'tmuxifier s "%"'
