@@ -24,6 +24,7 @@ In short, this repo is needed so infrastructure changes are intentional, auditab
 - **Daily workflow automation**: quality and maintenance commands are centralized (`fmt`, `check`, updates, hooks).
 - **Security and CI checks**: GitHub workflows cover linting, flake checks, lockfile updates, and secret scanning.
 - **Remote install support**: documented bootstrap SSH flow is available in `docs/nixos-installer-bootstrap-ssh.md`.
+- **SSH bookmarks**: declarative host metadata and 1Password agent scoping are documented in `docs/ssh-bookmarks.md`.
 
 ## Repository Layout
 
@@ -32,6 +33,7 @@ In short, this repo is needed so infrastructure changes are intentional, auditab
 ├── nix/          # Flake composition, inputs, tooling, formatting, and checks
 ├── modules/      # Atomic Den aspects grouped by semantic responsibility
 ├── lib/          # Focused implementations shared behind module facades
+├── data/         # Non-secret declarative host and repository metadata
 ├── dots/         # Native application and shell configuration
 ├── scripts/      # Reusable operational and packaged scripts
 ├── secrets/      # Encrypted sops-nix payloads
