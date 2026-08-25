@@ -65,6 +65,7 @@
 
           character = {
             error_symbol = "[➜](bold red)";
+            vicmd_symbol = "[V](bold green)";
             success_symbol = "[➜](bold green)";
           };
 
