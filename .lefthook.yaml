@@ -1,7 +1,7 @@
 pre-commit:
   commands:
-    fmt-check:
-      run: just fmt-check
+    format code:
+      run: just fmt-fix
       stage_fixed: true
 pre-push:
   commands:
