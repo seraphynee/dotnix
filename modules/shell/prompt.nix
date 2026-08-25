@@ -23,26 +23,41 @@
       pkgs,
       ...
     }:
+    let
+      starshipConfigPath = "${config.xdg.configHome}/starship/starship.toml";
+      starshipConfig =
+        let
+          generatedConfig =
+            (pkgs.formats.toml { }).generate "starship-config"
+              config.programs.starship.settings;
+        in
+        pkgs.writeText "starship-config" (
+          builtins.replaceStrings [ "format = '''" "$character'''" ] [ "format = \"\"\"" "$character\"\"\"" ]
+            (builtins.readFile generatedConfig)
+        );
+    in
     {
+      home.sessionVariables.STARSHIP_CONFIG = starshipConfigPath;
+
       programs.starship = {
         enable = true;
         enableFishIntegration = true;
         extraPackages = [ pkgs.jj-starship ];
-        configPath = "${config.xdg.configHome}/starship/starship.toml";
+        configPath = starshipConfigPath;
         settings = {
           add_newline = true;
 
-          format = lib.concatStrings [
-            "$hostname"
-            "$directory"
-            "$custom"
-            "$git_metrics"
-            "$git_state"
-            "$nodejs"
-            "$bun"
-            "$nix_shell"
-            "$fill"
-            "$line_break"
+          format = lib.concatStringsSep "\n" [
+            "$hostname\\"
+            "$directory\\"
+            "$custom\\"
+            "$git_metrics\\"
+            "$git_state\\"
+            "$nodejs\\"
+            "$bun\\"
+            "$nix_shell\\"
+            "$fill\\"
+            "$line_break\\"
             "$character"
           ];
 
@@ -193,6 +208,11 @@
           swift.symbol = " ";
           zig.symbol = " ";
         };
+      };
+
+      # Starship needs a basic multiline TOML string for backslash continuations.
+      home.file."${starshipConfigPath}" = lib.mkForce {
+        source = starshipConfig;
       };
     };
 }
