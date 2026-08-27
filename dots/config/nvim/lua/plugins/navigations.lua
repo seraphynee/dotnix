@@ -3,6 +3,7 @@ return {
   -- https://github.com/dmtrKovalenko/fff
   {
     "dmtrKovalenko/fff",
+    enabled = false,
     build = "nix run .#release",
     opts = {
       grep = {
