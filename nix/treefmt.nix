@@ -47,7 +47,7 @@ in
             formatter = {
               stylua = {
                 options = [
-                  "--search-parent-directories"
+                  "--config-path=dots/config/stylua/stylua.toml.tmpl"
                   "--respect-ignores"
                 ];
 
