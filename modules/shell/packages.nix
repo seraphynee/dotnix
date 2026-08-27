@@ -259,6 +259,15 @@
   den.aspects.shell._.my-scripts.homeManager =
     { pkgs, ... }:
     let
+      jjTaskClone = pkgs.writeShellApplication {
+        name = "jj-task-clone";
+        runtimeInputs = with pkgs; [
+          jujutsu
+          gum
+        ];
+        text = builtins.readFile ../../scripts/jj-task-clone.sh;
+      };
+
       testspeed = pkgs.writeShellApplication {
         name = "testspeed";
         runtimeInputs = [
@@ -269,6 +278,9 @@
       };
     in
     {
-      home.packages = [ testspeed ];
+      home.packages = [
+        jjTaskClone
+        testspeed
+      ];
     };
 }
