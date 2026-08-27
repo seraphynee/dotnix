@@ -1,5 +1,4 @@
 {
-  __findFile,
   inputs,
   lib,
   ...
@@ -8,52 +7,90 @@
   # Herdr
   den.aspects.shell._.herdr = {
     homeManager =
-      { pkgs, ... }:
+      {
+        config,
+        lib,
+        pkgs,
+        ...
+      }:
       let
         herdr = inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.herdr;
+        herdrPluginLib = import ../../lib/shell/herdr-plugins.nix {
+          inherit inputs lib pkgs;
+        };
+        inherit (herdrPluginLib) herdrPlugins;
+
+        # Keep this JSON in the store so the activation script has a direct
+        # reference to every pinned plugin root.  mapAttrsToList is stable
+        # (it follows the sorted attribute names), making the desired state
+        # deterministic across evaluations.
+        herdrPluginDesiredState = pkgs.writeText "herdr-plugins-desired.json" (
+          builtins.toJSON {
+            version = 1;
+            plugins = lib.mapAttrsToList (_: plugin: {
+              inherit (plugin) id;
+              root = toString plugin.root;
+              inherit (plugin) enabled;
+            }) herdrPlugins;
+          }
+        );
+
         herdrFishCompletion = pkgs.runCommand "herdr-fish-completion" { } ''
           ${herdr}/bin/herdr completion fish > $out
         '';
-        herdrPluginBootstrap =
+
+        herdrPluginReconcile =
           assert lib.versionAtLeast herdr.version "0.8.0";
-          assert lib.versionAtLeast pkgs.nodejs.version "22.12.0";
           pkgs.writeShellApplication {
-            name = "herdr-plugin-bootstrap";
+            name = "herdr-plugin-reconcile";
             runtimeInputs = [
               herdr
-              pkgs.git
+              pkgs.bash
+              pkgs.coreutils
               pkgs.jq
-              pkgs.nodejs
             ];
-            text = builtins.readFile ./herdr-plugin-bootstrap.sh;
+            text = builtins.readFile ./herdr-plugin-reconcile.sh;
           };
+
+        automaticRename =
+          assert lib.any (plugin: plugin.id == "herdr-automatic-rename") (lib.attrValues herdrPlugins);
+          lib.findFirst (plugin: plugin.id == "herdr-automatic-rename") null (lib.attrValues herdrPlugins);
+        automaticRenameFishHook = automaticRename.hooks.fish or null;
+        automaticRenameZshHook = automaticRename.hooks.zsh or null;
+        automaticRenameFishHookPath =
+          if automaticRenameFishHook == null then
+            ""
+          else
+            "${toString automaticRename.root}/${automaticRenameFishHook}";
+        automaticRenameZshHookPath =
+          if automaticRenameZshHook == null then
+            ""
+          else
+            "${toString automaticRename.root}/${automaticRenameZshHook}";
       in
       {
+        # The Hunk executable is a Node entrypoint and invokes `node` by name
+        # from its manifest.  Keep Node available in interactive HM profiles;
+        # no npm or Git tooling is needed at runtime.
+        home.packages = [ pkgs.nodejs ];
+
+        home.activation.herdrPlugins = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+          state_home="''${XDG_STATE_HOME:-${config.xdg.stateHome}}"
+          ${herdrPluginReconcile}/bin/herdr-plugin-reconcile \
+            --desired-state ${herdrPluginDesiredState} \
+            --state-file "$state_home/herdr/nix-managed-plugins.json"
+        '';
+
         xdg.configFile."herdr/config.toml".source = ../../dots/config/herdr/config.toml;
         xdg.configFile."fish/completions/herdr.fish".source = herdrFishCompletion;
         xdg.configFile."fish/conf.d/herdr.fish".text = ''
-          if type -q herdr
-              ${herdrPluginBootstrap}/bin/herdr-plugin-bootstrap \
-                --github herdr-automatic-rename \
-                  qu8n/herdr-automatic-rename \
-                --github jhochenbaum.hunkdiff \
-                  jhochenbaum/herdr-hunk-diff
-              for hook in $HOME/.config/herdr/plugins/github/herdr-automatic-rename-*/shell/hook.fish
-                  test -r "$hook"; and source "$hook"; and break
-              end
+          if type -q herdr; and test -r ${lib.escapeShellArg automaticRenameFishHookPath}
+              source ${lib.escapeShellArg automaticRenameFishHookPath}
           end
         '';
         xdg.configFile."zsh/conf.d/third-party/herdr-automatic-rename.sh".text = ''
-          if (( $+commands[herdr] )); then
-            ${herdrPluginBootstrap}/bin/herdr-plugin-bootstrap \
-              --github herdr-automatic-rename \
-                qu8n/herdr-automatic-rename \
-              --github jhochenbaum.hunkdiff \
-                jhochenbaum/herdr-hunk-diff
-            for hook in $HOME/.config/herdr/plugins/github/herdr-automatic-rename-*/shell/hook.zsh(N); do
-              source "$hook"
-              break
-            done
+          if (( $+commands[herdr] )) && [[ -r ${lib.escapeShellArg automaticRenameZshHookPath} ]]; then
+            source ${lib.escapeShellArg automaticRenameZshHookPath}
           fi
         '';
       };
