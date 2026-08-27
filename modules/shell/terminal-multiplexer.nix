@@ -4,7 +4,6 @@
   ...
 }:
 {
-  # Herdr
   den.aspects.shell._.herdr = {
     homeManager =
       {
@@ -104,7 +103,17 @@
         environment.systemPackages = [ herdr ];
       };
   };
-  # tmux
+
+  den.aspects.shell._.workmux.homeManager =
+    {
+      pkgs,
+      ...
+    }:
+    {
+      home.packages = [ inputs.workmux.packages.${pkgs.system}.default ];
+      xdg.configFile."workmux/config.yaml".source = ../../dots/config/workmux/config.yaml;
+    };
+
   den.aspects.shell._.tmux.homeManager =
     { pkgs, ... }:
     let
@@ -182,7 +191,7 @@
         '';
       };
     };
-  # Zellij
+
   den.aspects.shell._.zellij = {
     homeManager = {
       xdg.configFile."zellij" = {

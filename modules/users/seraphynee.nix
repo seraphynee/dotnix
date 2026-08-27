@@ -44,6 +44,7 @@
       <shell/television>
       <shell/tmux>
       <shell/utils>
+      <shell/workmux>
       <shell/worktrunk>
       <shell/yazi>
       <shell/zellij>

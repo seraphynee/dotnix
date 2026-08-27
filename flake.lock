@@ -1287,6 +1287,7 @@
         "systems": "systems_5",
         "systems-linux": "systems-linux",
         "treefmt-nix": "treefmt-nix_5",
+        "workmux": "workmux",
         "worktrunk": "worktrunk",
         "zen-browser": "zen-browser"
       }
@@ -1620,6 +1621,26 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "workmux": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1787774558,
+        "narHash": "sha256-qubWyOxzzODezZjNtQT71NmrFP7xoEGhMjbw/2QZnQk=",
+        "owner": "raine",
+        "repo": "workmux",
+        "rev": "0025eec2da459fe238dbf96d462ff2ecda610ed7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "raine",
+        "repo": "workmux",
         "type": "github"
       }
     },

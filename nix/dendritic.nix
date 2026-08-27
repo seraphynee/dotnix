@@ -184,5 +184,10 @@
     };
 
     llm-agents.url = "github:numtide/llm-agents.nix";
+
+    workmux = {
+      url = "github:raine/workmux";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 }

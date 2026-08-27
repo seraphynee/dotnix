@@ -1,0 +1,16 @@
+mode: session
+post_create:
+  - direnv allow
+windows:
+  - name: ai
+    panes:
+      - command: <agent>
+        focus: true
+      - command: hunk diff
+        split: horizontal
+  - name: editor
+    panes:
+      - command: nvim
+  - name: reviewer
+    panes:
+      - command: tuicr
