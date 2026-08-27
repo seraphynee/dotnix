@@ -1,0 +1,17 @@
+;; Input combos / chording.
+#|
+  Syntax:
+  (participating-keysN) actionN timeoutN release-behaviourN (disabled-layersN)
+
+  Reference:
+  https://jtroo.github.io/config.html#input-chords-v2
+
+  timeoutN:
+  The maximum time (in milliseconds) between the first key press and the
+  subsequent ones for them to be recognized as a chord. If the keys are not
+  pressed within this window, Kanata processes them as regular key presses.
+|#
+
+(defchordsv2
+  @conditional_input_chords@
+)

@@ -46,17 +46,15 @@
         conditionalInputChords =
           if pkgs.stdenv.hostPlatform.isDarwin then
             ''
-              (m ,) C-a $input-chord-time all-released ()
-              ;; (i o) A-left 20 all-released ()
-              ;; (o p) A-right 20 all-released ()
+              ;; (m ,) C-a $input-chord-time all-released ()
+              (i o) A-left 20 all-released ()
+              (o p) A-right 20 all-released ()
             ''
           else if pkgs.stdenv.hostPlatform.isLinux then
             ''
-              (m ,) C-a $input-chord-time all-released ()
+              ;; (m ,) C-a $input-chord-time all-released ()
               (i o) C-left 20 all-released ()
               (o p) C-right 20 all-released ()
-              (lalt lsft [) C-S-tab 250 first-release ()
-              (lalt lsft ]) C-tab 250 first-release ()
             ''
           else
             "";
@@ -70,51 +68,40 @@
             "";
 
         conditionalRaycastLayer =
-          if pkgs.stdenv.hostPlatform.isDarwin then
-            ''
-              ;; == RAYCAST ==
-              (defalias
-                rrain (cmd open "raycast://extensions/lardissone/raindrop-io/search")
-                remoj (cmd open "raycast://extensions/raycast/emoji-symbols/search-emoji-symbols")
-                rspot (cmd open "raycast://extensions/mattisssa/spotify-player/search")
-                ryout (cmd open "raycast://extensions/tonka3000/youtube/search-videos?arguments=%7B%22query%22%3A%22%22%7D")
-              )
+          if pkgs.stdenv.hostPlatform.isDarwin then ''(include "parts/raycast.kbd")'' else "";
 
-              (deflayer raycast
-                     🔅    🔆    @mc   @sls  @dtn  @dnd  ◀◀    ▶⏸    ▶▶    🔇    🔉    🔊
-                grv  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-                tab  XX   XX   @remoj   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-                caps XX   XX   XX   XX   XX   XX   @rspot   @rrain   @ryout   XX   XX   XX
-                lsft XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-                lctl lmet lalt           spc            ralt rmet rctl
-              )
-            ''
-          else
-            "";
+        render =
+          file: replacements:
+          builtins.replaceStrings (builtins.attrNames replacements) (builtins.attrValues replacements) (
+            builtins.readFile file
+          );
 
-        kanataConfig =
-          builtins.replaceStrings
-            [
-              "@conditional_lmet_tab@"
-              "@conditional_home_row_mods@"
-              "@conditional_m_v_mods@"
-              "@conditional_input_chords@"
-              "@conditional_ly_rayc@"
-              "@conditional_raycast_layer@"
-            ]
-            [
-              conditionalLmetTab
-              conditionalHomeRowMods
-              conditionalMVMods
-              conditionalInputChords
-              conditionalLyRayc
-              conditionalRaycastLayer
-            ]
-            (builtins.readFile ../../dots/config/kanata/row.kbd);
+        kanataConfig = render ../../dots/config/kanata/row.kbd {
+          "@conditional_raycast_include@" = conditionalRaycastLayer;
+        };
+
+        kanataCore = render ../../dots/config/kanata/parts/core.kbd {
+          "@conditional_lmet_tab@" = conditionalLmetTab;
+          "@conditional_home_row_mods@" = conditionalHomeRowMods;
+          "@conditional_m_v_mods@" = conditionalMVMods;
+          "@conditional_ly_rayc@" = conditionalLyRayc;
+        };
+
+        kanataChords = render ../../dots/config/kanata/parts/chords.kbd {
+          "@conditional_input_chords@" = conditionalInputChords;
+        };
       in
       {
         environment.systemPackages = with pkgs; [ kanata-with-cmd ];
-        environment.etc."kanata/row.kbd".text = kanataConfig;
+        environment.etc = {
+          "kanata/row.kbd".text = kanataConfig;
+          "kanata/parts/chords.kbd".text = kanataChords;
+          "kanata/parts/core.kbd".text = kanataCore;
+          "kanata/parts/herdr.kbd".source = ../../dots/config/kanata/parts/herdr.kbd;
+          "kanata/parts/raycast.kbd".source = ../../dots/config/kanata/parts/raycast.kbd;
+          "kanata/parts/tmux.kbd".source = ../../dots/config/kanata/parts/tmux.kbd;
+          "kanata/parts/zellij.kbd".source = ../../dots/config/kanata/parts/zellij.kbd;
+        };
 
         systemd.services.kanata = {
           description = "Kanata Keyboard Remapper";
