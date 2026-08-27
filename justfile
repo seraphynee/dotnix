@@ -12,7 +12,7 @@ fmt-check:
     nix fmt -- --ci
 
 check:
-    nix flake check --print-build-logs
+    nix flake check --accept-flake-config --print-build-logs
 
 secrets-scan:
     nix run nixpkgs#gitleaks -- detect --source . --verbose

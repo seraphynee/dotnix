@@ -42,6 +42,7 @@
           }
           ''
             export HERDR_PLUGIN_RECONCILE=${herdrPluginReconcile}/bin/herdr-plugin-reconcile
+            export HERDR_TEST_BASH=${pkgs.bash}/bin/bash
             bash ${../../tests/herdr-plugin-reconcile.sh}
             touch "$out"
           '';

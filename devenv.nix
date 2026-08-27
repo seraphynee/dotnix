@@ -53,7 +53,7 @@
     };
     flake-check = {
       exec = ''
-        nix flake check --print-build-logs
+        nix flake check --accept-flake-config --print-build-logs
       '';
       description = "Evaluate and test the flake";
     };

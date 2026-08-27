@@ -15,8 +15,13 @@ printf 'id = "herdr-automatic-rename"\n' >"$tmpdir/old/herdr-plugin.toml"
 export HERDR_TEST_REGISTRY="$tmpdir/registry.json"
 export HERDR_TEST_INVOCATIONS="$tmpdir/invocations"
 
-cat >"$tmpdir/bin/herdr" <<'HERDR'
-#!/usr/bin/env bash
+mock_bash=${HERDR_TEST_BASH:-$BASH}
+[[ $mock_bash == /* && -x $mock_bash ]] || {
+  printf 'test requires an absolute executable Bash path: %s\n' "$mock_bash" >&2
+  exit 1
+}
+printf '#!%s\n' "$mock_bash" >"$tmpdir/bin/herdr"
+cat >>"$tmpdir/bin/herdr" <<'HERDR'
 set -Eeuo pipefail
 
 registry_tmp() { mktemp "$HERDR_TEST_REGISTRY.tmp.XXXXXX"; }
