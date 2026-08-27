@@ -42,7 +42,7 @@ clean:
 
 # Host operations
 rb host:
-    if [ "$(uname -s)" = "Darwin" ]; then nh darwin switch . -H {{ host }}; else nh os switch . -H {{ host }}; fi
+    if [ "$(uname -s)" = "Darwin" ]; then nh darwin switch . -H {{ host }} -- --accept-flake-config; else nh os switch . -H {{ host }} -- --accept-flake-config; fi
 
 rbb host:
     sudo nixos-rebuild boot --flake .#{{ host }}
