@@ -118,7 +118,6 @@
       xdg.configFile."tmux/settings.conf".source = ../../dots/config/tmux/settings.conf;
       xdg.configFile."tmux/keybind.conf".source = ../../dots/config/tmux/keybind.conf;
       xdg.configFile."tmux/clipboard.conf".text = clipboardBindings;
-      xdg.configFile."tmux/panes.conf".source = ../../dots/config/tmux/panes.conf;
       xdg.configFile."tmux/plugins.conf".source = ../../dots/config/tmux/plugins.conf;
       xdg.configFile."tmux/status-bar/style-1.conf".source =
         ../../dots/config/tmux/status-bar/style-1.conf;
@@ -128,6 +127,8 @@
         ../../dots/config/tmux/status-bar/style-3.conf;
       xdg.configFile."tmux/status-bar/style-4.conf".source =
         ../../dots/config/tmux/status-bar/style-4.conf;
+      xdg.configFile."tmux/status-bar/style-5.conf".source =
+        ../../dots/config/tmux/status-bar/style-5.conf;
 
       home.packages = [
         pkgs.tmux
