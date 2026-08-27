@@ -66,9 +66,10 @@
           character = {
             error_symbol = "[➜](bold red)";
             success_symbol = "[➜](bold green)";
-            vicmd_symbol = "[V](bold green)";
+            vicmd_symbol = "[](bold green)";
             vimcmd_replace_one_symbol = "[R](bold yellow)";
             vimcmd_replace_symbol = "[R](bold yellow)";
+            vimcmd_visual_symbol = "[V](bold yellow)";
           };
 
           time = {
