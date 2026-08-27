@@ -1,3 +1,4 @@
+---
 nerdfont: true # Enable nerdfont icons (prompted on first run)
 merge_strategy: rebase # Make workmux merge do rebase by default
 merge_keep: true # Keep worktree, window, and branch after merge by default
@@ -11,15 +12,12 @@ layouts:
     panes:
       - command: <agent>
         focus: true
-      - command: <agent:codex>
+      - command: <agent:opencode>
         split: horizontal
   review:
     panes:
       - command: <agent>
 sidebar:
-  agent_icons:
-    codex:
-      icon: cx
   position: left
   # Use workmux's responsive default: 10% of the terminal width,
   # clamped between 25 and 50 columns.

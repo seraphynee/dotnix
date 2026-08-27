@@ -81,6 +81,12 @@
         '';
 
         xdg.configFile."herdr/config.toml".source = ../../dots/config/herdr/config.toml;
+        xdg.configFile."herdr/plugins/config/worktrunk/config.toml".text = ''
+          open_mode        = "workspace"
+          picker_placement = "popup"
+          popup_height     = 24
+          popup_width      = "70%"
+        '';
         xdg.configFile."fish/completions/herdr.fish".source = herdrFishCompletion;
         xdg.configFile."fish/conf.d/herdr.fish".text = ''
           if type -q herdr; and test -r ${lib.escapeShellArg automaticRenameFishHookPath}
