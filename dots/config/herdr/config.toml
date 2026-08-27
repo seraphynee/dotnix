@@ -7,13 +7,20 @@ onboarding = false
   confirm_close                     = false
   pane_borders                      = true
   pane_gaps                         = false
+  pane_outer_borders                = true
   prompt_new_tab_name               = false
   redraw_on_focus_gained            = true
   show_agent_labels_on_pane_borders = true
-  sidebar_collapsed_mode            = "hidden"
+  sidebar_collapsed_mode            = "compact"
+  tab_bar_position                  = "bottom"
 
 [keys]
   prefix = "ctrl+a"
+
+  # worktree
+  new_worktree    = "prefix+t"
+  open_worktree   = "prefix+T"
+  remove_worktree = "prefix+L"
 
   # workspaces (tmux sessions)
   close_workspace  = "prefix+g"       # tmux: kill-session
@@ -56,47 +63,3 @@ onboarding = false
   zoom           = "prefix+z"
 
   focus_agent = "prefix+alt+1..9"
-
-  # [[keys.command]]
-  #   command     = "nathanflurry.jj-workspace.new-tab"
-  #   description = "new jj workspace (in tab)"
-  #   key         = "prefix+a"
-  #   type        = "plugin_action"
-  #
-  # [[keys.command]]
-  #   command     = "nathanflurry.jj-workspace.new"
-  #   description = "new jj workspace"
-  #   key         = "prefix+shift+a"
-  #   type        = "plugin_action"
-  #
-  # [[keys.command]]
-  #   command     = "nathanflurry.jj-workspace.remove"
-  #   description = "remove jj workspace"
-  #   key         = "prefix+shift+d"
-  #   type        = "plugin_action"
-
-  # BEGIN jhochenbaum.hunkdiff — managed by `setup-keys`; edit via the plugin, not by hand
-  # [[keys.command]]
-  #   command     = "jhochenbaum.hunkdiff.review"
-  #   description = "hunk: review changes"
-  #   key         = "prefix+shift+h"
-  #   type        = "plugin_action"
-
-  [[keys.command]]
-    command     = "jhochenbaum.hunkdiff.send-review"
-    description = "hunk: send review to agent"
-    key         = "prefix+s"
-    type        = "plugin_action"
-
-  [[keys.command]]
-    command     = "jhochenbaum.hunkdiff.review:commit"
-    description = "hunk: review the last commit"
-    key         = "prefix+shift+c"
-    type        = "plugin_action"
-
-  [[keys.command]]
-    command     = "jhochenbaum.hunkdiff.review:staged"
-    description = "hunk: review staged changes"
-    key         = "prefix+shift+a"
-    type        = "plugin_action"
-    # END jhochenbaum.hunkdiff
