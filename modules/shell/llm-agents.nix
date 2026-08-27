@@ -113,7 +113,7 @@ let
           "";
     in
     ''
-      model = "gpt-5.6-sol"
+      model = "gpt-5.6-luna"
       model_reasoning_effort = "high"
 
       [features]
