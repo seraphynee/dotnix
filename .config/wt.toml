@@ -1,2 +1,2 @@
 [pre-start]
-  allow-direnv = "direnv allow && devenv allow"
+  allow-direnv = "direnv allow"
