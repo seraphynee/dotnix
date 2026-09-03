@@ -462,6 +462,25 @@ abbr "bugbc"="brew upgrade --greedy && brew cleanup"
 abbr "bup"="brew upgrade"
 abbr "buz"="brew uninstall --zap"
 
+# --- tmux  ---
+abbr "bktmux"="tmux list-keys | sk"
+abbr "tx"="tmux"
+abbr "ts"='tmux new -A -s "%"'
+abbr "tl"="tmux list-sessions"
+abbr "tkss"='tmux kill-session -t "%"'
+abbr "tksv"="tmux kill-server"
+
+# --- herdr ---
+abbr "h"="herdr"
+abbr "hs"="herdr session attach %"
+abbr "hsl"="herdr session list"
+abbr "hss"="herdr session stop"
+abbr "hsvs"="herdr server stop"
+
+# --- tmuxifier ---
+abbr "txi"="tmuxifier"
+abbr "txis"='tmuxifier s "%"'
+
 # --- Zellij ---
 abbr "zl"="zellij"
 abbr "zla"="zellij attach"
@@ -480,17 +499,6 @@ abbr "mbp"="ssh mbp"
 abbr "tailacer"="ssh tailacer"
 abbr "tailmbp"="ssh tailmbp"
 abbr "tailpc"="ssh tailpc-nixos"
-
-# --- Tmux / Tmuxifier / Tmuxinator ---
-abbr "bktmux"="tmux list-keys | sk"
-abbr "tx"="tmux"
-abbr "ts"='tmux new -s "%"'
-abbr "tl"="tmux list-sessions"
-abbr "tkss"='tmux kill-session -t "%"'
-abbr "tksv"="tmux kill-server"
-
-abbr "txi"="tmuxifier"
-abbr "txis"='tmuxifier s "%"'
 
 # --- ls / file listing (eza) ---
 abbr "l"="eza -l --classify=auto --icons=auto --git"

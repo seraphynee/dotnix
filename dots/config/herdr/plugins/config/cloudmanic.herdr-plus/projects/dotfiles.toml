@@ -1,0 +1,39 @@
+description = "Dotfiles Chezmoi"          # shown in the browser
+name        = "dotfiles"                  # required: the workspace label
+working_dir = "~/Code/Personal/dotfiles/"
+
+# Tabs open in file order. The FIRST tab reuses the workspace's root tab; the
+# rest are created behind it so the first tab stays in front.
+
+[[tabs]]
+  name = "ai" # required: the tab label
+
+  [[tabs.panes]]
+    command = "pi"
+
+  [[tabs.panes]]
+    command = "hunk diff --watch"
+    label   = "hunk"
+    ratio   = 0.45
+    split   = "right"
+
+[[tabs]]
+  name = "editor"
+
+  [[tabs.panes]]
+    command = "nvim"
+    label   = "neovim"
+
+[[tabs]]
+  name = "vcs"
+
+  [[tabs.panes]]
+    command = "jjui"
+    label   = "jjui"
+
+[[tabs]]
+  name = "terminal" # no command — just an empty shell
+
+[[tabs]]
+  name        = "dot_config"
+  working_dir = "~/.config"

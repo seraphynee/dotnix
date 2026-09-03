@@ -1,0 +1,30 @@
+repo = "dotnix"
+
+[[tabs]]
+  name = "ai" # required: the tab label
+
+  [[tabs.panes]]
+    command = "codex"
+
+  [[tabs.panes]]
+    command = "hunk diff"
+    ratio   = 0.35
+    split   = "right"
+
+[[tabs]]
+  command = "nvim"
+  name    = "editor"
+
+[[tabs]]
+  name = "vcs"
+
+  [[tabs.panes]]
+    command = "lazygit"
+    label   = "lazygit"
+
+[[tabs]]
+  name = "terminal" # no command — just an empty shell
+
+[[tabs]]
+  name        = "dot_config"
+  working_dir = "~/.config"

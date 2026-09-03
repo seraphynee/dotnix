@@ -97,6 +97,17 @@
           if (( $+commands[herdr] )) && [[ -r ${lib.escapeShellArg automaticRenameZshHookPath} ]]; then
             source ${lib.escapeShellArg automaticRenameZshHookPath}
           fi
+
+          # Stop and delete a Herdr session in one command.
+          function hsd() {
+            if [[ $# -ne 1 ]]; then
+              print -u2 "Usage: hsd <session>"
+              return 2
+            fi
+
+            local session="$1"
+            herdr session stop "$session" && herdr session delete "$session"
+          }
         '';
       };
 
@@ -187,17 +198,6 @@
         seshConnectPicker
       ];
 
-      programs = {
-        fish.interactiveShellInit = lib.mkAfter ''
-          abbr --add tx tmux
-          abbr --add txa 'tmux a'
-          abbr --add txat --set-cursor 'tmux a -t "%"'
-          abbr --add ts --set-cursor 'tmux new -s "%"'
-          abbr --add tl "tmux list-sessions"
-          abbr --add tkss --set-cursor 'tmux kill-session -t "%"'
-          abbr --add tksv "tmux kill-server"
-        '';
-      };
     };
 
   den.aspects.shell._.zellij = {
