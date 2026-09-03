@@ -123,6 +123,78 @@ let
         runHook postInstall
       '';
     };
+
+  herdrPlus = pkgs.buildGoModule {
+    pname = "herdr-plus";
+    version = "0.1.24";
+    src = inputs.herdr-plus;
+    vendorHash = "sha256-im2gPhLarMf1w/8rhxbOe9EhUdvseffukT9tqU4EEXI=";
+    subPackages = [ "." ];
+    # The upstream suite assumes its temporary directories are outside any
+    # repository.  Nix's build sandbox places them below /build, which makes
+    # that environment-specific test fail even though the plugin builds and
+    # runs correctly.
+    doCheck = false;
+
+    ldflags = [
+      "-s"
+      "-w"
+    ];
+
+    postInstall = ''
+      install -Dm644 herdr-plugin.toml "$out/herdr-plugin.toml"
+    '';
+  };
+
+  herdrWorktreeSetup = pkgs.buildNpmPackage {
+    pname = "herdr-worktree-setup";
+    version = "0.2.0";
+    src = inputs.herdr-worktree-setup;
+    npmDepsHash = "sha256-RRO1LUWos3mkaFA3Fb4xwomfn8DrD1Gt67VP7V7xi3w=";
+    dontNpmBuild = true;
+
+    installPhase = ''
+      runHook preInstall
+      mkdir -p "$out"
+      install -Dm644 herdr-plugin.toml "$out/herdr-plugin.toml"
+      install -Dm644 package.json "$out/package.json"
+      install -Dm644 package-lock.json "$out/package-lock.json"
+      cp -R src "$out/src"
+      cp -R node_modules "$out/node_modules"
+      runHook postInstall
+    '';
+  };
+
+  herdrFlash = pkgs.rustPlatform.buildRustPackage {
+    pname = "herdr-flash";
+    version = "0.3.0";
+    src = inputs.herdr-flash;
+    cargoHash = "sha256-w9Wuj3JAxrqTZ9Pje1M7PBE3npDLerbkvD66ffvQE9E=";
+    # Several upstream tests require a real terminal and process environment;
+    # they are not stable inside Nix's non-interactive build sandbox.
+    doCheck = false;
+
+    postInstall = ''
+      install -Dm644 herdr-plugin.toml "$out/herdr-plugin.toml"
+    '';
+  };
+
+  herdrLast = pkgs.buildGoModule {
+    pname = "herdr-last";
+    version = "0.1.0";
+    src = inputs.herdr-last;
+    vendorHash = null;
+    subPackages = [ "." ];
+
+    ldflags = [
+      "-s"
+      "-w"
+    ];
+
+    postInstall = ''
+      install -Dm644 herdr-plugin.toml "$out/herdr-plugin.toml"
+    '';
+  };
 in
 {
   # This attrset intentionally remains an implementation detail.  Registry
@@ -140,6 +212,30 @@ in
       id = "jhochenbaum.hunkdiff";
       src = inputs.herdr-hunk-diff;
       builder = hunkDiff;
+    };
+
+    "cloudmanic.herdr-plus" = mkHerdrPlugin {
+      id = "cloudmanic.herdr-plus";
+      src = inputs.herdr-plus;
+      builder = herdrPlus;
+    };
+
+    "tdi.worktree-setup" = mkHerdrPlugin {
+      id = "tdi.worktree-setup";
+      src = inputs.herdr-worktree-setup;
+      builder = herdrWorktreeSetup;
+    };
+
+    "youguanxinqing.herdr-flash" = mkHerdrPlugin {
+      id = "youguanxinqing.herdr-flash";
+      src = inputs.herdr-flash;
+      builder = herdrFlash;
+    };
+
+    "herdr-last" = mkHerdrPlugin {
+      id = "herdr-last";
+      src = inputs.herdr-last;
+      builder = herdrLast;
     };
   };
 }

@@ -52,8 +52,24 @@
       url = "github:qu8n/herdr-automatic-rename";
       flake = false;
     };
+    herdr-flash = {
+      url = "github:youguanxinqing/herdr-flash";
+      flake = false;
+    };
     herdr-hunk-diff = {
       url = "github:jhochenbaum/herdr-hunk-diff";
+      flake = false;
+    };
+    herdr-last = {
+      url = "github:lmilojevicc/herdr-last";
+      flake = false;
+    };
+    herdr-plus = {
+      url = "github:cloudmanic/herdr-plus";
+      flake = false;
+    };
+    herdr-worktree-setup = {
+      url = "github:tdi/herdr-worktree-setup";
       flake = false;
     };
     hjem = {

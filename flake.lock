@@ -516,6 +516,22 @@
         "type": "github"
       }
     },
+    "herdr-flash": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1788318045,
+        "narHash": "sha256-S0k7H0JGUXxmIoTPBv2W8ZqM3r30Vc9Z0sezAtagW28=",
+        "owner": "youguanxinqing",
+        "repo": "herdr-flash",
+        "rev": "f18645409965ebd5617dac9153925b826272e3e5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "youguanxinqing",
+        "repo": "herdr-flash",
+        "type": "github"
+      }
+    },
     "herdr-hunk-diff": {
       "flake": false,
       "locked": {
@@ -529,6 +545,54 @@
       "original": {
         "owner": "jhochenbaum",
         "repo": "herdr-hunk-diff",
+        "type": "github"
+      }
+    },
+    "herdr-last": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786119700,
+        "narHash": "sha256-DvIP+AC+4ZB3fYeMbeP+Kt3wGOizwv1KhY9+SKf2+eo=",
+        "owner": "lmilojevicc",
+        "repo": "herdr-last",
+        "rev": "444c12f51fa8f712588cd1481dcd5459f658eac9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lmilojevicc",
+        "repo": "herdr-last",
+        "type": "github"
+      }
+    },
+    "herdr-plus": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1788397494,
+        "narHash": "sha256-rcAOC1Xnt4Mt4SoZPBAUq6Dy/klRIspBywOgnK2UK4w=",
+        "owner": "cloudmanic",
+        "repo": "herdr-plus",
+        "rev": "87bbaa2a48b178a935b1d74f719f2e9d3f5047eb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cloudmanic",
+        "repo": "herdr-plus",
+        "type": "github"
+      }
+    },
+    "herdr-worktree-setup": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1784019413,
+        "narHash": "sha256-PEbVs/TbFWtzCanyArOr7maEzZCJrdxedlLxP52nYEw=",
+        "owner": "tdi",
+        "repo": "herdr-worktree-setup",
+        "rev": "4527a11bd5444dbce34c3d4f459b49d704cc12a7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tdi",
+        "repo": "herdr-worktree-setup",
         "type": "github"
       }
     },
@@ -1259,7 +1323,11 @@
         "helium": "helium",
         "herdr": "herdr",
         "herdr-automatic-rename": "herdr-automatic-rename",
+        "herdr-flash": "herdr-flash",
         "herdr-hunk-diff": "herdr-hunk-diff",
+        "herdr-last": "herdr-last",
+        "herdr-plus": "herdr-plus",
+        "herdr-worktree-setup": "herdr-worktree-setup",
         "hjem": "hjem",
         "home-manager": "home-manager",
         "homebrew-cask": "homebrew-cask",

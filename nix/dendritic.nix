@@ -177,6 +177,26 @@
       flake = false;
     };
 
+    herdr-plus = {
+      url = "github:cloudmanic/herdr-plus";
+      flake = false;
+    };
+
+    herdr-worktree-setup = {
+      url = "github:tdi/herdr-worktree-setup";
+      flake = false;
+    };
+
+    herdr-flash = {
+      url = "github:youguanxinqing/herdr-flash";
+      flake = false;
+    };
+
+    herdr-last = {
+      url = "github:lmilojevicc/herdr-last";
+      flake = false;
+    };
+
     hunk = {
       url = "github:modem-dev/hunk";
       inputs.nixpkgs.follows = "nixpkgs";

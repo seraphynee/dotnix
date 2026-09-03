@@ -48,12 +48,17 @@
           '';
     in
     {
-      # Building this output proves the pinned source, TypeScript build,
-      # fixed-output runtime dependency, manifest, and Hunk executable are all
+      # Building these outputs proves every pinned source, build toolchain,
+      # fixed-output dependency closure, manifest, and plugin executable are
       # available through the flake's fixed-output graph.
       checks.herdr-hunk-diff =
         assert hunkDiffPlugin != null;
         hunkDiffPlugin.root;
+
+      checks.herdr-plus = herdrPlugins."cloudmanic.herdr-plus".root;
+      checks.herdr-worktree-setup = herdrPlugins."tdi.worktree-setup".root;
+      checks.herdr-flash = herdrPlugins."youguanxinqing.herdr-flash".root;
+      checks.herdr-last = herdrPlugins."herdr-last".root;
 
       checks.herdr-plugin-reconcile = reconcilerTests;
     };
