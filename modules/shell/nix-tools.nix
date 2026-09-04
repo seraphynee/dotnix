@@ -8,7 +8,6 @@
           deadnix # Detect unused Nix code
           nil # Nix language server
           nixd # Nix language server
-          nixfmt # Nix formatter (RFC style)
           nix-init # Generate a Nix package file from source projects
           nix-inspect # Inspect derivations and Nix metadata
           nixpkgs-review # Build/test packages affected by nixpkgs changes
