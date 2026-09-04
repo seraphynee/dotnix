@@ -212,6 +212,10 @@
     in
     {
       xdg.configFile."fish/fish_plugins".source = ../../dots/config/fish/fish_plugins;
+      xdg.configFile."fish/functions" = {
+        source = ../../dots/config/fish/functions;
+        recursive = true;
+      };
       xdg.configFile."fish/conf.d/colors.fish".source = ../../dots/config/fish/conf.d/colors.fish;
       xdg.configFile."fish/conf.d/atuin.fish".source = ../../dots/config/fish/conf.d/atuin.fish;
       xdg.configFile."fish/conf.d/bat.fish".source = ../../dots/config/fish/conf.d/bat.fish;
@@ -243,6 +247,7 @@
             set -g fish_greeting
             abbr --add cl clear
             fish_vi_key_bindings
+            source ${../../dots/config/fish/conf.d/pisces.fish}
 
             # === sesh binding ===
             # Untuk default mode (emacs mode)
