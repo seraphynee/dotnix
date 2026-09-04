@@ -45,10 +45,10 @@
             ];
           }
           ''
-            local_config=$(env -u SSH_TTY ssh -G -F ${linuxSshConfig} ghcny)
+            local_config=$(env -u SSH_CONNECTION ssh -G -F ${linuxSshConfig} ghcny)
             printf '%s\n' "$local_config" | grep -q '^identityagent '
 
-            forwarded_config=$(SSH_TTY=/tmp/forwarded-tty ssh -G -F ${linuxSshConfig} ghcny)
+            forwarded_config=$(SSH_CONNECTION='192.0.2.1 54321 192.0.2.2 22' ssh -G -F ${linuxSshConfig} ghcny)
             if printf '%s\n' "$forwarded_config" | grep -q '^identityagent '; then
               printf 'forwarded SSH agent unexpectedly overridden\n' >&2
               exit 1
@@ -75,6 +75,8 @@
           !(linuxPkgs.lib.hasInfix "SSH_AUTH_SOCK" (onePasswordHomeModule.programs.bash.bashrcExtra or ""));
         assert !(linux.config.programs.ssh.settings.ghcny.data ? useOpIdentityAgent);
         assert pkgs.lib.hasInfix "Match originalhost ghcny exec" linux.config.programs.ssh.extraConfig;
+        assert pkgs.lib.hasInfix ''exec "test -z \"$SSH_CONNECTION\""''
+          linux.config.programs.ssh.extraConfig;
         assert pkgs.lib.hasInfix "IdentityAgent ~/.1password/agent.sock"
           linux.config.programs.ssh.extraConfig;
         assert pkgs.lib.hasInfix

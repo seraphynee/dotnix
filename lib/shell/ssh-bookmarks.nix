@@ -16,7 +16,7 @@ let
     else
       "~/.1password/agent.sock";
   sshAgentConfig = lib.concatMapStringsSep "\n" (host: ''
-    Match originalhost ${host} exec "test -z $SSH_TTY"
+    Match originalhost ${host} exec "test -z \"$SSH_CONNECTION\""
         IdentityAgent ${sshAgentPath}
     Match all'') sshAgentHosts;
 in
