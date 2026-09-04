@@ -1,3 +1,4 @@
+---
 app_version: 0.4.3
 behavior_configs:
   - base_move_speed: 2.0

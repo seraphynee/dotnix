@@ -1,3 +1,4 @@
+---
 mode: session
 post_create:
   - direnv allow
