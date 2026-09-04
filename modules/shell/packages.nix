@@ -98,11 +98,9 @@
               nodejs # JavaScript runtime
               bun # JavaScript runtime & toolkit
               pnpm # Fast JavaScript package manager
-              biome # JavaScript and Typescript lsp
 
               # Golang
               go # Go programming language
-              gopls # Go lsp
 
               #Rust
               cargo # Rust package manager
@@ -120,8 +118,6 @@
 
               # Lua
               lua
-              stylua # Lua formatter
-              lua-language-server # Lua language server
 
               # C C++
               gcc # GNU Compiler Collection
@@ -130,7 +126,6 @@
 
               # Python
               uv # Python package manager
-              ruff # Python linter & formatter
               basedpyright # Python lsp
               pipx
               python315

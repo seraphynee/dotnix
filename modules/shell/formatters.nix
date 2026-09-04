@@ -3,10 +3,6 @@ _: {
     { pkgs, ... }:
     {
       home.packages = with pkgs; [
-        biome
-        stylua
-        yamlfmt
-        ruff
         rustfmt
       ];
 

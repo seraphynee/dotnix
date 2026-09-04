@@ -70,11 +70,61 @@
       };
 
     homeManager =
-      { config, ... }:
+      { config, pkgs, ... }:
       {
         home.stateVersion = "26.11";
         imports = [ inputs.nix-index-database.homeModules.nix-index ];
         systemd.user.startServices = "sd-switch";
+
+        # Development diagnostics and formatting tools shared by every host.
+        home.packages = with pkgs; [
+          # LSPs, formatters, and linters
+          # dprint # Language-agnostic formatter
+          harper
+          lychee
+          treefmt
+
+          # Text
+          codespell
+          typos # The Nix package for the typos-cli command.
+
+          # JavaScript and TypeScript
+          biome
+          eslint
+          prettier
+
+          # Go
+          gopls
+
+          # Python
+          ruff
+
+          # Lua
+          luajit
+          lua-language-server
+          luarocks
+          stylua
+
+          # Shell
+          shellcheck
+          shfmt
+
+          # Nix
+          nixfmt
+
+          # Markdown
+          markdownlint-cli2
+          markdown-oxide
+          pandoc
+
+          # TOML
+          taplo
+          # tombi # TOML formatter and linter
+
+          # YAML
+          yamlfmt
+          yamllint
+        ];
 
         # Keep pre-26.05 behavior and silence the Home Manager transition warning.
         programs.zsh.dotDir = config.home.homeDirectory;
