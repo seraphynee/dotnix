@@ -16,51 +16,58 @@
       ];
     };
 
-    nixos = {
-      system.stateVersion = "25.11";
+    nixos =
+      { pkgs, ... }:
+      {
+        system.stateVersion = "25.11";
 
-      imports = [
-        inputs.nix-index-database.nixosModules.nix-index
-        inputs.disko.nixosModules.disko
-      ];
+        # The SOPS CLI is required both for day-to-day secret management and by
+        # the repository's bootstrap workflow. Keep it in the base NixOS
+        # profile so every NixOS host, including installer variants, gets it.
+        environment.systemPackages = [ pkgs.sops ];
 
-      nixpkgs.config.allowUnfree = true;
-      programs.nix-index-database.comma.enable = true;
-      programs.nix-ld.enable = true;
+        imports = [
+          inputs.nix-index-database.nixosModules.nix-index
+          inputs.disko.nixosModules.disko
+        ];
 
-      home-manager = {
-        useGlobalPkgs = true;
-        useUserPackages = true;
-        backupFileExtension = "backup";
-      };
+        nixpkgs.config.allowUnfree = true;
+        programs.nix-index-database.comma.enable = true;
+        programs.nix-ld.enable = true;
 
-      nix = {
-        settings = {
-          warn-dirty = false;
-          extra-system-features = [ "recursive-nix" ];
-          experimental-features = [
-            "nix-command"
-            "flakes"
-            "pipe-operators"
-            "recursive-nix"
-          ];
-          trusted-users = [
-            "root"
-            "@wheel"
-          ];
-          substituters = [
-            "https://cache.nixos.org/"
-            "https://nix-community.cachix.org"
-            "https://cache.numtide.com"
-          ];
-          trusted-public-keys = [
-            "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-            "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-            "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
-          ];
+        home-manager = {
+          useGlobalPkgs = true;
+          useUserPackages = true;
+          backupFileExtension = "backup";
+        };
+
+        nix = {
+          settings = {
+            warn-dirty = false;
+            extra-system-features = [ "recursive-nix" ];
+            experimental-features = [
+              "nix-command"
+              "flakes"
+              "pipe-operators"
+              "recursive-nix"
+            ];
+            trusted-users = [
+              "root"
+              "@wheel"
+            ];
+            substituters = [
+              "https://cache.nixos.org/"
+              "https://nix-community.cachix.org"
+              "https://cache.numtide.com"
+            ];
+            trusted-public-keys = [
+              "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+              "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+              "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+            ];
+          };
         };
       };
-    };
 
     homeManager =
       { config, ... }:
