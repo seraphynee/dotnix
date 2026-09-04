@@ -7,7 +7,7 @@
     Protocol = 2;
     ServerAliveCountMax = 120;
     ServerAliveInterval = 30;
-    StrictHostKeyChecking = "no";
+    StrictHostKeyChecking = "accept-new";
   };
 
   hosts = {

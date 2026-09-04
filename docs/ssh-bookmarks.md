@@ -13,9 +13,16 @@ and other secret material remain managed by SOPS. The old encrypted
 Each bookmark can opt into the 1Password SSH agent with
 `useOpIdentityAgent = true`. The generated config adds an
 `IdentityAgent` block scoped with `Match originalhost`. It also checks that
-`SSH_TTY` is unset, so an SSH session on a remote machine keeps using its
-forwarded agent instead of being overridden by the local 1Password socket.
-Linux and macOS use their platform-specific 1Password socket paths.
+`SSH_TTY` is unset, following 1Password's documented pattern: an interactive
+SSH shell on a remote machine keeps using its forwarded agent instead of the
+remote machine's local 1Password socket. The shell configuration deliberately
+does not set `SSH_AUTH_SOCK`, so it cannot overwrite the socket supplied by
+agent forwarding. Linux and macOS use their platform-specific 1Password socket
+paths.
+
+The default host-key policy is `accept-new`: OpenSSH automatically records keys
+for new hosts but rejects changed host keys. Agent forwarding remains enabled
+only for the explicitly declared `tailacer` bookmark.
 
 Validate the generated configuration and forwarding behavior with:
 
