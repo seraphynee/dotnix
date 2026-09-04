@@ -214,10 +214,9 @@ let
   mkPiConfig = builtins.toJSON {
     theme = "dark";
     defaultThinkingLevel = "high";
-    defaultProvider = "openrouter";
-    defaultModel = "stealth/ox-alpha";
+    defaultProvider = "openai-codex";
+    defaultModel = "openai-codex/gpt-5.6-luna";
     enabledModels = [
-      "openrouter/stealth/ox-alpha"
       "openai-codex/gpt-5.6-luna"
       "openai-codex/gpt-5.6-sol"
       "openai-codex/gpt-5.6-terra"
