@@ -3,6 +3,19 @@
   perSystem =
     { pkgs, ... }:
     let
+      linuxPkgs = import inputs.nixpkgs {
+        system = "x86_64-linux";
+        config.allowUnfree = true;
+      };
+      darwinPkgs = import inputs.nixpkgs {
+        system = "aarch64-darwin";
+        config.allowUnfree = true;
+      };
+      onePasswordHomeModule =
+        (import ../../modules/shell/1password.nix {
+          constants.user.seraphynee.username = "ssh-test";
+        }).den.aspects.shell._._1password.homeManager
+          { inherit (linuxPkgs) lib; };
       mkHome =
         homePkgs:
         inputs.home-manager.lib.homeManagerConfiguration {
@@ -19,7 +32,7 @@
           ];
         };
 
-      linux = mkHome pkgs;
+      linux = mkHome linuxPkgs;
       linuxSshConfig =
         pkgs.writeText "ssh-bookmarks-linux-config"
           linux.config.home.file.".ssh/config".text;
@@ -44,10 +57,6 @@
             touch "$out"
           '';
 
-      darwinPkgs = import inputs.nixpkgs {
-        system = "aarch64-darwin";
-        config.allowUnfree = true;
-      };
       darwin = mkHome darwinPkgs;
     in
     {
@@ -56,6 +65,14 @@
         assert
           linux.config.programs.ssh.settings.ghspy.data.IdentityFile == [ "~/.ssh_keys/ghspy-auth.pub" ];
         assert linux.config.programs.ssh.settings.tailacer.data.ForwardAgent;
+        assert linux.config.programs.ssh.settings."*".data.StrictHostKeyChecking == "accept-new";
+        assert !((onePasswordHomeModule.home.sessionVariables or { }) ? SSH_AUTH_SOCK);
+        assert
+          !(linuxPkgs.lib.hasInfix "SSH_AUTH_SOCK" (
+            onePasswordHomeModule.programs.fish.interactiveShellInit or ""
+          ));
+        assert
+          !(linuxPkgs.lib.hasInfix "SSH_AUTH_SOCK" (onePasswordHomeModule.programs.bash.bashrcExtra or ""));
         assert !(linux.config.programs.ssh.settings.ghcny.data ? useOpIdentityAgent);
         assert pkgs.lib.hasInfix "Match originalhost ghcny exec" linux.config.programs.ssh.extraConfig;
         assert pkgs.lib.hasInfix "IdentityAgent ~/.1password/agent.sock"
