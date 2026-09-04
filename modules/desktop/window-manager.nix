@@ -25,7 +25,7 @@
       niri = {
         includes = [
           <desktop/wm>
-          <desktop/sddm>
+          <desktop/noctalia-greeter>
         ];
 
         nixos =
@@ -48,7 +48,7 @@
       mango = {
         includes = [
           <desktop/wm>
-          <desktop/sddm>
+          <desktop/noctalia-greeter>
           <shell/msnap>
         ];
 

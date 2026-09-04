@@ -15,7 +15,7 @@
     };
 
     kde = {
-      includes = [ <desktop/sddm> ];
+      includes = [ <desktop/noctalia-greeter> ];
 
       nixos = {
         services = {
