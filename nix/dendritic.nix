@@ -16,9 +16,13 @@
   '';
 
   flake-file.nixConfig = {
-    extra-substituters = [ "https://cache.numtide.com" ];
+    extra-substituters = [
+      "https://cache.numtide.com"
+      "https://handy-computer.cachix.org"
+    ];
     extra-trusted-public-keys = [
       "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+      "handy-computer.cachix.org-1:Sihzctn6DC0CJM5QeL+9nBEL3CL8c33m777C+eIv748="
     ];
   };
 
@@ -49,6 +53,8 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    handy.url = "github:cjpais/Handy/v0.9.6";
 
     hjem = {
       url = "github:feel-co/hjem";

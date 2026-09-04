@@ -86,6 +86,7 @@ let
       <apps/discord>
       <apps/firefox>
       <apps/ghostty>
+      <apps/handy>
       <apps/wezterm>
       <apps/zen>
       <apps/zed>
