@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ paths, lib, ... }:
 {
   perSystem =
     { inputs', pkgs, ... }:
@@ -23,7 +23,7 @@
               pkgs.sops
               inputs'.nixos-anywhere.packages.nixos-anywhere
             ];
-            text = builtins.readFile ../scripts/nixos-installer.sh;
+            text = builtins.readFile (paths.scripts + "/nixos-installer.sh");
           };
         in
         {
@@ -44,7 +44,7 @@
                 ];
               }
               ''
-                bash ${../tests/nixos-installer.sh} ${../scripts/nixos-installer.sh} ${../.}
+                bash ${../tests/nixos-installer.sh} ${(paths.scripts + "/nixos-installer.sh")} ${../.}
                 touch "$out"
               '';
         }

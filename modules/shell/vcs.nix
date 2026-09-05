@@ -1,4 +1,5 @@
 {
+  paths,
   __findFile,
   inputs,
   lib,
@@ -8,7 +9,7 @@
   # Version control
   den.aspects.shell._.vcs.homeManager.imports = [
     ../../lib/shell/vcs/profile.nix
-    ../../lib/shell/vcs/git.nix
+    (import ../../lib/shell/vcs/git.nix { inherit paths; })
     ../../lib/shell/vcs/jujutsu.nix
     ../../lib/shell/vcs/repositories.nix
   ];
@@ -24,7 +25,7 @@
         enableGitIntegration = false; # Optional: set hunk as default git pager
       };
 
-      xdg.configFile."hunk/config.toml".source = ../../dots/config/hunk/config.toml;
+      xdg.configFile."hunk/config.toml".source = paths.dots + "/config/hunk/config.toml";
     };
   };
   # Lazygit
@@ -67,7 +68,7 @@
               config.sops.placeholder."llm/oco_api_key"
               config.sops.placeholder."llm/oco_api_url"
             ]
-            (builtins.readFile ../../dots/opencommit.tmpl);
+            (builtins.readFile (paths.dots + "/opencommit.tmpl"));
       in
       {
         sops.templates."opencommit-config" = {
@@ -104,7 +105,7 @@
         home.packages = [ worktrunk ];
         xdg.configFile."fish/completions/wt.fish".source = worktrunkFishCompletion;
         xdg.configFile."fish/functions/wt.fish".source = worktrunkFishIntegration;
-        # Sourced by the existing conf.d glob in modules/shell/shells.nix;
+        # Sourced by the existing conf.d glob in modules/shell/shells/zsh.nix;
         # includes its own lazy completion via compdef.
         xdg.configFile."zsh/conf.d/080-worktrunk.zsh".source = worktrunkZshIntegration;
         programs.bash.bashrcExtra = lib.mkAfter ''

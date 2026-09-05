@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, paths, ... }:
 {
   perSystem =
     { pkgs, ... }:
@@ -13,6 +13,7 @@
       };
       onePasswordHomeModule =
         (import ../../modules/shell/1password.nix {
+          inherit paths;
           constants.user.seraphynee.username = "ssh-test";
         }).den.aspects.shell._._1password.homeManager
           { inherit (linuxPkgs) lib; };

@@ -1,3 +1,4 @@
+{ paths, ... }:
 {
   den.aspects.services._.kanata = {
     nixos =
@@ -76,18 +77,18 @@
             builtins.readFile file
           );
 
-        kanataConfig = render ../../dots/config/kanata/row.kbd {
+        kanataConfig = render (paths.dots + "/config/kanata/row.kbd") {
           "@conditional_raycast_include@" = conditionalRaycastLayer;
         };
 
-        kanataCore = render ../../dots/config/kanata/parts/core.kbd {
+        kanataCore = render (paths.dots + "/config/kanata/parts/core.kbd") {
           "@conditional_lmet_tab@" = conditionalLmetTab;
           "@conditional_home_row_mods@" = conditionalHomeRowMods;
           "@conditional_m_v_mods@" = conditionalMVMods;
           "@conditional_ly_rayc@" = conditionalLyRayc;
         };
 
-        kanataChords = render ../../dots/config/kanata/parts/chords.kbd {
+        kanataChords = render (paths.dots + "/config/kanata/parts/chords.kbd") {
           "@conditional_input_chords@" = conditionalInputChords;
         };
       in
@@ -97,10 +98,10 @@
           "kanata/row.kbd".text = kanataConfig;
           "kanata/parts/chords.kbd".text = kanataChords;
           "kanata/parts/core.kbd".text = kanataCore;
-          "kanata/parts/herdr.kbd".source = ../../dots/config/kanata/parts/herdr.kbd;
-          "kanata/parts/raycast.kbd".source = ../../dots/config/kanata/parts/raycast.kbd;
-          "kanata/parts/tmux.kbd".source = ../../dots/config/kanata/parts/tmux.kbd;
-          "kanata/parts/zellij.kbd".source = ../../dots/config/kanata/parts/zellij.kbd;
+          "kanata/parts/herdr.kbd".source = paths.dots + "/config/kanata/parts/herdr.kbd";
+          "kanata/parts/raycast.kbd".source = paths.dots + "/config/kanata/parts/raycast.kbd";
+          "kanata/parts/tmux.kbd".source = paths.dots + "/config/kanata/parts/tmux.kbd";
+          "kanata/parts/zellij.kbd".source = paths.dots + "/config/kanata/parts/zellij.kbd";
         };
 
         systemd.services.kanata = {

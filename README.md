@@ -31,7 +31,7 @@ In short, this repo is needed so infrastructure changes are intentional, auditab
 ```text
 .
 ├── nix/          # Flake composition, inputs, tooling, formatting, and checks
-├── modules/      # Atomic Den aspects grouped by semantic responsibility
+├── modules/      # Den aspects: technical category → subcategory → feature
 ├── lib/          # Focused implementations shared behind module facades
 ├── data/         # Non-secret declarative host and repository metadata
 ├── dots/         # Native application and shell configuration
@@ -48,13 +48,32 @@ directly.
 
 ## Where New Configuration Belongs
 
-- Add an atomic Den aspect to the matching semantic category under `modules/`.
-  Keep its public aspect path independently selectable.
+- Add an atomic Den aspect to the matching technical category under `modules/`.
+  Use subcategories for substantial groups: `shell/shells/`, `shell/ai/`,
+  `shell/multiplexer/`, `apps/browsers/`, or `system/boot/`.
+  Keep its public aspect path independently selectable; physical paths are not
+  public Den names. For example, `modules/shell/multiplexer/tmux.nix` still
+  declares `<shell/tmux>` and consumes `dots/config/tmux/`.
+- Keep cohesive small categories together, such as `shell/vcs.nix` and
+  `shell/file-navigation.nix`. Use descriptive kebab-case filenames, with at
+  most two directory levels below a technical category. Review files above
+  200 lines by responsibility; do not split merely to meet a line limit.
 - Put a large focused implementation under `lib/` only when keeping it inside
   its category module would make that module difficult to scan.
 - Put native application files under `dots/config/<application>/`, then add an
   explicit module reference. Presence under `dots/` alone does not deploy a
-  file.
+  file. Consult the [native configuration inventory](dots/README.md) for each
+  subtree's wiring and dormant exceptions. Preserve explicit file deployment
+  lists instead of automatically deploying entire directories.
+- Use the `paths` argument declared in `nix/den.nix` for repository assets:
+  `paths.dots + "/config/tmux/tmux.conf"`, `paths.scripts`, and `paths.secrets`.
+  Capture it in the outer flake module and pass it explicitly to imported
+  helpers; nested Home Manager modules do not inherit flake arguments.
+- Put client-specific AI generators in `lib/shell/ai/` and reusable SOPS
+  builders in `lib/secrets/sops/`. Host-specific SOPS declarations live in
+  `modules/secrets/sops/<host>.nix` under their existing provider names.
+- Keep core flake wiring in `nix/dendritic.nix` and grouped input declarations
+  in `nix/inputs/`. Preserve input-specific `follows` and lockfile pins.
 - Put flake evaluation checks under `nix/checks/`.
 - Put reusable operational commands under `scripts/` and expose them through a
   module, the `justfile`, or operator documentation.

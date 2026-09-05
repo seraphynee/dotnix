@@ -1,6 +1,10 @@
-{ __findFile, inputs, ... }:
 {
-  # Package profiles
+  __findFile,
+  inputs,
+  lib,
+  ...
+}:
+{
   den.aspects.shell._.packages = {
     nixos =
       { pkgs, ... }:
@@ -163,119 +167,4 @@
       };
     };
   };
-  # Configured utilities
-  den.aspects.shell._.utils.homeManager =
-    { pkgs, ... }:
-    {
-      services.ssh-agent = {
-        enable = true;
-      };
-
-      programs = {
-        fzf = {
-          enable = true;
-          enableFishIntegration = false;
-        };
-
-        eza = {
-          enable = true;
-          enableFishIntegration = true;
-        };
-
-        zoxide = {
-          enable = true;
-          enableFishIntegration = true;
-          enableNushellIntegration = true;
-        };
-
-        broot = {
-          enable = true;
-          enableFishIntegration = false;
-          enableNushellIntegration = true;
-        };
-
-        devenv = {
-          enable = true;
-          enableFishIntegration = true;
-        };
-
-        direnv = {
-          enable = true;
-          nix-direnv.enable = true;
-        };
-
-        carapace = {
-          enable = true;
-          enableFishIntegration = false;
-          enableNushellIntegration = true;
-        };
-
-        atuin = {
-          enable = true;
-          enableFishIntegration = true;
-          enableNushellIntegration = true;
-        };
-
-        pay-respects = {
-          enable = true;
-          enableFishIntegration = false;
-          enableNushellIntegration = true;
-        };
-
-        bat = {
-          enable = true;
-          config = {
-            theme = "Catppuccin Mocha";
-          };
-          extraPackages = with pkgs.bat-extras; [
-            batgrep
-            batman
-            batpipe
-            batwatch
-            batdiff
-            prettybat
-          ];
-        };
-
-        btop = {
-          enable = true;
-          package = pkgs.btop.override {
-            cudaSupport = true;
-          };
-          settings = {
-            color_theme = "Dracula";
-            theme_background = false;
-            vim_keys = true;
-          };
-        };
-      };
-    };
-  # Local scripts
-  den.aspects.shell._.my-scripts.homeManager =
-    { pkgs, ... }:
-    let
-      jjTaskClone = pkgs.writeShellApplication {
-        name = "jj-task-clone";
-        runtimeInputs = with pkgs; [
-          jujutsu
-          gum
-        ];
-        text = builtins.readFile ../../scripts/jj-task-clone.sh;
-      };
-
-      testspeed = pkgs.writeShellApplication {
-        name = "testspeed";
-        runtimeInputs = [
-          pkgs.gum
-          pkgs.ookla-speedtest
-        ];
-        text = builtins.readFile ../../scripts/testspeed.sh;
-      };
-    in
-    {
-      home.packages = [
-        jjTaskClone
-        testspeed
-      ];
-    };
 }

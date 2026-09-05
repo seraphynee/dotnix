@@ -1,4 +1,5 @@
 {
+  paths,
   __findFile,
   inputs,
   lib,
@@ -9,7 +10,7 @@
   den.aspects.shell._.aerospace = {
     homeManager = {
       xdg.configFile."aerospace" = {
-        source = ../../dots/config/aerospace;
+        source = paths.dots + "/config/aerospace";
         recursive = true;
       };
     };
@@ -97,7 +98,7 @@
     homeManager =
       { pkgs, ... }:
       lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
-        xdg.configFile."rift/config.toml".source = ../../dots/config/rift/config.toml;
+        xdg.configFile."rift/config.toml".source = paths.dots + "/config/rift/config.toml";
       };
   };
 }

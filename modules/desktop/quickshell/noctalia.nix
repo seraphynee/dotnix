@@ -225,13 +225,6 @@
             };
           };
       };
-      dms = {
-        includes = [ <desktop/qs> ];
-
-        nixos = {
-          programs.dms-shell.enable = true;
-        };
-      };
     };
   };
 }

@@ -1,4 +1,4 @@
-{ constants, ... }:
+{ paths, constants, ... }:
 {
   den.aspects.shell._._1password = {
     nixos = {
@@ -22,7 +22,7 @@
     homeManager =
       { lib, ... }:
       {
-        xdg.configFile."1Password/ssh/agent.toml".source = ../../dots/config/1Password/ssh/agent.toml;
+        xdg.configFile."1Password/ssh/agent.toml".source = paths.dots + "/config/1Password/ssh/agent.toml";
         # Prevent Home Manager's ssh-agent service from overriding SSH_AUTH_SOCK.
         services.ssh-agent = {
           enable = lib.mkForce false;

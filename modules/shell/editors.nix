@@ -1,10 +1,10 @@
-{ lib, ... }:
+{ paths, lib, ... }:
 {
   # Helix
   den.aspects.shell._.helix = {
     homeManager = {
       xdg.configFile."helix" = {
-        source = ../../dots/config/helix;
+        source = paths.dots + "/config/helix";
         recursive = true;
       };
     };
@@ -26,7 +26,7 @@
     let
       inherit (pkgs.stdenv.hostPlatform) isDarwin isLinux;
       nanorc = builtins.replaceStrings [ "@XDG_DATA_HOME@" ] [ config.xdg.dataHome ] (
-        builtins.readFile ../../dots/config/nano/nanorc
+        builtins.readFile (paths.dots + "/config/nano/nanorc")
       );
     in
     lib.mkIf (isDarwin || isLinux) {
@@ -39,7 +39,7 @@
     { pkgs, ... }:
     {
       xdg.configFile."nvim" = {
-        source = ../../dots/config/nvim;
+        source = paths.dots + "/config/nvim";
         recursive = true;
       };
 

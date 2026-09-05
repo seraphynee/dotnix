@@ -1,0 +1,89 @@
+{ mkMcpServers }:
+let
+  mkPiConfig = builtins.toJSON {
+    theme = "dark";
+    defaultThinkingLevel = "high";
+    defaultProvider = "openai-codex";
+    defaultModel = "openai-codex/gpt-5.6-luna";
+    enabledModels = [
+      "openai-codex/gpt-5.6-luna"
+      "openai-codex/gpt-5.6-sol"
+      "openai-codex/gpt-5.6-terra"
+    ];
+
+    packages = [
+      {
+        source = "npm:pi-caveman";
+        autoload = false;
+      }
+      {
+        source = "npm:pi-context-view";
+        autoload = true;
+      }
+      {
+        source = "npm:pi-markdown-preview";
+        autoload = true;
+      }
+      {
+        source = "npm:pi-mcp-adapter";
+        autoload = true;
+      }
+      {
+        source = "npm:pi-skill-gate";
+        autoload = false;
+      }
+      {
+        source = "npm:pi-subagents";
+        autoload = true;
+      }
+      {
+        source = "npm:pi-web-access";
+        autoload = true;
+      }
+      {
+        source = "npm:@ff-labs/pi-fff";
+        autoload = true;
+      }
+      {
+        source = "npm:@dietrichgebert/ponytail";
+        autoload = false;
+      }
+      {
+        source = "npm:@narumitw/pi-btw";
+        autoload = true;
+      }
+      {
+        source = "npm:@narumitw/pi-goal";
+        autoload = false;
+      }
+      {
+        source = "npm:@pi9/ask";
+        autoload = true;
+      }
+      {
+        source = "npm:@juicesharp/rpiv-todo";
+        autoload = false;
+      }
+    ];
+  };
+
+  mkPiMcpConfig =
+    config:
+    let
+      servers = mkMcpServers config;
+      toPiServer =
+        _name: server:
+        {
+          inherit (server) url;
+        }
+        // (if server ? headers && server.headers != { } then { inherit (server) headers; } else { })
+        // (if server.enabled or true then { } else { disabled = true; });
+    in
+    builtins.toJSON {
+      mcpServers = builtins.mapAttrs toPiServer servers;
+    };
+
+in
+{
+  inherit mkPiConfig mkPiMcpConfig;
+}

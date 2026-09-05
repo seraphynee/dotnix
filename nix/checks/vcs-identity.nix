@@ -1,4 +1,5 @@
 {
+  paths,
   inputs,
   lib,
   constants,
@@ -34,7 +35,7 @@
           inherit pkgs;
           modules = [
             ../../lib/shell/vcs/profile.nix
-            ../../lib/shell/vcs/git.nix
+            (import ../../lib/shell/vcs/git.nix { inherit paths; })
             ../../lib/shell/vcs/jujutsu.nix
             {
               home = {

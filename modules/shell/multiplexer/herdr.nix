@@ -1,6 +1,8 @@
 {
+  __findFile,
   inputs,
   lib,
+  paths,
   ...
 }:
 {
@@ -14,7 +16,7 @@
       }:
       let
         herdr = inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.herdr;
-        herdrPluginLib = import ../../lib/shell/herdr-plugins.nix {
+        herdrPluginLib = import (paths.root + "/lib/shell/herdr-plugins.nix") {
           inherit inputs lib pkgs;
         };
         inherit (herdrPluginLib) herdrPlugins;
@@ -48,7 +50,7 @@
               pkgs.coreutils
               pkgs.jq
             ];
-            text = builtins.readFile ./herdr-plugin-reconcile.sh;
+            text = builtins.readFile (paths.root + "/modules/shell/herdr-plugin-reconcile.sh");
           };
 
         automaticRename =
@@ -80,9 +82,9 @@
             --state-file "$state_home/herdr/nix-managed-plugins.json"
         '';
 
-        xdg.configFile."herdr/config.toml".source = ../../dots/config/herdr/config.toml;
+        xdg.configFile."herdr/config.toml".source = paths.dots + "/config/herdr/config.toml";
         xdg.configFile."herdr/plugins/config" = {
-          source = ../../dots/config/herdr/plugins/config;
+          source = paths.dots + "/config/herdr/plugins/config";
           recursive = true;
         };
         xdg.configFile."fish/completions/herdr.fish".source = herdrFishCompletion;
@@ -116,100 +118,6 @@
       in
       {
         environment.systemPackages = [ herdr ];
-      };
-  };
-
-  den.aspects.shell._.workmux.homeManager =
-    {
-      pkgs,
-      ...
-    }:
-    {
-      home.packages = [ inputs.workmux.packages.${pkgs.system}.default ];
-      xdg.configFile."workmux/config.yaml".source = ../../dots/config/workmux/config.yaml;
-    };
-
-  den.aspects.shell._.tmux.homeManager =
-    { pkgs, ... }:
-    let
-      inherit (pkgs.stdenv.hostPlatform) isDarwin isLinux;
-
-      clipboardBindings =
-        if isDarwin then
-          ''
-            bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "pbcopy"
-            bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "pbcopy"
-          ''
-        else if isLinux then
-          ''
-            if-shell 'command -v wl-copy' {
-                  bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "wl-copy"
-                  bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "wl-copy"
-                } {
-                  if-shell 'command -v xclip' {
-                    bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xclip -selection clipboard -in"
-                    bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "xclip -selection clipboard -in"
-                  } {
-                    if-shell 'command -v xsel' {
-                      bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xsel --clipboard --input"
-                      bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "xsel --clipboard --input"
-                    }
-                  }
-                }
-          ''
-        else
-          "";
-
-      seshConnectPickerScript = builtins.replaceStrings [ "#!/usr/bin/env bash\n\n" ] [ "" ] (
-        builtins.readFile ../../dots/config/tmux/scripts/sesh-connect-picker.sh
-      );
-
-      seshConnectPicker = pkgs.writeShellApplication {
-        name = "sesh-connect-picker";
-        runtimeInputs = with pkgs; [
-          gnused
-          gum
-          sesh
-        ];
-        text = seshConnectPickerScript;
-      };
-    in
-    {
-      xdg.configFile."tmux/tmux.conf".source = ../../dots/config/tmux/tmux.conf;
-      xdg.configFile."tmux/settings.conf".source = ../../dots/config/tmux/settings.conf;
-      xdg.configFile."tmux/keybind.conf".source = ../../dots/config/tmux/keybind.conf;
-      xdg.configFile."tmux/clipboard.conf".text = clipboardBindings;
-      xdg.configFile."tmux/plugins.conf".source = ../../dots/config/tmux/plugins.conf;
-      xdg.configFile."tmux/status-bar/style-1.conf".source =
-        ../../dots/config/tmux/status-bar/style-1.conf;
-      xdg.configFile."tmux/status-bar/style-2.conf".source =
-        ../../dots/config/tmux/status-bar/style-2.conf;
-      xdg.configFile."tmux/status-bar/style-3.conf".source =
-        ../../dots/config/tmux/status-bar/style-3.conf;
-      xdg.configFile."tmux/status-bar/style-4.conf".source =
-        ../../dots/config/tmux/status-bar/style-4.conf;
-      xdg.configFile."tmux/status-bar/style-5.conf".source =
-        ../../dots/config/tmux/status-bar/style-5.conf;
-
-      home.packages = [
-        pkgs.tmux
-        seshConnectPicker
-      ];
-
-    };
-
-  den.aspects.shell._.zellij = {
-    homeManager = {
-      xdg.configFile."zellij" = {
-        source = ../../dots/config/zellij;
-        recursive = true;
-      };
-    };
-
-    nixos =
-      { pkgs, ... }:
-      {
-        environment.systemPackages = with pkgs; [ zellij ];
       };
   };
 }

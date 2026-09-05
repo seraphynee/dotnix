@@ -1,3 +1,4 @@
+{ paths }:
 {
   config,
   lib,
@@ -50,7 +51,7 @@ let
         GITHUB_TOKEN_FILE = githubPATPath;
       };
 
-      xdg.configFile."git/ignore".source = ../../../dots/config/git/ignore;
+      xdg.configFile."git/ignore".source = paths.dots + "/config/git/ignore";
 
       programs.bash.bashrcExtra = lib.mkIf (githubPATPath != null) (
         lib.mkAfter ''

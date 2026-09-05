@@ -1,4 +1,9 @@
-{ __findFile, inputs, ... }:
+{
+  paths,
+  __findFile,
+  inputs,
+  ...
+}:
 {
   den.aspects.desktop._.wm = {
     homeManager =
@@ -54,7 +59,7 @@
 
         homeManager = {
           xdg.configFile."mango" = {
-            source = ../../dots/config/mango;
+            source = paths.dots + "/config/mango";
             recursive = true;
           };
 
