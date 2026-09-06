@@ -66,3 +66,7 @@ issue-steps/
 
 # ignores only .codemark directory in the repository root
 /.codemark/
+
+# superpowers
+/docs/superpowers/
+/.superpowers/sdd/
