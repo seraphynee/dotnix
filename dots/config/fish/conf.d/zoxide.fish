@@ -1,4 +1,5 @@
-zoxide init fish | source
+# Home Manager initializes Zoxide; this file only provides the interactive picker.
+status is-interactive; or return
 
 function fzf_zoxide_widget
     # Ambil pilihan dari zoxide + fzf dengan preview

@@ -63,6 +63,21 @@
             ""
           else
             "${toString automaticRename.root}/${automaticRenameFishHook}";
+        # Preserve the hook's original location while replacing its two
+        # startup dirname processes with a path known during evaluation.
+        automaticRenameFishInit = pkgs.writeText "herdr-automatic-rename.fish" (
+          # Fail on an upstream layout change instead of silently relocating
+          # a hook that still resolves its executable relative to itself.
+          assert
+            automaticRenameFishHook == null
+            || lib.hasInfix "(dirname (dirname (status current-filename)))" (
+              builtins.readFile automaticRenameFishHookPath
+            );
+          builtins.replaceStrings
+            [ "(dirname (dirname (status current-filename)))" ]
+            [ (lib.escapeShellArg (toString automaticRename.root)) ]
+            (if automaticRenameFishHook == null then "" else builtins.readFile automaticRenameFishHookPath)
+        );
         automaticRenameZshHookPath =
           if automaticRenameZshHook == null then
             ""
@@ -89,8 +104,8 @@
         };
         xdg.configFile."fish/completions/herdr.fish".source = herdrFishCompletion;
         xdg.configFile."fish/conf.d/herdr.fish".text = ''
-          if type -q herdr; and test -r ${lib.escapeShellArg automaticRenameFishHookPath}
-              source ${lib.escapeShellArg automaticRenameFishHookPath}
+          if status is-interactive; and test -n "$HERDR_PANE_ID"; and command -q herdr
+              source ${automaticRenameFishInit}
           end
         '';
         xdg.configFile."zsh/conf.d/third-party/herdr-automatic-rename.sh".text = ''

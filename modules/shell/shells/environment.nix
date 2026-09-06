@@ -22,7 +22,7 @@
       fishRuntimeSecretAssignments = lib.concatStringsSep "\n" (
         lib.mapAttrsToList (variable: path: ''
           if test -r ${lib.escapeShellArg path}
-              set -gx ${variable} (command cat -- ${lib.escapeShellArg path})
+              set -gx ${variable} (string collect < ${lib.escapeShellArg path})
           end
         '') runtimeSecretPaths
       );
@@ -31,7 +31,7 @@
         # BEGIN dotnix runtime secrets
         ${fishRuntimeSecretAssignments}
         if set -q GITHUB_TOKEN_FILE; and test -r "$GITHUB_TOKEN_FILE"
-            set -gx GITHUB_TOKEN (command cat -- "$GITHUB_TOKEN_FILE")
+            set -gx GITHUB_TOKEN (string collect < "$GITHUB_TOKEN_FILE")
         end
         # END dotnix runtime secrets
       '';

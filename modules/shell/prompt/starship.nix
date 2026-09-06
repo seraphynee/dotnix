@@ -8,6 +8,9 @@
       ...
     }:
     let
+      starshipFishInit = pkgs.runCommand "starship-fish-init.fish" { } ''
+        ${lib.getExe config.programs.starship.package} init fish --print-full-init > "$out"
+      '';
       starshipConfigPath = "${config.xdg.configHome}/starship/starship.toml";
       starshipConfig =
         let
@@ -26,9 +29,15 @@
 
       home.sessionVariables.STARSHIP_CONFIG = starshipConfigPath;
 
+      programs.fish.interactiveShellInit = lib.mkIf config.programs.fish.enable ''
+        if test "$TERM" != dumb
+            source ${starshipFishInit}
+        end
+      '';
+
       programs.starship = {
         enable = true;
-        enableFishIntegration = true;
+        enableFishIntegration = false;
         configPath = starshipConfigPath;
         settings = {
           add_newline = true;

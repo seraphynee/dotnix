@@ -78,7 +78,6 @@
         recursive = true;
       };
       xdg.configFile."fish/conf.d/colors.fish".source = paths.dots + "/config/fish/conf.d/colors.fish";
-      xdg.configFile."fish/conf.d/atuin.fish".source = paths.dots + "/config/fish/conf.d/atuin.fish";
       xdg.configFile."fish/conf.d/bat.fish".source = paths.dots + "/config/fish/conf.d/bat.fish";
       xdg.configFile."fish/conf.d/common_functions.fish".source =
         paths.dots + "/config/fish/conf.d/common_functions.fish";
@@ -107,7 +106,9 @@
           interactiveShellInit = ''
             set -g fish_greeting
             abbr --add cl clear
-            fish_vi_key_bindings
+            # Fish loads these at the first prompt; calling the function here
+            # initializes the same preset bindings twice.
+            set -g fish_key_bindings fish_vi_key_bindings
             source ${(paths.dots + "/config/fish/conf.d/pisces.fish")}
 
             # === sesh binding ===
@@ -162,4 +163,7 @@
         };
       };
     };
+
+  # NixOS translates the Fish environment setup during the system build.
+  den.aspects.shell._.fish.nixos.programs.fish.useBabelfish = true;
 }
