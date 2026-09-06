@@ -25,201 +25,137 @@
               inputs.noctalia.homeModules.default
             ];
 
-            programs.noctalia-shell = {
+            programs.noctalia = {
               enable = true;
               # Start Noctalia from Mango only to avoid duplicate/racy startup.
               systemd.enable = false;
-              plugins = {
-                sources = [
-                  {
-                    enabled = true;
-                    name = "Official Noctalia Plugins";
-                    url = "https://github.com/noctalia-dev/noctalia-plugins";
-                  }
-                ];
-                states = {
-                  catwalk = {
-                    enabled = true;
-                    sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
-                  };
-                  mangowc-layout-switcher = {
-                    enabled = true;
-                    sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
-                  };
-                  tailscale = {
-                    enabled = true;
-                    sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
-                  };
-                  polkit-agent = {
-                    enabled = true;
-                    sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
-                  };
-                  privacy-indicator = {
-                    enabled = true;
-                    sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
-                  };
-                  cloudflare-warp = {
-                    enabled = true;
-                    sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
-                  };
-                  screen-toolkit = {
-                    enabled = true;
-                    sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
-                  };
-                };
-                version = 2;
-              };
-              pluginSettings = {
-                catwalk = {
-                  minimumThreshold = 25;
-                  hideBackground = true;
-                };
-              };
 
               settings = {
-                settingsVersion = 57;
-                sessionMenu = {
-                  enableCountdown = true;
-                  countdownDuration = 10000;
-                  position = "center";
-                  showHeader = true;
-                  showKeybinds = true;
-                  largeButtonsStyle = true;
-                  largeButtonsLayout = "single-row";
-                  powerOptions = [
-                    {
-                      action = "lock";
-                      enabled = true;
-                      keybind = "1";
-                    }
-                    {
-                      action = "suspend";
-                      enabled = true;
-                      keybind = "2";
-                    }
-                    {
-                      action = "hibernate";
-                      enabled = true;
-                      keybind = "3";
-                    }
-                    {
-                      action = "reboot";
-                      enabled = true;
-                      keybind = "4";
-                    }
-                    {
-                      action = "logout";
-                      enabled = true;
-                      keybind = "5";
-                    }
-                    {
-                      action = "shutdown";
-                      enabled = true;
-                      keybind = "6";
-                    }
-                  ];
-                };
+                battery.warning_threshold = 30;
+
                 bar = {
-                  barType = "framed";
-                  density = "default";
-                  position = "top";
-                  showCapsule = false;
-                  widgets = {
-                    left = [
-                      {
-                        id = "ControlCenter";
-                        useDistroLogo = true;
-                      }
-                      {
-                        id = "Network";
-                      }
-                      {
-                        id = "Bluetooth";
-                      }
+                  order = [ "main" ];
+                  main = {
+                    position = "top";
+                    capsule = false;
+                    start = [
+                      "control-center"
+                      "network"
+                      "bluetooth"
                     ];
                     center = [
-                      {
-                        formatHorizontal = "HH:mm";
-                        formatVertical = "HH mm";
-                        id = "Clock";
-                        useMonospacedFont = true;
-                        usePrimaryColor = true;
-                      }
-                      {
-                        hideUnoccupied = true;
-                        id = "Workspace";
-                        labelMode = "Index";
-                      }
-                      {
-                        compactMode = false;
-                        diskPath = "/";
-                        iconColor = "none";
-                        id = "SystemMonitor";
-                        showCpuCores = false;
-                        showCpuFreq = false;
-                        showCpuTemp = true;
-                        showCpuUsage = true;
-                        showDiskAvailable = false;
-                        showDiskUsage = false;
-                        showDiskUsageAsPercent = false;
-                        showGpuTemp = false;
-                        showLoadAverage = false;
-                        showMemoryAsPercent = false;
-                        showMemoryUsage = true;
-                        showNetworkStats = false;
-                        showSwapUsage = false;
-                        textColor = "none";
-                        useMonospaceFont = true;
-                        usePadding = false;
-                      }
+                      "clock"
+                      "workspaces"
+                      "cpu"
+                      "temp"
+                      "ram"
                     ];
-                    right = [
+                    end = [ "battery" ];
+                  };
+                };
+
+                location = {
+                  auto_locate = false;
+                  address = "Jakarta, Indonesia";
+                };
+
+                shell = {
+                  clipboard_enabled = true;
+                  font_family = "JetBrains Mono";
+                  time_format = "{:%H:%M}";
+
+                  launcher = {
+                    app_grid = false;
+                    compact = true;
+                  };
+
+                  panel = {
+                    launcher_placement = "floating";
+                    launcher_position = "bottom_center";
+                  };
+
+                  session = {
+                    grid = false;
+                    show_shortcuts = true;
+                    actions = [
                       {
-                        displayMode = "icon-always";
-                        alwaysShowPercentage = true;
-                        id = "Battery";
-                        warningThreshold = 30;
+                        action = "lock";
+                        countdown_seconds = 10.0;
+                        enabled = true;
+                        shortcut = "1";
                       }
                       {
-                        id = "plugin:tailscale";
+                        action = "lock_and_suspend";
+                        countdown_seconds = 10.0;
+                        enabled = true;
+                        shortcut = "2";
                       }
                       {
-                        id = "plugin:screen-toolkit";
+                        action = "hibernate";
+                        countdown_seconds = 10.0;
+                        enabled = true;
+                        shortcut = "3";
                       }
                       {
-                        id = "plugin:mangowc-layout-switcher";
+                        action = "reboot";
+                        countdown_seconds = 10.0;
+                        enabled = true;
+                        shortcut = "4";
                       }
                       {
-                        id = "plugin:privacy-indicator";
+                        action = "logout";
+                        countdown_seconds = 10.0;
+                        enabled = true;
+                        shortcut = "5";
                       }
                       {
-                        id = "plugin:cloudflare-warp";
+                        action = "shutdown";
+                        countdown_seconds = 10.0;
+                        enabled = true;
+                        shortcut = "6";
+                        variant = "destructive";
                       }
                     ];
                   };
                 };
-                appLauncher = {
-                  enableClipboardHistory = true;
-                  viewMode = "list";
-                  position = "bottom_center";
-                  density = "compact";
+
+                system.monitor.enabled = true;
+
+                theme = {
+                  mode = "dark";
+                  source = "wallpaper";
+                  wallpaper_scheme = "m3-content";
                 };
-                colorSchemes = {
-                  useWallpaperColors = true;
-                  darkMode = true;
-                };
-                general = {
-                  showSessionButtonsOnLockScreen = false;
-                };
-                location = {
-                  monthBeforeDay = true;
-                  name = "Jakarta, Indonesia";
-                };
-                ui = {
-                  fontDefault = "Jetbrains Mono";
-                };
-                idle = {
-                  enabled = true;
+
+                widget = {
+                  battery = {
+                    type = "battery";
+                    display_mode = "glyph";
+                    show_label = true;
+                  };
+                  clock = {
+                    type = "clock";
+                    format = "{:%H:%M}";
+                    vertical_format = "{:%H\n%M}";
+                  };
+                  workspaces = {
+                    type = "workspaces";
+                    hide_when_empty = true;
+                    label_source = "id";
+                    show_labels = true;
+                  };
+                  cpu = {
+                    type = "sysmon";
+                    stat = "cpu_usage";
+                  };
+                  temp = {
+                    type = "sysmon";
+                    stat = "cpu_temp";
+                  };
+                  ram = {
+                    type = "sysmon";
+                    stat = "ram_used";
+                  };
                 };
               };
             };

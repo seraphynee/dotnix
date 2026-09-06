@@ -57,13 +57,23 @@
           <shell/msnap>
         ];
 
-        homeManager = {
-          xdg.configFile."mango" = {
-            source = paths.dots + "/config/mango";
-            recursive = true;
-          };
+        homeManager =
+          { pkgs, ... }:
+          {
+            imports = [ inputs.mango.hmModules.mango ];
 
-        };
+            # Keep the native config tree below while using Mango's module for
+            # its user-session target and Wayland/DBus integration.
+            wayland.windowManager.mango = {
+              enable = true;
+              package = inputs.mango.packages.${pkgs.stdenv.hostPlatform.system}.default;
+            };
+
+            xdg.configFile."mango" = {
+              source = paths.dots + "/config/mango";
+              recursive = true;
+            };
+          };
 
         nixos =
           { pkgs, ... }:
