@@ -29,6 +29,8 @@ if grep -q '^WARN ' <<<"${noctalia_validation_output}"; then
   exit 1
 fi
 
+grep -Fqx 'transparency_mode = "solid"' "${NOCTALIA_CONFIG}"
+
 if grep -R -q 'noctalia-shell' "${mango_config_dir}"; then
   echo 'Mango config still invokes the removed Noctalia v4 executable' >&2
   exit 1
@@ -36,6 +38,8 @@ fi
 
 grep -q '^exec-once=systemctl --user start mango-session.target$' "${mango_config_dir}/config.conf"
 grep -q '^exec-once=noctalia$' "${mango_config_dir}/config.conf"
+grep -Fqx 'layerrule=noshadow:1,noblur:1,layer_name:^noctalia-panel$' "${mango_config_dir}/rules.conf"
+grep -Fqx 'layerrule=noanim:1,noshadow:1,noblur:1,layer_name:^noctalia-panel-click-shield$' "${mango_config_dir}/rules.conf"
 
 if [[ "${MANGO_SESSION_ENABLED}" != true ]]; then
   echo 'Mango Home Manager session integration is disabled' >&2

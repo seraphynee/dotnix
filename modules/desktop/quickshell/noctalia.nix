@@ -69,6 +69,8 @@
                   };
 
                   panel = {
+                    transparency_mode = "solid";
+
                     launcher_placement = "floating";
                     launcher_position = "bottom_center";
 
