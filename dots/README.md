@@ -36,7 +36,7 @@ to generated files in a user's home directory.
 | `config/nano/` | active | [terminal editors](../modules/shell/editors.nix), `<shell/nano>` | Rendered XDG path |
 | `config/niri/` | dormant | none | Retained config; check aspect configuration separately |
 | `config/nvim/` | active | [terminal editors](../modules/shell/editors.nix), `<shell/neovim>` | Full Lua config tree; includes supporting docs |
-| `config/opencode-thinking/` | active | [AI agents](../modules/shell/ai/agents.nix), `<shell/llm_agents>` | Skills deployed alongside a SOPS-rendered config |
+| `config/opencode-thinking/` | active | [AI agents](../modules/shell/ai/agents.nix), `<shell/llm-agents>` | Skills deployed alongside a SOPS-rendered config |
 | `config/pet/` | active | [file navigation](../modules/shell/file-navigation.nix), `<shell/pet>` | Config and snippet files |
 | `config/rift/` | active | [desktop tools](../modules/shell/desktop-tools.nix), `<shell/rift>` | Native config |
 | `config/rumdl/` | active | [formatters](../modules/shell/formatters.nix), `<shell/formatters>` | Native formatter config |
