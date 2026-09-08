@@ -41,7 +41,10 @@
         # Keep espanso runtime under the NixOS module on Wayland so the
         # capability wrapper is applied correctly. Espanso match files remain
         # user-scoped and can safely be wired from decrypted sops secrets.
-        xdg.configFile = lib.mapAttrs' (
+        xdg.configFile = {
+          "espanso/config/default.yml".text = "{}";
+        }
+        // lib.mapAttrs' (
           name: secret:
           let
             fileName = lib.removePrefix "espanso/" name;

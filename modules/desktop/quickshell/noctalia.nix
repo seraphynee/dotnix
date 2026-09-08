@@ -40,17 +40,16 @@
                     capsule = false;
                     start = [
                       "control-center"
-                      "network"
                       "bluetooth"
+                      "battery"
                     ];
                     center = [
                       "clock"
                       "workspaces"
-                      "cpu"
-                      "temp"
-                      "ram"
                     ];
-                    end = [ "battery" ];
+                    end = [
+                      "media"
+                    ];
                   };
                 };
 
@@ -61,7 +60,7 @@
 
                 shell = {
                   clipboard_enabled = true;
-                  font_family = "JetBrains Mono";
+                  font_family = "IoskeleyMonoTerm Nerd Font";
                   time_format = "{:%H:%M}";
 
                   launcher = {
@@ -72,6 +71,9 @@
                   panel = {
                     launcher_placement = "floating";
                     launcher_position = "bottom_center";
+
+                    control_center_placement = "floating";
+                    open_near_click_control_center = true;
                   };
 
                   session = {

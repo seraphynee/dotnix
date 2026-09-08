@@ -45,7 +45,7 @@ rb host:
     if [ "$(uname -s)" = "Darwin" ]; then nh darwin switch . -H {{ host }} -- --accept-flake-config; else nh os switch . -H {{ host }} -- --accept-flake-config; fi
 
 rbb host:
-    sudo nixos-rebuild boot --flake .#{{ host }}
+    nh os boot . -H {{ host }} -- --accept-flake-config
 
 # Remote/bootstrap
 # Validate a physical NixOS target without changing it
