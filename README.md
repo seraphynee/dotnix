@@ -46,6 +46,15 @@ In short, this repo is needed so infrastructure changes are intentional, auditab
 those declarations and run `just write-flake` instead of editing `flake.nix`
 directly.
 
+## Flake Input Policy
+
+Prefer packages from the pinned `nixpkgs` when they provide the needed version
+and integration. Keep a dedicated input when it is newer, supplies a required
+NixOS/Home Manager module, is unavailable in `nixpkgs`, provides pinned source
+content, or belongs to the Den/flake framework. Recompare package versions when
+updating the lock file; an input should not remain merely because it existed
+before.
+
 ## Where New Configuration Belongs
 
 - Add an atomic Den aspect to the matching technical category under `modules/`.

@@ -1,17 +1,21 @@
 {
   flake-file.inputs = {
+    # Package unavailable in nixpkgs.
     momoi-say.url = "github:haruki-nikaidou/momoisay-rs";
 
+    # Newer package than nixpkgs.
     worktrunk = {
       url = "github:max-sixty/worktrunk";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Post-release and newer source than nixpkgs.
     herdr = {
       url = "github:ogulcancelik/herdr";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Source-only inputs for Herdr plugins.
     herdr-automatic-rename = {
       url = "github:qu8n/herdr-automatic-rename";
       flake = false;
@@ -42,14 +46,17 @@
       flake = false;
     };
 
+    # Newer package than nixpkgs.
     hunk = {
       url = "github:modem-dev/hunk";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.bun2nix.inputs.systems.follows = "systems-linux";
     };
 
+    # Dedicated package set unavailable in nixpkgs.
     llm-agents.url = "github:numtide/llm-agents.nix";
 
+    # Package unavailable in nixpkgs.
     workmux = {
       url = "github:raine/workmux";
       inputs.nixpkgs.follows = "nixpkgs";

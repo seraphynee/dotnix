@@ -1,5 +1,6 @@
 {
   lib,
+  inputs,
   self,
   ...
 }:
@@ -17,9 +18,19 @@
       allWorkstations = predicate: lib.all predicate workstations;
       allWorkstationHomes = predicate: lib.all predicate workstationHomes;
       hasPath = path: config: lib.attrByPath path false config;
+      removedInputsAbsent = lib.all (name: !(builtins.hasAttr name inputs)) [
+        "catppuccin"
+        "flake-aspects"
+        "helium"
+        "hjem"
+        "niri"
+        "noctalia-qs"
+        "systems"
+      ];
     in
     {
       checks.profile-composition =
+        assert removedInputsAbsent;
         assert allWorkstations (config: config.programs.mango.enable);
         assert allWorkstationHomes (home: home.programs.noctalia.enable);
         assert allWorkstations (config: config.services.tailscale.enable);

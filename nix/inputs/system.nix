@@ -1,5 +1,6 @@
 {
   flake-file.inputs = {
+    # Post-release and newer source than nixpkgs.
     nixos-anywhere = {
       url = "github:nix-community/nixos-anywhere";
       inputs.nixpkgs.follows = "nixpkgs";
