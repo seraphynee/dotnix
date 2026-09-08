@@ -16,10 +16,10 @@
 
     homeManager.dotnix.vcs = {
       identity = {
-        name = constants.user.chianyung.git_user;
+        name = constants.user.chianyung.gitUser;
         email = constants.user.chianyung.email;
       };
-      github.username = constants.user.chianyung.git_user;
+      github.username = constants.user.chianyung.gitUser;
       signing.keySecret = "keys/ssh/github/signing/ghcny-pub";
       git.enable = true;
     };

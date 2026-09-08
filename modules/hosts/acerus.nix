@@ -8,8 +8,6 @@ let
     nixos =
       { lib, pkgs, ... }:
       {
-        imports = [ ];
-
         boot.initrd.availableKernelModules = [
           "vmd"
           "nvme"

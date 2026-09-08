@@ -16,7 +16,7 @@ let
     ;
 in
 {
-  den.aspects.shell._.llm_agents =
+  den.aspects.shell._."llm-agents" =
     { user, ... }:
     {
       homeManager =

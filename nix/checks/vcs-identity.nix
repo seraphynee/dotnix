@@ -40,7 +40,7 @@
             {
               home = {
                 username = "vcs-test";
-                homeDirectory = if pkgs.stdenv.isDarwin then "/Users/vcs-test" else "/home/vcs-test";
+                homeDirectory = if pkgs.stdenv.hostPlatform.isDarwin then "/Users/vcs-test" else "/home/vcs-test";
                 stateVersion = "26.11";
               };
               dotnix.vcs = profile;
@@ -70,10 +70,10 @@
 
       seraphyne = mkVcsHome {
         identity = {
-          name = constants.user.seraphynee.git_user;
+          name = constants.user.seraphynee.gitUser;
           email = constants.user.seraphynee.email;
         };
-        github.username = constants.user.seraphynee.git_user;
+        github.username = constants.user.seraphynee.gitUser;
         git.enable = true;
         jujutsu = {
           enable = true;
@@ -83,10 +83,10 @@
 
       chianyung = mkVcsHome {
         identity = {
-          name = constants.user.chianyung.git_user;
+          name = constants.user.chianyung.gitUser;
           email = constants.user.chianyung.email;
         };
-        github.username = constants.user.chianyung.git_user;
+        github.username = constants.user.chianyung.gitUser;
         git.enable = true;
       };
 
@@ -107,25 +107,25 @@
         assert
           constants.user.chianyung == {
             username = "chianyung";
-            git_user = "chianyungcode";
+            gitUser = "chianyungcode";
             email = "cnytechcode@gmail.com";
           };
         assert
           constants.user.seraphynee == {
             username = "seraphynee";
-            git_user = "seraphynee";
+            gitUser = "seraphynee";
             email = "seraphyne31@gmail.com";
           };
         assert
           constants.user.micha == {
             username = "micha";
-            git_user = null;
+            gitUser = null;
             email = null;
           };
         assert
           constants.user.admin == {
             username = "admin";
-            git_user = null;
+            gitUser = null;
             email = null;
           };
         assert valid.config.dotnix.vcs.identity.name == "alpha";

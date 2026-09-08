@@ -22,7 +22,7 @@
       <shell/herdr>
       <shell/hunk>
       <shell/lla>
-      <shell/llm_agents>
+      <shell/llm-agents>
       <shell/my-scripts>
       <shell/nano>
       <shell/ocr>
@@ -43,11 +43,11 @@
 
     homeManager.dotnix.vcs = {
       identity = {
-        name = constants.user.seraphynee.git_user;
+        name = constants.user.seraphynee.gitUser;
         email = constants.user.seraphynee.email;
       };
       github = {
-        username = constants.user.seraphynee.git_user;
+        username = constants.user.seraphynee.gitUser;
         patSecret = "keys/pat/ghspy-pat";
       };
       signing.keySecret = "keys/ssh/github/signing/ghspy-pub";

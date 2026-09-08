@@ -6,7 +6,7 @@
       ...
     }:
     {
-      home.packages = [ inputs.workmux.packages.${pkgs.system}.default ];
+      home.packages = [ inputs.workmux.packages.${pkgs.stdenv.hostPlatform.system}.default ];
       xdg.configFile."workmux/config.yaml".source = paths.dots + "/config/workmux/config.yaml";
     };
 }

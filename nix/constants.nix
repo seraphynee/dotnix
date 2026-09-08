@@ -3,22 +3,22 @@
     user = {
       chianyung = {
         username = "chianyung";
-        git_user = "chianyungcode";
+        gitUser = "chianyungcode";
         email = "cnytechcode@gmail.com";
       };
       seraphynee = {
         username = "seraphynee";
-        git_user = "seraphynee";
+        gitUser = "seraphynee";
         email = "seraphyne31@gmail.com";
       };
       micha = {
         username = "micha";
-        git_user = null;
+        gitUser = null;
         email = null;
       };
       admin = {
         username = "admin";
-        git_user = null;
+        gitUser = null;
         email = null;
       };
     };

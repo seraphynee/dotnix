@@ -11,7 +11,7 @@
         imports = [ inputs.zen-browser.homeModules.default ];
         programs.zen-browser = {
           enable = true;
-          darwinDefaultsId = pkgs.lib.mkIf pkgs.stdenv.isDarwin "org.mozilla.firefox.plist";
+          darwinDefaultsId = pkgs.lib.mkIf pkgs.stdenv.hostPlatform.isDarwin "org.mozilla.firefox.plist";
           profiles.default = rec {
             search = {
               force = true; # Needed for nix to overwrite search settings on rebuild
@@ -86,10 +86,10 @@
                 id = "zen-compact-mode-toggle";
                 key = "s";
                 modifiers =
-                  (pkgs.lib.optionalAttrs pkgs.stdenv.isDarwin {
+                  (pkgs.lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
                     alt = true;
                   })
-                  // (pkgs.lib.optionalAttrs pkgs.stdenv.isLinux {
+                  // (pkgs.lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
                     control = true;
                   });
               }
