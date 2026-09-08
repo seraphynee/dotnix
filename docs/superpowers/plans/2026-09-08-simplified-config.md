@@ -486,7 +486,10 @@ git commit -m "refactor: normalize dendritic configuration names"
 
 - [ ] **Step 1: Extend the VCS characterization check for simple and scripted Jujutsu aliases**
 
-Add these assertions before the `runCommand` in `nix/checks/vcs-identity.nix`:
+Add these assertions before the `runCommand` in `nix/checks/vcs-identity.nix`.
+The scripted aliases carry their commands in a shell-body string, so check
+that body for the workspace command rather than looking for a top-level list
+element:
 
 ```nix
 assert seraphyne.config.programs.jujutsu.settings.aliases.ed == [ "edit" ];
@@ -494,8 +497,10 @@ assert seraphyne.config.programs.jujutsu.settings.aliases.fetch == [
   "git"
   "fetch"
 ];
-assert builtins.elem "workspace" seraphyne.config.programs.jujutsu.settings.aliases.wacd;
-assert builtins.elem "workspace" seraphyne.config.programs.jujutsu.settings.aliases.wd;
+assert
+  lib.any (lib.hasInfix "jj workspace") seraphyne.config.programs.jujutsu.settings.aliases.wacd;
+assert
+  lib.any (lib.hasInfix "jj workspace") seraphyne.config.programs.jujutsu.settings.aliases.wd;
 ```
 
 - [ ] **Step 2: Run the enhanced check before extracting the aliases**

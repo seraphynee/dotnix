@@ -161,6 +161,15 @@
             "$left"
             "$right"
           ];
+        assert seraphyne.config.programs.jujutsu.settings.aliases.ed == [ "edit" ];
+        assert
+          seraphyne.config.programs.jujutsu.settings.aliases.fetch == [
+            "git"
+            "fetch"
+          ];
+        assert lib.any (lib.hasInfix "jj workspace")
+          seraphyne.config.programs.jujutsu.settings.aliases.wacd;
+        assert lib.any (lib.hasInfix "jj workspace") seraphyne.config.programs.jujutsu.settings.aliases.wd;
         assert !chianyung.config.programs.jujutsu.enable;
         assert
           explicitPrefix.config.programs.jujutsu.settings.templates.git_push_bookmark
