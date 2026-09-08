@@ -5,10 +5,8 @@
 
     includes = [
       <shell/packages/dev>
-      <shell/packages/personal>
       <shell/nix-tools>
 
-      <shell/_1password>
       <shell/ai>
       <shell/bash>
       <shell/env>
@@ -19,6 +17,8 @@
       <shell/starship>
       <shell/tmux>
       <shell/utils>
+
+      <system/virt>
     ];
   };
 }

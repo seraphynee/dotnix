@@ -1,5 +1,4 @@
-_:
-{
+_: {
   den.aspects.desktop._.sddm.nixos =
     { pkgs, ... }:
     let

@@ -12,28 +12,9 @@
       <den/primary-user>
 
       (<den/user-shell> "fish")
-      <feature/development>
 
-      <shell/espanso>
-      <shell/fastfetch>
-      <shell/formatters>
-      <shell/vcs>
-      <shell/helix>
-      <shell/herdr>
-      <shell/hunk>
-      <shell/lla>
-      <shell/llm-agents>
-      <shell/my-scripts>
-      <shell/nano>
-      <shell/ocr>
-      <shell/opencommit>
-      <shell/pet>
-      <shell/superfile>
-      <shell/television>
-      <shell/workmux>
-      <shell/worktrunk>
-      <shell/yazi>
-      <shell/zellij>
+      <feature/development>
+      <feature/personal>
     ];
 
     homeManager.dotnix.repositories = {
@@ -66,6 +47,7 @@
       {
         users.users.${constants.user.seraphynee.username} = {
           extraGroups = [
+            "incus-admin"
             "input"
             "uinput"
           ];

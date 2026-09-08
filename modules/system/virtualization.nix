@@ -1,4 +1,3 @@
-{ constants, ... }:
 {
   den.aspects.system._.podman.nixos = {
     virtualisation.podman = {
@@ -14,8 +13,6 @@
     { lib, options, ... }:
     lib.mkMerge [
       {
-        users.users.${constants.user.seraphynee.username}.extraGroups = [ "incus-admin" ];
-
         networking = {
           nftables.enable = true;
           firewall.interfaces.incusbr0 = {

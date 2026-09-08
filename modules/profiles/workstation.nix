@@ -11,7 +11,6 @@
       <system/settings>
       <system/ssh>
       <system/sshd>
-      <system/virt>
       <system/xdg>
 
       <desktop/wm/mango>

@@ -34,6 +34,7 @@
           "/modules/profiles/workstation.nix"
           "/modules/profiles/server.nix"
           "/modules/features/development.nix"
+          "/modules/features/personal.nix"
         ]
         && !(builtins.pathExists (repositoryRoot + "/modules/profiles.nix"));
     in
@@ -59,12 +60,14 @@
         assert allWorkstationHomes (home: home.programs.fzf.enable);
         assert vps.i18n.defaultLocale == "en_US.UTF-8";
         assert vps.services.openssh.enable;
-        assert acerus.services.cloudflare-warp.enable;
-        assert !(esquire.services.cloudflare-warp.enable or false);
+        assert allWorkstations (config: config.services.cloudflare-warp.enable);
         assert esquire.virtualisation.podman.enable;
         assert !acerus.virtualisation.podman.enable;
-        assert hasPath [ "services" "handy" "enable" ] acerus.home-manager.users.seraphynee;
-        assert !(hasPath [ "services" "handy" "enable" ] esquire.home-manager.users.seraphynee);
+        assert allWorkstationHomes (hasPath [
+          "services"
+          "handy"
+          "enable"
+        ]);
         pkgs.runCommand "profile-composition" { } ''
           touch "$out"
         '';

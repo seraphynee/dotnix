@@ -20,6 +20,7 @@
       {
         users.users.${constants.user.micha.username} = {
           extraGroups = [
+            "incus-admin"
             "uinput"
           ];
 

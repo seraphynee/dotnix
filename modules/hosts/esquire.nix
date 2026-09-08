@@ -30,8 +30,6 @@ let
 
       <system/nvidia>
       <system/podman>
-      <apps/datagrip>
-      <apps/vscode>
 
       <secrets/sops/esquire>
     ];

@@ -1,5 +1,4 @@
-_:
-{
+_: {
   den.aspects.desktop._.de._.gnome = {
     nixos = {
       services = {
