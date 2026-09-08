@@ -99,8 +99,8 @@ not reference them directly.
 
 ## Composition Architecture
 
-Atomic aspects remain the reusable implementation boundary. Two cross-cutting
-composition aspects reduce repetition without hiding host-critical settings.
+Atomic aspects remain the reusable implementation boundary. Role profiles and
+user-facing features reduce repetition without hiding host-critical settings.
 
 ### `<profile/workstation>`
 
@@ -128,6 +128,15 @@ and host-only applications remain in each host aspect. Specifically:
 This keeps destructive or machine-sensitive policy visible at the point where
 the machine is declared.
 
+### `<profile/server>`
+
+This platform-neutral profile describes the shared baseline for server hosts.
+It initially composes system locale and the SSH server. The `vps` host consumes
+the profile while retaining its disk layout, bootloader, networking policy,
+firewall ports, and secrets locally. Starting with this deliberately small
+boundary avoids moving machine-sensitive policy into a generic profile and
+gives future server hosts an explicit composition point.
+
 ### `<feature/development>`
 
 This user-facing feature composes the interactive development environment
@@ -148,9 +157,15 @@ selected shell and Zsh disabled. `micha` becomes primarily the shared feature
 plus shell selection and retains its Zsh aspect. `chianyung` and `admin` are
 not broadened by this refactor.
 
-Both composition aspects live in `modules/profiles.nix`. The file contains
-only descriptions and include lists, making it the central place to answer
-"what does this role or feature contain?"
+Each composition aspect lives in a focused file whose path mirrors its Den
+namespace:
+
+- `modules/profiles/workstation.nix` defines `<profile/workstation>`;
+- `modules/profiles/server.nix` defines `<profile/server>`;
+- `modules/features/development.nix` defines `<feature/development>`.
+
+These files contain only descriptions and include lists, making the directory
+layout the index for answering what each role or feature contains.
 
 ## Readability Changes
 
