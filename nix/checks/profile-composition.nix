@@ -10,6 +10,7 @@
     let
       acerus = self.nixosConfigurations.acerus.config;
       esquire = self.nixosConfigurations.esquire.config;
+      vps = self.nixosConfigurations.vps.config;
       workstations = [
         acerus
         esquire
@@ -47,6 +48,8 @@
         assert allWorkstationHomes (home: home.programs.direnv.enable);
         assert allWorkstationHomes (home: home.programs.nh.enable);
         assert allWorkstationHomes (home: home.programs.fzf.enable);
+        assert vps.i18n.defaultLocale == "en_US.UTF-8";
+        assert vps.services.openssh.enable;
         assert acerus.services.cloudflare-warp.enable;
         assert !(esquire.services.cloudflare-warp.enable or false);
         assert esquire.virtualisation.podman.enable;
