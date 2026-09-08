@@ -23,6 +23,7 @@
         assert allWorkstations (config: config.programs.mango.enable);
         assert allWorkstationHomes (home: home.programs.noctalia.enable);
         assert allWorkstations (config: config.services.tailscale.enable);
+        assert allWorkstations (config: config.networking.networkmanager.enable);
         assert allWorkstations (
           config: lib.elem "multi-user.target" (config.systemd.services.kanata.wantedBy or [ ])
         );
@@ -33,6 +34,8 @@
         assert allWorkstationHomes (home: home.programs.neovim.enable);
         assert allWorkstationHomes (home: home.programs.atuin.enable);
         assert allWorkstationHomes (home: home.programs.direnv.enable);
+        assert allWorkstationHomes (home: home.programs.nh.enable);
+        assert allWorkstationHomes (home: home.programs.fzf.enable);
         assert acerus.services.cloudflare-warp.enable;
         assert !(esquire.services.cloudflare-warp.enable or false);
         assert esquire.virtualisation.podman.enable;

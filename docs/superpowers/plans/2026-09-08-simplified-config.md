@@ -64,6 +64,7 @@ Create `nix/checks/profile-composition.nix`:
         assert allWorkstations (config: config.programs.mango.enable);
         assert allWorkstationHomes (home: home.programs.noctalia.enable);
         assert allWorkstations (config: config.services.tailscale.enable);
+        assert allWorkstations (config: config.networking.networkmanager.enable);
         assert
           allWorkstations (
             config: lib.elem "multi-user.target" (config.systemd.services.kanata.wantedBy or [ ])
@@ -71,10 +72,12 @@ Create `nix/checks/profile-composition.nix`:
         assert allWorkstations (config: config.services.openssh.enable);
         assert allWorkstations (config: config.virtualisation.incus.enable);
         assert allWorkstationHomes (home: home.programs.fish.enable);
-        assert allWorkstationHomes (home: home.programs.zsh.enable);
+        assert allWorkstationHomes (home: !home.programs.zsh.enable);
         assert allWorkstationHomes (home: home.programs.neovim.enable);
         assert allWorkstationHomes (home: home.programs.atuin.enable);
         assert allWorkstationHomes (home: home.programs.direnv.enable);
+        assert allWorkstationHomes (home: home.programs.nh.enable);
+        assert allWorkstationHomes (home: home.programs.fzf.enable);
         assert acerus.services.cloudflare-warp.enable;
         assert !(esquire.services.cloudflare-warp.enable or false);
         assert esquire.virtualisation.podman.enable;
@@ -198,11 +201,13 @@ Create `modules/profiles.nix`:
       <shell/starship>
       <shell/tmux>
       <shell/utils>
-      <shell/zsh>
     ];
   };
 }
 ```
+
+Zsh is user-selected/user-specific and is intentionally excluded from the
+shared development feature. Each user aspect retains its own Zsh choice.
 
 - [ ] **Step 3: Replace the shared Acerus includes with the workstation profile**
 
@@ -249,6 +254,10 @@ includes = [
 
 Keep Den routing, primary-user selection, and Fish shell selection. Replace the duplicated development includes with `<feature/development>`, then retain only Seraphynee-specific additions:
 
+Because Fish is selected for Seraphynee, do not add `<shell/zsh>` to this
+feature or user aspect; the characterization check intentionally preserves
+Seraphynee's disabled-Zsh state.
+
 ```nix
 includes = [
   <den/host-aspects>
@@ -290,6 +299,7 @@ Use:
 includes = [
   <den/host-aspects>
   (<den/user-shell> "zsh")
+  <shell/zsh>
   <feature/development>
 ];
 ```

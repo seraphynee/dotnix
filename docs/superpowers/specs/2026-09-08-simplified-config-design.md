@@ -135,15 +135,18 @@ shared by `seraphynee` and `micha`:
 
 - development and personal package sets;
 - Nix authoring tools and the `nh` rebuild workflow;
-- 1Password, shared agent instructions, Bash, Fish, Zsh, and environment setup;
+- 1Password, shared agent instructions, Bash, Fish, and environment setup;
 - Lazygit, Neovim, Starship, Tmux, and common command-line utilities.
 
-Shell selection through `<den/user-shell>` remains in the user file. VCS
-identity and any additions unique to one person also remain in that person's
-aspect. `seraphynee` therefore keeps the extended AI agents, editors, Herdr,
-Hunk, navigation tools, scripts, OCR, Workmux, Worktrunk, Yazi, and Zellij
-includes explicitly. `micha` becomes primarily the shared feature plus shell
-selection. `chianyung` and `admin` are not broadened by this refactor.
+Shell selection through `<den/user-shell>` remains in the user file, and Zsh
+configuration remains user-selected/user-specific rather than part of the
+shared feature. VCS identity and any additions unique to one person also
+remain in that person's aspect. `seraphynee` therefore keeps the extended AI
+agents, editors, Herdr, Hunk, navigation tools, scripts, OCR, Workmux,
+Worktrunk, Yazi, and Zellij includes explicitly while retaining Fish as the
+selected shell and Zsh disabled. `micha` becomes primarily the shared feature
+plus shell selection and retains its Zsh aspect. `chianyung` and `admin` are
+not broadened by this refactor.
 
 Both composition aspects live in `modules/profiles.nix`. The file contains
 only descriptions and include lists, making it the central place to answer
@@ -197,7 +200,8 @@ configuration. The check covers:
 
 - Mango and Noctalia enablement on `acerus` and `esquire`;
 - Tailscale, Kanata, networking, SSH, and Incus on both workstations;
-- Neovim, Fish, Zsh, Nix tooling, and common utilities in the Seraphynee home;
+- Neovim, Fish, the current disabled-Zsh state, Nix tooling, and common
+  utilities in the Seraphynee home;
 - Acerus- and Esquire-specific features remain distinct.
 
 These are characterization assertions, not a second configuration source. The
