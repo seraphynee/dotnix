@@ -28,10 +28,19 @@
         "noctalia-qs"
         "systems"
       ];
+      repositoryRoot = ../..;
+      compositionLayoutMatches =
+        lib.all (relative: builtins.pathExists (repositoryRoot + relative)) [
+          "/modules/profiles/workstation.nix"
+          "/modules/profiles/server.nix"
+          "/modules/features/development.nix"
+        ]
+        && !(builtins.pathExists (repositoryRoot + "/modules/profiles.nix"));
     in
     {
       checks.profile-composition =
         assert removedInputsAbsent;
+        assert compositionLayoutMatches;
         assert allWorkstations (config: config.programs.mango.enable);
         assert allWorkstationHomes (home: home.programs.noctalia.enable);
         assert allWorkstations (config: config.services.tailscale.enable);

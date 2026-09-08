@@ -8,8 +8,9 @@
     includes = [
       <disko/simple>
       <system/bootloader/grub>
-      <system/locale>
-      <system/sshd>
+
+      <profile/server>
+
       <secrets/sops/vps>
     ];
 
