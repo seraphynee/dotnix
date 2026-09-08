@@ -80,57 +80,6 @@
                 id = 2;
               };
             };
-            spacesForce = true;
-            spaces = {
-              Work = {
-                id = "9bf4a656-8bd0-4bc8-a5b1-0ee4f06146ff";
-                icon = "💼";
-                container = containers.Work.id;
-                position = 1000;
-                theme = {
-                  type = "gradient";
-                  colors = [
-                    {
-                      algorithm = "floating";
-                      type = "explicit-lightness";
-                      red = 0;
-                      green = 0;
-                      blue = 0;
-                      lightness = 50;
-                      position = {
-                        x = 51;
-                        y = 97;
-                      };
-                    }
-                  ];
-                  opacity = 0.5;
-                };
-              };
-              Personal = {
-                id = "4978fdb5-eadf-4ab6-9281-d62f2d2e1eb8";
-                icon = "🏠";
-                container = containers.Personal.id;
-                position = 2000;
-                theme = {
-                  type = "gradient";
-                  colors = [
-                    {
-                      algorithm = "floating";
-                      type = "explicit-lightness";
-                      red = 56;
-                      green = 66;
-                      blue = 55;
-                      lightness = 50;
-                      position = {
-                        x = 51;
-                        y = 97;
-                      };
-                    }
-                  ];
-                  opacity = 0.5;
-                };
-              };
-            };
             keyboardShortcuts = [
               # Change compact mode toggle to Ctrl+Alt+S
               {
@@ -219,7 +168,7 @@
             ];
             # Fails activation on schema changes to detect potential regressions
             # Find this in about:config or prefs.js of your profile
-            keyboardShortcutsVersion = 18;
+            keyboardShortcutsVersion = 20;
           };
         };
       };
