@@ -28,33 +28,12 @@ let
       bootloader
       <system/impermanence>
 
-      <system/audio>
-      <system/fonts>
-      <system/locale>
-      <system/networking>
+      <profile/workstation>
+
       <system/nvidia>
       <system/podman>
-      <system/settings>
-      <system/ssh>
-      <system/sshd>
-      <system/virt>
-      <system/xdg>
-
-      <desktop/wm/mango>
-      <desktop/qs/noctalia>
-
-      <apps/chromium>
-      <apps/discord>
       <apps/datagrip>
-      <apps/firefox>
-      <apps/ghostty>
       <apps/vscode>
-      <apps/wezterm>
-      <apps/zed>
-      <apps/zen>
-
-      <services/tailscale>
-      <services/kanata>
 
       <secrets/sops/esquire>
     ];

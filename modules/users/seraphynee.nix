@@ -12,38 +12,24 @@
       <den/primary-user>
 
       (<den/user-shell> "fish")
+      <feature/development>
 
-      <shell/packages/dev>
-      <shell/packages/personal>
-      <shell/nix-tools>
-
-      <shell/_1password>
-      <shell/ai>
-      <shell/bash>
-      <shell/env>
       <shell/espanso>
       <shell/fastfetch>
-      <shell/fish>
       <shell/formatters>
       <shell/vcs>
       <shell/helix>
       <shell/herdr>
       <shell/hunk>
-      <shell/lazygit>
       <shell/lla>
       <shell/llm_agents>
       <shell/my-scripts>
       <shell/nano>
-      <shell/nh>
-      <shell/neovim>
       <shell/ocr>
       <shell/opencommit>
       <shell/pet>
-      <shell/starship>
       <shell/superfile>
       <shell/television>
-      <shell/tmux>
-      <shell/utils>
       <shell/workmux>
       <shell/worktrunk>
       <shell/yazi>

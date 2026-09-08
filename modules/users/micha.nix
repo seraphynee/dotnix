@@ -8,23 +8,8 @@
     includes = [
       <den/host-aspects>
       (<den/user-shell> "zsh")
-
-      <shell/packages/dev>
-      <shell/packages/personal>
-      <shell/nix-tools>
-
-      <shell/_1password>
-      <shell/ai>
-      <shell/bash>
-      <shell/env>
-      <shell/fish>
-      <shell/lazygit>
-      <shell/nh>
-      <shell/neovim>
-      <shell/starship>
-      <shell/tmux>
-      <shell/utils>
       <shell/zsh>
+      <feature/development>
     ];
 
     nixos =

@@ -68,32 +68,11 @@ let
       bootloader
       <system/impermanence>
 
-      <system/locale>
-      <system/ssh>
-      <system/sshd>
-      <system/audio>
+      <profile/workstation>
+
       <system/bluetooth>
-      <system/fonts>
-      <system/networking>
-      <system/virt>
-      <system/xdg>
-      <system/settings>
-
-      <desktop/wm/mango>
-      <desktop/qs/noctalia>
-
-      <apps/chromium>
-      <apps/discord>
-      <apps/firefox>
-      <apps/ghostty>
       <apps/handy>
-      <apps/wezterm>
-      <apps/zen>
-      <apps/zed>
-
       <services/cloudflare-warp>
-      <services/tailscale>
-      <services/kanata>
 
       <secrets/sops/acerus>
     ];
