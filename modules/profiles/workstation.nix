@@ -21,6 +21,7 @@
       <apps/discord>
       <apps/firefox>
       <apps/ghostty>
+      <apps/handy>
       <apps/wezterm>
       <apps/zed>
       <apps/zen>

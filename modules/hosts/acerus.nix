@@ -69,7 +69,6 @@ let
       <profile/workstation>
 
       <system/bluetooth>
-      <apps/handy>
       <services/cloudflare-warp>
 
       <secrets/sops/acerus>
