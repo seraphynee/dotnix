@@ -100,7 +100,45 @@ git commit -m "test: characterize server profile baseline"
 - Consumes: `<profile/server>` from the VPS host aspect.
 - Preserves: every Task 1 characterization assertion and all existing workstation/development consumers.
 
-- [ ] **Step 1: Move the workstation profile unchanged**
+- [ ] **Step 1: Add a failing source-layout regression assertion**
+
+In the `let` block of `nix/checks/profile-composition.nix`, add:
+
+```nix
+repositoryRoot = ../..;
+compositionLayoutMatches =
+  lib.all (relative: builtins.pathExists (repositoryRoot + relative)) [
+    "/modules/profiles/workstation.nix"
+    "/modules/profiles/server.nix"
+    "/modules/features/development.nix"
+  ]
+  && !(builtins.pathExists (repositoryRoot + "/modules/profiles.nix"));
+```
+
+Add this immediately after `assert removedInputsAbsent;`:
+
+```nix
+assert compositionLayoutMatches;
+```
+
+Stage the changed check so the Git-backed flake sees it:
+
+```bash
+git add nix/checks/profile-composition.nix
+```
+
+- [ ] **Step 2: Verify the layout assertion fails for the intended reason**
+
+Run:
+
+```bash
+nix build .#checks.x86_64-linux.profile-composition --accept-flake-config --no-link
+```
+
+Expected: FAIL at `assert compositionLayoutMatches;` because the three focused
+files do not exist yet and `modules/profiles.nix` still exists.
+
+- [ ] **Step 3: Move the workstation profile unchanged**
 
 Create `modules/profiles/workstation.nix`:
 
@@ -139,7 +177,7 @@ Create `modules/profiles/workstation.nix`:
 }
 ```
 
-- [ ] **Step 2: Move the development feature unchanged**
+- [ ] **Step 4: Move the development feature unchanged**
 
 Create `modules/features/development.nix`:
 
@@ -170,7 +208,7 @@ Create `modules/features/development.nix`:
 }
 ```
 
-- [ ] **Step 3: Add the minimal server profile**
+- [ ] **Step 5: Add the minimal server profile**
 
 Create `modules/profiles/server.nix`:
 
@@ -188,7 +226,7 @@ Create `modules/profiles/server.nix`:
 }
 ```
 
-- [ ] **Step 4: Consume the server profile from VPS**
+- [ ] **Step 6: Consume the server profile from VPS**
 
 Change the VPS include list to exactly:
 
@@ -206,12 +244,12 @@ includes = [
 Leave the existing `nixos` body unchanged so device selection, DHCP, firewall
 enablement, and port 22 remain visibly host-specific.
 
-- [ ] **Step 5: Remove the obsolete combined file**
+- [ ] **Step 7: Remove the obsolete combined file**
 
 Delete `modules/profiles.nix` after all three replacement aspect files exist.
 Do not leave duplicate definitions in the import tree.
 
-- [ ] **Step 6: Verify the filesystem and Den targets**
+- [ ] **Step 8: Verify the filesystem and Den targets**
 
 Run:
 
@@ -226,16 +264,16 @@ rg -n 'den\.aspects\.(profile|feature)' modules/profiles modules/features
 Expected: exactly one definition each for `profile._.workstation`,
 `profile._.server`, and `feature._.development`.
 
-- [ ] **Step 7: Stage the migration for Git-backed flake evaluation**
+- [ ] **Step 9: Stage the migration for Git-backed flake evaluation**
 
 ```bash
-git add modules/profiles.nix modules/profiles/workstation.nix modules/profiles/server.nix modules/features/development.nix modules/hosts/vps.nix
+git add nix/checks/profile-composition.nix modules/profiles.nix modules/profiles/workstation.nix modules/profiles/server.nix modules/features/development.nix modules/hosts/vps.nix
 ```
 
 Expected: the deleted combined file and all new namespace files are visible to
 the Git-backed flake source used by subsequent Nix commands.
 
-- [ ] **Step 8: Verify behavior and formatting**
+- [ ] **Step 10: Verify behavior and formatting**
 
 Run:
 
@@ -248,7 +286,7 @@ nix fmt -- --ci
 Expected: all pass and the formatter changes zero files. The existing
 FZF/Atuin warning may remain.
 
-- [ ] **Step 9: Verify scope hygiene**
+- [ ] **Step 11: Verify scope hygiene**
 
 Run:
 
@@ -258,13 +296,13 @@ git diff --name-only HEAD -- secrets
 git status --short
 ```
 
-Expected: no whitespace errors, no secret changes, and only the five scoped
-production paths are staged.
+Expected: no whitespace errors, no secret changes, and only the six scoped
+paths are staged.
 
-- [ ] **Step 10: Commit the layout migration**
+- [ ] **Step 12: Commit the layout migration**
 
 ```bash
-git add modules/profiles.nix modules/profiles/workstation.nix modules/profiles/server.nix modules/features/development.nix modules/hosts/vps.nix
+git add nix/checks/profile-composition.nix modules/profiles.nix modules/profiles/workstation.nix modules/profiles/server.nix modules/features/development.nix modules/hosts/vps.nix
 git commit -m "refactor: split profile and feature aspects"
 ```
 
