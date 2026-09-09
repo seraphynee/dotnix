@@ -7,7 +7,7 @@
       <services/cloudflare-warp>
 
       <apps/datagrip>
-      <apps/vscode>
+      <apps/hister>
 
       <shell/_1password>
       <shell/packages/personal>

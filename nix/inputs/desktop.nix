@@ -40,5 +40,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Dedicated module and package unavailable in nixpkgs.
+    hister = {
+      url = "github:asciimoo/hister";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 }
