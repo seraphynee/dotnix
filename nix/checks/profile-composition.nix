@@ -46,8 +46,9 @@
         assert allWorkstationHomes (home: home.programs.noctalia.enable);
         assert allWorkstations (config: config.services.tailscale.enable);
         assert allWorkstations (config: config.networking.networkmanager.enable);
+        assert allWorkstations (config: config.services.kanata.enable);
         assert allWorkstations (
-          config: lib.elem "multi-user.target" (config.systemd.services.kanata.wantedBy or [ ])
+          config: lib.elem "multi-user.target" (config.systemd.services."kanata-default".wantedBy or [ ])
         );
         assert allWorkstations (config: config.services.openssh.enable);
         assert allWorkstations (config: config.virtualisation.incus.enable);

@@ -30,7 +30,7 @@ to generated files in a user's home directory.
 | `config/helix/` | active | [terminal editors](../modules/shell/editors.nix), `<shell/helix>` | Includes languages and theme |
 | `config/herdr/` | active | [Herdr](../modules/shell/multiplexer/herdr.nix), `<shell/herdr>` | Main config and plugin config tree; shipping plugin config does not install that plugin |
 | `config/hunk/` | active | [VCS](../modules/shell/vcs.nix), `<shell/hunk>` | Native config |
-| `config/kanata/` | active | [Kanata](../modules/services/kanata.nix), `<services/kanata>` | Rendered core/chords/row plus explicit part files |
+| `config/kanata/` | active | [Kanata](../modules/services/hardware/kanata.nix), `<services/kanata>` | Rendered core/chords/row plus explicit part files |
 | `config/lla/` | active | [file navigation](../modules/shell/file-navigation.nix), `<shell/lla>` | Native config |
 | `config/mango/` | active | [window managers](../modules/desktop/window-manager.nix), `<desktop/wm/mango>` | Native configuration tree |
 | `config/nano/` | active | [terminal editors](../modules/shell/editors.nix), `<shell/nano>` | Rendered XDG path |
