@@ -58,6 +58,30 @@
                   address = "Jakarta, Indonesia";
                 };
 
+                idle = {
+                  pre_action_fade_seconds = 2.0;
+
+                  behavior = {
+                    lock = {
+                      timeout = 300;
+                      action = "lock";
+                      enabled = true;
+                    };
+
+                    "screen-off" = {
+                      timeout = 360;
+                      locked_timeout = 60;
+                      action = "screen_off";
+                      enabled = true;
+                    };
+                  };
+                };
+
+                lockscreen = {
+                  enabled = true;
+                  lock_before_suspend = true;
+                };
+
                 shell = {
                   clipboard_enabled = true;
                   font_family = "IoskeleyMonoTerm Nerd Font";
