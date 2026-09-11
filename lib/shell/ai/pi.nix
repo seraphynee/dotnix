@@ -3,12 +3,13 @@ let
   mkPiConfig = builtins.toJSON {
     theme = "dark";
     defaultThinkingLevel = "high";
-    defaultProvider = "openai-codex";
-    defaultModel = "openai-codex/gpt-5.6-luna";
+    defaultProvider = "opencode-go";
+    defaultModel = "deepseek-v4.1-flash";
     enabledModels = [
+      "muse-spark-1.3-contributor"
+      "deepseek-v4.1-flash"
       "openai-codex/gpt-5.6-luna"
       "openai-codex/gpt-5.6-sol"
-      "openai-codex/gpt-5.6-terra"
     ];
 
     packages = [
