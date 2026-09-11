@@ -53,6 +53,10 @@
       inputs.bun2nix.inputs.systems.follows = "systems-linux";
     };
 
+    # Version-pinned packages via nixpkgs-multiverse index.
+    # No `inputs.nixpkgs.follows`: multiverse declares `inputs = { }`.
+    multiverse.url = "github:fzakaria/nixpkgs-multiverse";
+
     # Dedicated package set unavailable in nixpkgs.
     llm-agents.url = "github:numtide/llm-agents.nix";
 
