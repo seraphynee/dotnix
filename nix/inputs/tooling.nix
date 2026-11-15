@@ -56,6 +56,16 @@
 
     llm-agents.url = "github:numtide/llm-agents.nix";
 
+    # Public agent skills, linked into ~/.agents/skills in modules/shell/ai/instructions.nix.
+    caveman = {
+      url = "github:JuliusBrussee/caveman";
+      flake = false;
+    };
+    ponytail = {
+      url = "github:DietrichGebert/ponytail";
+      flake = false;
+    };
+
     workmux = {
       url = "github:raine/workmux";
       inputs.nixpkgs.follows = "nixpkgs";

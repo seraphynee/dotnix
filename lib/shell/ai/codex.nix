@@ -52,8 +52,8 @@ let
           "";
     in
     ''
-      model = "gpt-5.6-luna"
-      model_reasoning_effort = "high"
+      model = "gpt-6-luna"
+      model_reasoning_effort = "xhigh"
 
       [features]
       ${builtins.concatStringsSep "\n" (
@@ -63,7 +63,7 @@ let
       ${trustedProjects}
 
       [tui]
-      status_line = ["model-with-reasoning", "current-dir", "context-used", "weekly-limit"]
+      status_line = ["model-with-reasoning", "current-dir", "context-used", "weekly-limit", "five-hour-limit"]
       status_line_use_colors = true
     '';
 in

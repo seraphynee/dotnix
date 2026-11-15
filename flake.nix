@@ -27,6 +27,10 @@
       flake = false;
     };
     catppuccin.url = "github:catppuccin/nix";
+    caveman = {
+      url = "github:JuliusBrussee/caveman";
+      flake = false;
+    };
     darwin = {
       url = "github:nix-darwin/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -158,6 +162,10 @@
     noctalia-qs = {
       url = "github:noctalia-dev/noctalia-qs";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    ponytail = {
+      url = "github:DietrichGebert/ponytail";
+      flake = false;
     };
     sops-nix = {
       url = "github:Mic92/sops-nix";
