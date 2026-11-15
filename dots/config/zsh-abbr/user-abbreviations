@@ -379,7 +379,7 @@ abbr jgps="jj git push -b %"
 abbr jgpsm="jj git push -b main"
 
 abbr jl="jj log"
-abbr jla="jj log 'all()'"
+abbr jla="jj log -r 'all()'"
 abbr jlt="jj log -T %"
 abbr jls='jj log -s'
 abbr jlsr='jj log -s -r "@%"'
@@ -489,16 +489,6 @@ abbr "zlda"="zellij delete-all-sessions --yes"
 abbr "zlk"="zellij kill-session"
 abbr "zlka"="zellij kill-all-sessions --yes"
 abbr "zlls"="zellij list-sessions"
-
-# --- SSH / Remote hosts ---
-abbr "acer"="ssh acer"
-abbr "gcp1"="ssh gcp1"
-abbr "ghcny"="ssh ghcny"
-abbr "ghspy"="ssh ghspy"
-abbr "mbp"="ssh mbp"
-abbr "tailacer"="ssh tailacer"
-abbr "tailmbp"="ssh tailmbp"
-abbr "tailpc"="ssh tailpc-nixos"
 
 # --- ls / file listing (eza) ---
 abbr "l"="eza -l --classify=auto --icons=auto --git"

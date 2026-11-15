@@ -92,6 +92,12 @@
         );
     in
     {
+      # Docker Sandboxes (sbx) feature flags.
+      home.sessionVariables = {
+        DOCKER_SANDBOXES_CLAUDE_REMOTE_CONTROL = "true";
+        DOCKER_SANDBOXES_CLIPBOARD_IMAGE_PASTE = "true";
+      };
+
       programs.fish.interactiveShellInit = lib.mkBefore fishRuntimeSecretInit;
       programs.zsh.initContent = lib.mkBefore zshRuntimeSecretInit;
 

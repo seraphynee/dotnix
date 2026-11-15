@@ -107,6 +107,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     import-tree.url = "github:vic/import-tree";
+    jj-waltz = {
+      url = "github:EzraCerpac/jj-waltz";
+      flake = false;
+    };
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs";

@@ -39,6 +39,7 @@
       <shell/ocr>
       <shell/opencommit>
       <shell/pet>
+      <shell/sbx>
       <shell/starship>
       <shell/superfile>
       <shell/television>
@@ -82,6 +83,8 @@
           extraGroups = [
             "input"
             "uinput"
+            # /dev/kvm access for Docker Sandboxes (sbx) microVMs
+            "kvm"
           ];
 
           hashedPasswordFile = config.sops.secrets."passwords/${constants.user.seraphynee.username}".path;

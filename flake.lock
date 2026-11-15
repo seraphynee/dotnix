@@ -875,6 +875,22 @@
         "type": "github"
       }
     },
+    "jj-waltz": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1794345178,
+        "narHash": "sha256-bs6R/n6QZ8oLPq+ActHp/+OGb8hJ/yGt6KYwHchg0to=",
+        "owner": "EzraCerpac",
+        "repo": "jj-waltz",
+        "rev": "6f49c689bf1e58f0372b1655f476893df2c1cdb3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "EzraCerpac",
+        "repo": "jj-waltz",
+        "type": "github"
+      }
+    },
     "lanzaboote": {
       "inputs": {
         "crane": "crane",
@@ -1453,6 +1469,7 @@
         "hunk": "hunk",
         "impermanence": "impermanence",
         "import-tree": "import-tree_3",
+        "jj-waltz": "jj-waltz",
         "lanzaboote": "lanzaboote",
         "llm-agents": "llm-agents",
         "mango": "mango",
