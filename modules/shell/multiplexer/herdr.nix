@@ -109,7 +109,8 @@
           end
         '';
         xdg.configFile."zsh/conf.d/third-party/herdr-automatic-rename.sh".text = ''
-          if (( $+commands[herdr] )) && [[ -r ${lib.escapeShellArg automaticRenameZshHookPath} ]]; then
+          # The hook no-ops outside a herdr pane, so only source it inside one.
+          if [[ -n ''${HERDR_PANE_ID-} ]] && (( $+commands[herdr] )) && [[ -r ${lib.escapeShellArg automaticRenameZshHookPath} ]]; then
             source ${lib.escapeShellArg automaticRenameZshHookPath}
           fi
 
