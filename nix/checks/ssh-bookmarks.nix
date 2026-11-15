@@ -59,13 +59,18 @@
           '';
 
       darwin = mkHome darwinPkgs;
+      deploymentServersSafe = builtins.all (
+        server: !(server.ForwardAgent or false) && !(server.useOpIdentityAgent or false)
+      ) (builtins.attrValues (import ../../data/ssh/bookmarks.nix).deployment_servers);
     in
     {
       checks.ssh-bookmarks =
+        assert deploymentServersSafe;
+        assert linux.config.programs.ssh.settings.glcny.data.HostName == "gitlab.com";
         assert linux.config.programs.ssh.settings.ghcny.data.HostName == "github.com";
         assert
           linux.config.programs.ssh.settings.ghspy.data.IdentityFile == [ "~/.ssh_keys/ghspy-auth.pub" ];
-        assert linux.config.programs.ssh.settings.tailacer.data.ForwardAgent;
+        assert linux.config.programs.ssh.settings.tailws-acer.data.ForwardAgent;
         assert linux.config.programs.ssh.settings."*".data.StrictHostKeyChecking == "accept-new";
         assert !((onePasswordHomeModule.home.sessionVariables or { }) ? SSH_AUTH_SOCK);
         assert

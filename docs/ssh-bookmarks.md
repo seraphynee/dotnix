@@ -1,9 +1,11 @@
 # SSH Bookmarks and 1Password Agent
 
 SSH bookmark metadata is declared in
-[`data/ssh/bookmarks.nix`](../data/ssh/bookmarks.nix). The `hosts` entries are
-rendered through Home Manager's `programs.ssh.settings`; the default `Host *`
-settings live under `defaults`.
+[`data/ssh/bookmarks.nix`](../data/ssh/bookmarks.nix), grouped by role:
+`workstations`, `development_servers`, `deployment_servers`, and `git_hosts`.
+All groups are merged and rendered through Home Manager's
+`programs.ssh.settings`; the default `Host *` settings live under `defaults`.
+Git host names are frozen because they appear in git remote URLs.
 
 Connection metadata such as aliases, routes, users, ports, and public
 `IdentityFile` paths is intentionally non-secret. Private keys, credentials,
@@ -23,7 +25,9 @@ platform-specific 1Password socket paths.
 
 The default host-key policy is `accept-new`: OpenSSH automatically records keys
 for new hosts but rejects changed host keys. Agent forwarding remains enabled
-only for the explicitly declared `tailacer` bookmark.
+only for explicitly declared workstation bookmarks such as `tailws-acer`.
+Deployment servers must never set `ForwardAgent` or `useOpIdentityAgent`; the
+check below fails if they do.
 
 Validate the generated configuration and forwarding behavior with:
 

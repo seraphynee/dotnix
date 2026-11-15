@@ -1,14 +1,17 @@
 { lib, pkgs, ... }:
 let
   sshBookmarks = import ../../data/ssh/bookmarks.nix;
+  hosts =
+    sshBookmarks.workstations
+    // sshBookmarks.development_servers
+    // sshBookmarks.deployment_servers
+    // sshBookmarks.git_hosts;
   sshSettings = {
     "*" = sshBookmarks.defaults;
   }
-  // lib.mapAttrs (
-    _: settings: builtins.removeAttrs settings [ "useOpIdentityAgent" ]
-  ) sshBookmarks.hosts;
+  // lib.mapAttrs (_: settings: builtins.removeAttrs settings [ "useOpIdentityAgent" ]) hosts;
   sshAgentHosts = lib.attrNames (
-    lib.filterAttrs (_: settings: settings.useOpIdentityAgent or false) sshBookmarks.hosts
+    lib.filterAttrs (_: settings: settings.useOpIdentityAgent or false) hosts
   );
   sshAgentPath =
     if pkgs.stdenv.hostPlatform.isDarwin then
