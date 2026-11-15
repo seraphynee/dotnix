@@ -4,8 +4,7 @@
     { pkgs, ... }:
     let
       inherit (pkgs.stdenv.hostPlatform) isDarwin;
-      fontName = if isDarwin then "Jetbrains Mono" else "Jetbrains Mono";
-      fontSize = if isDarwin then 18.7 else 13.5;
+      fontSize = if isDarwin then 17.7 else 13.5;
       closeTabMods = if isDarwin then "CMD" else "CTRL|SHIFT";
     in
     {
@@ -58,12 +57,17 @@
 
           return {
             color_schemes = {
+              ["flexoki-dark"] = require("themes.flexoki-dark"),
+              ["merino-dark"] = require("themes.merino-dark"),
               ["oldworld-vibrant"] = require("themes.oldworld-vibrant"),
             },
-            color_scheme = "oldworld-vibrant",
-            -- font = wezterm.font("${fontName}"),
+            color_scheme = "merino-dark",
+            font = wezterm.font({
+              family = "Paper Mono",
+              harfbuzz_features = { "ss01", "ss04", "zero" },
+            }),
             font_size = ${builtins.toString fontSize},
-            underline_thickness = 2.8,
+            -- underline_thickness = 2.8,
             max_fps = 120,
 
             window_background_opacity = 1,
