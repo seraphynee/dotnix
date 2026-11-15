@@ -1,5 +1,5 @@
 ;; Kanata entrypoint.
-;; Keep global settings, constants, and the physical layout here.
+;; Keep global settings, shared constants, and the physical layout here.
 ;; Feature-specific configuration lives in parts/.
 
 ;; Global configuration applied to all layers.
@@ -30,11 +30,11 @@
 
 ;; Physical keyboard layout.
 (defsrc
-       f1  f2  f3  f4  f5  f6  f7  f8  f9  f10  f11  f12
-  grv  1  2  3  4  5  6  7  8  9  0  -  =  bspc
-  tab  q  w  e  r  t  y  u  i  o  p  [  ]  \
-  caps  a  s  d  f  g  h  j  k  l  ;  '  ret
-  lsft  z  x  c  v  b  n  m  ,  .  /  rsft
+       f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
   lctl  lmet  lalt  spc  ralt  rmet  rctl
 )
 
@@ -43,6 +43,5 @@
 (include "parts/core.kbd")
 (include "parts/tmux.kbd")
 (include "parts/herdr.kbd")
-(include "parts/zellij.kbd")
 
 @conditional_raycast_include@
