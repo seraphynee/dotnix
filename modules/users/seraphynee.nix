@@ -37,7 +37,6 @@
       <shell/nh>
       <shell/neovim>
       <shell/ocr>
-      <shell/opencommit>
       <shell/pet>
       <shell/sbx>
       <shell/starship>
