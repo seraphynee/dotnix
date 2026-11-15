@@ -10,6 +10,7 @@
     includes = [
       # <shell/homebrew>
       # <shell/aerospace>
+      <shell/rex>
 
       <system/settings>
       <secrets/sops/mbp>
@@ -24,6 +25,9 @@
         ];
       };
 
-    darwin = { };
+    darwin = {
+      # Casks are inactive until <shell/homebrew> is enabled above.
+      homebrew.casks = [ "aside" ];
+    };
   };
 }
