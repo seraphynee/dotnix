@@ -13,6 +13,7 @@
     ../../lib/shell/vcs/jujutsu.nix
     ../../lib/shell/vcs/repositories.nix
   ];
+  den.aspects.shell._.vcs.includes = [ <shell/jj-waltz> ];
   # Hunk
   den.aspects.shell._.hunk = {
     homeManager = {
@@ -48,36 +49,42 @@
       };
     };
   };
-  # OpenCommit
-  den.aspects.shell._.opencommit = {
-    nixos =
-      { pkgs, ... }:
-      {
-        environment.systemPackages = with pkgs; [ opencommit ];
-      };
-    homeManager =
-      { config, pkgs, ... }:
-      let
-        ocoConfig =
-          builtins.replaceStrings
-            [
-              "@oco_api_key@"
-              "@oco_api_url@"
-            ]
-            [
-              config.sops.placeholder."llm/oco_api_key"
-              config.sops.placeholder."llm/oco_api_url"
-            ]
-            (builtins.readFile (paths.dots + "/opencommit.tmpl"));
-      in
-      {
-        sops.templates."opencommit-config" = {
-          path = "${config.home.homeDirectory}/.opencommit";
-          mode = "0600";
-          content = ocoConfig;
-        };
-      };
-  };
+  # jj-waltz (`jw`): Jujutsu workspace switcher
+  den.aspects.shell._.jj-waltz.homeManager =
+    {
+      lib,
+      pkgs,
+      ...
+    }:
+    let
+      jw = pkgs.callPackage ../../pkgs/jj-waltz/package.nix { src = inputs.jj-waltz; };
+      # Shell init is generated at build time. The completions line is dropped
+      # because the static completion files below already provide (lazy)
+      # completions, same as the chezmoi setup.
+      jwFishInit = pkgs.runCommand "jw-fish-init.fish" { } ''
+        ${lib.getExe jw} shell init fish | grep -vF 'jw shell completions fish' > "$out"
+      '';
+      jwZshInit = pkgs.runCommand "jw-zsh-init.zsh" { } ''
+        ${lib.getExe jw} shell init zsh | grep -vF 'jw shell completions zsh' > "$out"
+      '';
+      # `site-functions` of the profile is already on zsh's fpath (home-manager).
+      jwZshCompletion = pkgs.writeTextDir "share/zsh/site-functions/_jw" (
+        builtins.readFile (paths.dots + "/config/zsh/completions/_jw")
+      );
+    in
+    {
+      home.packages = [
+        jw
+        jwZshCompletion
+      ];
+      xdg.configFile."fish/completions/jw.fish".source = paths.dots + "/config/fish/completions/jw.fish";
+      programs.fish.interactiveShellInit = lib.mkAfter ''
+        source ${jwFishInit}
+      '';
+      programs.zsh.initContent = lib.mkAfter ''
+        source ${jwZshInit}
+      '';
+    };
   # Worktrunk
   den.aspects.shell._.worktrunk = {
     homeManager =

@@ -96,6 +96,17 @@
         ];
       };
   };
+  # Rex (config files only; the Rex app itself is installed manually)
+  den.aspects.shell._.rex = {
+    homeManager =
+      { pkgs, ... }:
+      lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+        xdg.configFile."rex" = {
+          source = paths.dots + "/config/rex";
+          recursive = true;
+        };
+      };
+  };
   # Rift
   den.aspects.shell._.rift = {
     homeManager =

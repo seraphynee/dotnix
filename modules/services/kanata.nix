@@ -30,30 +30,24 @@
           else
             "";
 
-        conditionalMVMods =
+        conditionalNavMods =
           if pkgs.stdenv.hostPlatform.isDarwin then
-            ''
-              m (tap-hold $tap-time $hold-time m rmet)
-              v (tap-hold $tap-time $hold-time v rmet)
-            ''
+            "lctl  lalt  lmet"
           else if pkgs.stdenv.hostPlatform.isLinux then
-            ''
-              m (tap-hold $tap-time $hold-time m lmet)
-              v (tap-hold $tap-time $hold-time v lmet)
-            ''
+            "lctl  lmet  lalt"
           else
             "";
 
         conditionalInputChords =
           if pkgs.stdenv.hostPlatform.isDarwin then
             ''
-              ;; (m ,) C-a $input-chord-time all-released ()
+              ;; (m ,) C-b $input-chord-time all-released ()
               (i o) A-left 20 all-released ()
               (o p) A-right 20 all-released ()
             ''
           else if pkgs.stdenv.hostPlatform.isLinux then
             ''
-              ;; (m ,) C-a $input-chord-time all-released ()
+              ;; (m ,) C-b $input-chord-time all-released ()
               (i o) C-left 20 all-released ()
               (o p) C-right 20 all-released ()
             ''
@@ -84,7 +78,7 @@
         kanataCore = render (paths.dots + "/config/kanata/parts/core.kbd") {
           "@conditional_lmet_tab@" = conditionalLmetTab;
           "@conditional_home_row_mods@" = conditionalHomeRowMods;
-          "@conditional_m_v_mods@" = conditionalMVMods;
+          "@conditional_nav_mods@" = conditionalNavMods;
           "@conditional_ly_rayc@" = conditionalLyRayc;
         };
 
@@ -101,7 +95,6 @@
           "kanata/parts/herdr.kbd".source = paths.dots + "/config/kanata/parts/herdr.kbd";
           "kanata/parts/raycast.kbd".source = paths.dots + "/config/kanata/parts/raycast.kbd";
           "kanata/parts/tmux.kbd".source = paths.dots + "/config/kanata/parts/tmux.kbd";
-          "kanata/parts/zellij.kbd".source = paths.dots + "/config/kanata/parts/zellij.kbd";
         };
 
         systemd.services.kanata = {

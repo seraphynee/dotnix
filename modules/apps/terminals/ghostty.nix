@@ -20,9 +20,8 @@
 
           background-opacity = 1;
           background-blur-radius = 10;
-          theme = "Flexoki Dark";
+          theme = "merino-dark";
 
-          cursor-color = "#00FF98";
           cursor-style = "bar";
           cursor-style-blink = false;
 
@@ -30,11 +29,7 @@
           window-padding-y = 11;
           window-title-font-family = "Cascadia Code";
 
-          font-family =
-            if pkgs.stdenv.hostPlatform.isDarwin then
-              "IoskeleyMonoTerm Nerd Font"
-            else
-              "IoskeleyMonoTerm Nerd Font";
+          font-family = "Paper Mono";
           font-size = if pkgs.stdenv.hostPlatform.isDarwin then 19 else 14;
           font-thicken = false;
           font-thicken-strength = 150;

@@ -11,6 +11,24 @@
       starshipFishInit = pkgs.runCommand "starship-fish-init.fish" { } ''
         ${lib.getExe config.programs.starship.package} init fish --print-full-init > "$out"
       '';
+      # Bake PROMPT2 into the init script: the stock script runs
+      # `starship prompt --continuation` on every startup. It depends on the
+      # config, so build against the generated starship.toml; any config change
+      # produces a new store path and thus a fresh PROMPT2.
+      starshipZshInit =
+        pkgs.runCommand "starship-zsh-init.zsh"
+          {
+            nativeBuildInputs = [ pkgs.writableTmpDirAsHomeHook ];
+          }
+          ''
+            export STARSHIP_CONFIG=${starshipConfig}
+            export STARSHIP_SHELL=zsh
+            starship=${lib.getExe config.programs.starship.package}
+            continuation="$("$starship" prompt --continuation)"
+            "$starship" init zsh --print-full-init | grep -v '^PROMPT2=' > "$out"
+            # Single-quote the value for zsh, escaping embedded single quotes.
+            printf "PROMPT2='%s'\n" "''${continuation//\'/\'\\\'\'}" >> "$out"
+          '';
       starshipConfigPath = "${config.xdg.configHome}/starship/starship.toml";
       starshipConfig =
         let
@@ -35,9 +53,20 @@
         end
       '';
 
+      # Sourced last-ish: after conf.d (1000), compinit (1010) and the tool
+      # inits (1020), before aliases (1100) and syntax highlighting (1200).
+      programs.zsh.initContent = lib.mkIf config.programs.zsh.enable (
+        lib.mkOrder 1090 ''
+          if [[ $TERM != dumb ]]; then
+            source ${starshipZshInit}
+          fi
+        ''
+      );
+
       programs.starship = {
         enable = true;
         enableFishIntegration = false;
+        enableZshIntegration = false;
         configPath = starshipConfigPath;
         settings = {
           add_newline = true;

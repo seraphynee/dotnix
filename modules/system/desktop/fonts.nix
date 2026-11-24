@@ -53,6 +53,7 @@ _: {
           open-sans
           ubuntu-classic
           martian-mono
+          paper-mono
           _0xproto
           geist-font
           monaspace

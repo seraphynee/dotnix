@@ -1,15 +1,15 @@
 { mkMcpServers }:
 let
   mkPiConfig = builtins.toJSON {
-    theme = "dark";
     defaultThinkingLevel = "high";
-    defaultProvider = "openai-codex";
-    defaultModel = "openai-codex/gpt-5.6-luna";
     enabledModels = [
-      "openai-codex/gpt-5.6-luna"
-      "openai-codex/gpt-5.6-sol"
-      "openai-codex/gpt-5.6-terra"
+      "openai-codex/gpt-6-luna"
+      "openai-codex/gpt-6.1-sol"
+      "opencode-go/deepseek-v4.1-flash"
+      "muse-spark-1.3-contributor"
+      "opencode-go/mimo-v2.6-pro"
     ];
+    defaultTools = [ "+codemode" ];
 
     packages = [
       {
@@ -25,10 +25,6 @@ let
         autoload = true;
       }
       {
-        source = "npm:pi-mcp-adapter";
-        autoload = true;
-      }
-      {
         source = "npm:pi-skill-gate";
         autoload = false;
       }
@@ -37,15 +33,23 @@ let
         autoload = true;
       }
       {
+        source = "git:github.com/obra/superpowers";
+        autoload = true;
+      }
+      {
         source = "npm:pi-web-access";
         autoload = true;
+      }
+      {
+        source = "npm:@dietrichgebert/ponytail";
+        autoload = false;
       }
       {
         source = "npm:@ff-labs/pi-fff";
         autoload = true;
       }
       {
-        source = "npm:@dietrichgebert/ponytail";
+        source = "npm:@juicesharp/rpiv-todo";
         autoload = false;
       }
       {
@@ -60,10 +64,6 @@ let
         source = "npm:@pi9/ask";
         autoload = true;
       }
-      {
-        source = "npm:@juicesharp/rpiv-todo";
-        autoload = false;
-      }
     ];
   };
 
@@ -77,7 +77,7 @@ let
           inherit (server) url;
         }
         // (if server ? headers && server.headers != { } then { inherit (server) headers; } else { })
-        // (if server.enabled or true then { } else { disabled = true; });
+        // (if server.enabled or true then { } else { enabled = false; });
     in
     builtins.toJSON {
       mcpServers = builtins.mapAttrs toPiServer servers;

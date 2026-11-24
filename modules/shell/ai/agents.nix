@@ -14,13 +14,27 @@ let
     mkCursorCliConfig
     mkCursorMcpConfig
     ;
+  # OpenCode v2 ships its binary as `opencode2`; expose it as `opencode` too so
+  # existing callers (oct alias, sesh, nvim plugins) keep working.
+  mkOpencode2 =
+    pkgs: llmPackages:
+    pkgs.symlinkJoin {
+      name = "opencode2-with-opencode-alias";
+      paths = [ llmPackages.opencode2 ];
+      postBuild = "ln -s opencode2 $out/bin/opencode";
+    };
 in
 {
   den.aspects.shell._.llm_agents =
     { user, ... }:
     {
       homeManager =
-        { config, pkgs, ... }:
+        {
+          config,
+          lib,
+          pkgs,
+          ...
+        }:
         let
           inherit (pkgs.stdenv.hostPlatform) isDarwin isLinux;
 
@@ -77,6 +91,12 @@ in
 
           home.file.".cursor/cli-config.json".text = cursorCliConfig;
 
+          # NixOS installs the CLIs system-wide; on darwin only the desktop app
+          # comes from Nix until the rest of mbp is migrated off Homebrew.
+          home.packages = lib.optionals isDarwin [
+            inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode2-desktop
+          ];
+
           xdg.configFile."opencode-thinking" = {
             source = paths.dots + "/config/opencode-thinking";
             recursive = true;
@@ -108,7 +128,8 @@ in
             llmPackages.codex
             llmPackages.cursor-agent
             llmPackages.grok
-            llmPackages.opencode
+            (mkOpencode2 pkgs llmPackages)
+            llmPackages.opencode2-desktop
             llmPackages.pi
             pkgs.bubblewrap
           ];

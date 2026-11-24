@@ -48,7 +48,23 @@
       inputs.bun2nix.inputs.systems.follows = "systems-linux";
     };
 
+    # Rust (Cargo.lock, no flake.nix): built in modules/shell/vcs.nix.
+    jj-waltz = {
+      url = "github:EzraCerpac/jj-waltz";
+      flake = false;
+    };
+
     llm-agents.url = "github:numtide/llm-agents.nix";
+
+    # Public agent skills, linked into ~/.agents/skills in modules/shell/ai/instructions.nix.
+    caveman = {
+      url = "github:JuliusBrussee/caveman";
+      flake = false;
+    };
+    ponytail = {
+      url = "github:DietrichGebert/ponytail";
+      flake = false;
+    };
 
     workmux = {
       url = "github:raine/workmux";

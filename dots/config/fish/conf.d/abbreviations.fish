@@ -244,11 +244,6 @@ abbr --add npmt "npm test"
 abbr --add npmU "npm update"
 abbr --add npmV "npm -v"
 
-# ssh
-abbr --add mbp "ssh mbp"
-abbr --add ghcny "ssh ghcny"
-abbr --add ghspy "ssh ghspy"
-
 # pet
 abbr --add psc "pet search"
 abbr --add pexec "pet exec -t"
@@ -258,9 +253,6 @@ abbr --add showdot "defaults write com.apple.finder AppleShowAllFiles TRUE"
 abbr --add spot-file "lsof -c '/mds\$/'"
 abbr --add spot-off "sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist"
 abbr --add spot-on "sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist"
-abbr --add tailacer "ssh tailacer"
-abbr --add tailmbp "ssh tailmbp"
-abbr --add tailpc "ssh tailpc-nixos"
 abbr --add tailprefs "tailscale debug prefs"
 abbr --add ax "chmod a+x"
 abbr --add bktmux "tmux list-keys | sk"
@@ -539,7 +531,7 @@ abbr -a jgps --set-cursor 'jj git push -b %'
 abbr -a jgpsm --set-cursor 'jj git push -b main'
 
 abbr -a jl 'jj log'
-abbr -a jla "jj log 'all()'"
+abbr -a jla "jj log -r 'all()'"
 abbr -a jlr --set-cursor "jj log -r '%'"
 abbr -a jlt --set-cursor "jj log -T %"
 abbr -a jls --set-cursor 'jj log -s'

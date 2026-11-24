@@ -13,7 +13,6 @@ to generated files in a user's home directory.
 | Path | Status | Consumer / aspect | Notes |
 | --- | --- | --- | --- |
 | `agents/` | active | [instructions](../modules/shell/ai/instructions.nix), `<shell/ai>` | Shared `.agents` tree, including instructions and skills |
-| `opencommit.tmpl` | active | [VCS](../modules/shell/vcs.nix), `<shell/opencommit>` | Rendered through sops-nix |
 | `config/1Password/` | active | [1Password](../modules/shell/1password.nix), `<shell/_1password>` | SSH agent configuration |
 | `config/aerospace/` | active | [desktop tools](../modules/shell/desktop-tools.nix), `<shell/aerospace>` | Optional aspect; not enabled by every host |
 | `config/atuin/config.toml` | dormant | none | Atuin itself is configured inline by `<shell/utils>` |

@@ -21,18 +21,8 @@
 # fi
 #
 
-# Initialize tools
-if (($ + commands[zoxide])); then
-  _init_zoxide_zsh() {
-    eval "$(zoxide init zsh)"
-  }
-
-  if (($ + functions[zsh - defer])); then
-    zsh-defer _init_zoxide_zsh
-  else
-    _init_zoxide_zsh
-  fi
-fi
+# `zoxide init zsh` is generated at build time and sourced from .zshrc
+# (see modules/shell/packages/utilities.nix), so no init is needed here.
 
 # Widget Zsh: pilih direktori dari zoxide dengan preview dan langsung cd
 fzf_zoxide_widget() {

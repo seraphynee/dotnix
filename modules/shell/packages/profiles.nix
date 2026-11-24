@@ -149,7 +149,10 @@
         homeManager =
           { pkgs, lib, ... }:
           {
-            home.packages = [ inputs.momoi-say.packages.${pkgs.stdenv.hostPlatform.system}.momoisay ];
+            home.packages = [
+              inputs.momoi-say.packages.${pkgs.stdenv.hostPlatform.system}.momoisay
+              pkgs.spotatui # Spotify terminal UI
+            ];
 
             services = lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
               jankyborders = {
